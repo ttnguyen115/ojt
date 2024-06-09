@@ -1,0 +1,42 @@
+{
+    "dogs": [
+        {
+            "id": 1,
+            "label": "Corgi"
+        },
+        {
+            "id": 2,
+            "label": "Alaska"
+        }
+    ],
+    "cats": [
+        {
+            "id": 3,
+            "label": "American Curl Cat Breed"
+        },
+        {
+            "id": 4,
+            "label": "American Shorthair Cat Breed"
+        }
+    ],
+    "chickens": [
+        {
+            "id": 5,
+            "label": "Laying"
+        },
+        {
+            "id": 6,
+            "label": "Dual-Purpose Breeds"
+        }
+    ],
+    "birds": [
+        {
+            "id": 7,
+            "label": "Parrot"
+        },
+        {
+            "id": 8,
+            "label": "Dove"
+        }
+    ]
+}
