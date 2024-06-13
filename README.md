@@ -47,7 +47,7 @@ project
 
 1. Feature: Make UI/UX - Search Cars Page (SCP)
    ![image](https://github.com/ttnguyen115/ojt/assets/56264793/ae70d872-96f7-44fd-9f3e-76e0ff8a3e4f)
-   Car API: 
+   Car API: https://github.com/ttnguyen115/ojt/blob/master/postman_collection.json
     - US1001: Split page layout by border with responsive
     - US1002: Create grid of cars with responsive
     - US1003: Making dynamic car item card with data
