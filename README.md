@@ -45,13 +45,21 @@ project
 
 ### Backlog: 
 
-1. Make UI/UX: Search Cars Page (SCP), Car Detail Page (CDP), Compare Modal with `Compare` toggle button, Filter chips in SCP.
-2. Add `Spotlight` car at the top of SCP.
-3. Navigate to CDP when click one item in SCP.
-4. Create ducks to manage state SSR
-5. Add fixed and floating `Compare Modal`, `Advertising`
-6. Handle API for mocks in `pages/api/...`
-7. Handle `< Results`, `< Previous`, `Next >` in CDP
-8. Auto scrolling after navigating to CDP to `Finance` component in CDP after clicking item price in SCP
-9. Responsive 
+1. Feature: Make UI/UX - Search Cars Page (SCP)
+   ![image](https://github.com/ttnguyen115/ojt/assets/56264793/ae70d872-96f7-44fd-9f3e-76e0ff8a3e4f)
+    - US1001: Split page layout by border with responsive
+    - US1002: Create grid of cars with responsive
+    - US1003: Making dynamic car item card with data
+      
+3. Car Detail Page (CDP).
+4. Compare Modal with `Compare` toggle button.
+5. Filter chips in SCP.
+6. Add `Spotlight` car at the top of SCP.
+7. Navigate to CDP when click one item in SCP.
+8. Create ducks to manage state SSR
+9. Add fixed and floating `Compare Modal`, `Advertising`
+10. Handle API for mocks in `pages/api/...`
+11. Handle `< Results`, `< Previous`, `Next >` in CDP
+12. Auto scrolling after navigating to CDP to `Finance` component in CDP after clicking item price in SCP
+13. Responsive 
 
