@@ -51,10 +51,11 @@ project
     - US1001: Split page layout by border with responsive
     - US1002: Create grid of cars with responsive
     - US1003: Making dynamic car item card with data
-    - US1004: Making filters for Desktop view part 1
-    - US1005: Making filters for Desktop view part 2
-    - US1006: Making filters for Mobile view part 1
-    - US1006: Making filters for Mobile view part 2
+    - US1004: Fetching car filters API and combining into a single duck for SCP
+    - US1005: Making UI filters for Desktop view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
+    - US1006: Making UI filters for Desktop view part 2 (makes, models, trims, attributes, year)
+    - US1007: Making UI filters for Mobile view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
+    - US1008: Making UI filters for Mobile view part 2 (makes, models, trims, attributes, year)
       
 3. Car Detail Page (CDP).
 4. Compare Modal with `Compare` toggle button.
