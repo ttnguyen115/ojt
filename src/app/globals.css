@@ -2,23 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
-    --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --foreground-rgb: 255, 255, 255;
-        --background-start-rgb: 0, 0, 0;
-        --background-end-rgb: 0, 0, 0;
-    }
-}
-
 body {
-    color: rgb(var(--foreground-rgb));
-    background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+    background-color: #fff;
+}
+*:focus {
+    outline: none;
+}
+
+/* In your global CSS or Tailwind config */
+h1 {
+    @apply text-3xl; /* Sets font size to 1.875rem (Tailwind's base size) * 3 */
+}
+h2 {
+    @apply text-2xl; /* Sets font size to 1.5rem * 2 */
+}
+h3 {
+    @apply text-xl; /* Sets font size to 1.25rem */
+}
+h4 {
+    @apply text-lg; /* Sets font size to 1rem */
+}
+h5 {
+    @apply text-base; /* Inherits base font size */
+}
+h6 {
+    @apply text-sm; /* Sets font size to 0.875rem */
 }
 
 @layer utilities {

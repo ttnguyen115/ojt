@@ -10,6 +10,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@nextui-org/react": "^2.4.1",
         "@redux-devtools/extension": "^3.3.0",
         "@redux-eggs/core": "^2.2.0",
         "@redux-eggs/next": "^2.2.0",
@@ -28,6 +29,8 @@
         "reselect": "^5.1.1"
     },
     "devDependencies": {
+        "@types/node": "20.14.2",
+        "@types/react": "18.3.3",
         "eslint": "^8",
         "eslint-config-next": "14.2.3",
         "postcss": "^8",
