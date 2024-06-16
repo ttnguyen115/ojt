@@ -13,6 +13,7 @@ import CarHolder from '@/components/shared/car-holder/car-holder';
 import SortAndCompare from '@/components/shared/filters/car-sort-filter';
 import Sort from '@/components/shared/filters/sort/sort';
 import Wallet from '@/components/shared/wallet/wallet';
+import SearchInput from '@/components/inputs/search-input';
 
 const SearchCarResults = ({ title }) => {
     const { chickens = [], birds = [] } = useSelector(
@@ -32,7 +33,7 @@ const SearchCarResults = ({ title }) => {
                     <div>Text</div>
                     <div>Text</div>
                     <div className='border-gray-200 border-2 rounded-md flex flex-col lg:flex-row justify-between'>
-                        <div>Search input</div>
+                        <SearchInput />
                         <div>Chips filters</div>
                     </div>
                 </div>

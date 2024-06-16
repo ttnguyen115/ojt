@@ -1,6 +1,7 @@
 import React from 'react';
 import Sort from './sort/sort';
 import Wallet from '../wallet/wallet';
+import Compare from './compare/compare';
 
 function SortAndCompare() {
     const criterias = ['Text', 'Text', 'Text', 'Text'];
@@ -8,7 +9,7 @@ function SortAndCompare() {
     return (
         <div className='border-gray-200 border-2 rounded-md p-4'>
             <div className='flex flex-row justify-end space-x-8 mb-2'>
-                <div>Compare</div>
+                <Compare />
                 <Sort className='hidden md:block' />
                 <Wallet className='hidden md:block' />
             </div>
