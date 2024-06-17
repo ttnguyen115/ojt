@@ -23,7 +23,7 @@ const options = {};
 
 if (typeof window === 'undefined') {
     options.beforeResult = async (store) => {
-        const animals = await fetcher('/hello');
+        const animals = await fetcher('models?sort="asc"&year=2015');
         store.dispatch(exampleDuckCreator.creators.setExample(animals));
     };
 }
