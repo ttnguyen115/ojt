@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Footer from './footer';
 import Navbar from './shared/navigations/navbar';
 import SearchBar from './shared/searchbar/search-bar';
+import CompareModal from './modals/compare-modal';
 
 const Layout = ({ children }) => {
     const [showSearchBar, setShowSearchBar] = useState(false);
@@ -30,9 +31,11 @@ const Layout = ({ children }) => {
                     showSearchBar ? 'translate-y-0' : '-translate-y-full'
                 }`}>
                 <SearchBar />
+                <CompareModal />
             </div>
+            <div className=' top-0 w-full'></div>
             <div className='flex-grow flex justify-center mt-6 mb-10'>
-                <div className='sm:w-11/12 md:w-4/5 '>{children}</div>
+                <div className='w-11/12 '>{children}</div>
             </div>
             <Footer />
         </div>

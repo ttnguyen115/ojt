@@ -14,12 +14,9 @@ import SortAndCompare from '@/components/shared/filters/car-sort-filter';
 import Sort from '@/components/shared/filters/sort/sort';
 import Wallet from '@/components/shared/wallet/wallet';
 import SearchInput from '@/components/inputs/search-input';
+import CompareModal from '@/components/modals/compare-modal';
 
 const SearchCarResults = ({ title }) => {
-    const { chickens = [], birds = [] } = useSelector(
-        exampleDuckCreator.selectors.getAnimalsWithTwoFeet,
-    );
-
     const navigateToPage = useCustomNavigation();
 
     const handleClick = () => {
@@ -42,10 +39,10 @@ const SearchCarResults = ({ title }) => {
                     <Sort className='block md:hidden' />
                     <Wallet className='block md:hidden' />
                 </div>
-                <div className='sm:hidden md:block md:col-span-3 items-start border-2 border-gray-200 rounded-md h-1/2'>
+                <div className='sm:hidden md:block md:col-span-2 items-start border-2 border-gray-200 rounded-md h-1/2'>
                     <CheckboxFilter />
                 </div>
-                <div className='col-span-12 md:col-span-9 w-full flex flex-col gap-4'>
+                <div className='col-span-12 md:col-span-10 w-full flex flex-col gap-4'>
                     <SortAndCompare />
                     <CarHolder />
                 </div>

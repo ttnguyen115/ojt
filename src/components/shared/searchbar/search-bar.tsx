@@ -1,6 +1,7 @@
 import SearchInput from '@/components/inputs/search-input';
 import Sort from '../filters/sort/sort';
 import Wallet from '../wallet/wallet';
+import Compare from '../filters/compare/compare';
 
 function SearchBar() {
     return (
@@ -9,6 +10,7 @@ function SearchBar() {
                 <SearchInput />
                 <Sort />
                 <Wallet />
+                <Compare />
             </div>
         </div>
     );
