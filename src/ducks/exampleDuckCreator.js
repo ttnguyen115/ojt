@@ -1,11 +1,11 @@
-import Duck from "extensible-duck";
-import { createSelector } from "reselect";
+import Duck from 'extensible-duck';
+import { createSelector } from 'reselect';
 
 // lodash
-import _get from "lodash/get";
+import _get from 'lodash/get';
 
 // custom redux
-import { createAction } from "@/redux/createAction";
+import { createAction } from '@/redux/createAction';
 
 const initialState = {
     loading: false,
@@ -14,18 +14,23 @@ const initialState = {
 };
 
 const exampleDuckCreator = new Duck({
-    namespace: "",
-    store: "animals",
+    namespace: '',
+    store: 'animals',
     consts: {},
     initialState,
 
-    types: ["CLEAR", "LOADED"],
+    types: ['CLEAR', 'LOADED'],
 
     reducer: (state, action, { types }) => {
         switch (action.type) {
             case types.LOADED: {
                 const { payload = {} } = action;
-                return { ...state, animals: payload, loading: false, error: null };
+                return {
+                    ...state,
+                    animals: payload,
+                    loading: false,
+                    error: null,
+                };
             }
 
             case types.CLEAR: {
@@ -46,21 +51,40 @@ const exampleDuckCreator = new Duck({
     selectors: (duck) => ({
         getDuckState: (state) => _get(state, duck.store, {}),
 
-        getAnimals: new Duck.Selector((selectors) => (state) => _get(selectors.getDuckState(state), "animals", {})),
+        getAnimals: new Duck.Selector(
+            (selectors) => (state) =>
+                _get(selectors.getDuckState(state), 'animals', {}),
+        ),
 
-        getDogs: new Duck.Selector((selectors) => (state) => _get(selectors.getAnimals(state), "dogs", [])),
+        getDogs: new Duck.Selector(
+            (selectors) => (state) =>
+                _get(selectors.getAnimals(state), 'dogs', []),
+        ),
 
-        getCats: new Duck.Selector((selectors) => (state) => _get(selectors.getAnimals(state), "cats", [])),
+        getCats: new Duck.Selector(
+            (selectors) => (state) =>
+                _get(selectors.getAnimals(state), 'cats', []),
+        ),
 
-        getChickens: new Duck.Selector((selectors) => (state) => _get(selectors.getAnimals(state), "chickens", [])),
+        getChickens: new Duck.Selector(
+            (selectors) => (state) =>
+                _get(selectors.getAnimals(state), 'chickens', []),
+        ),
 
-        getBirds: new Duck.Selector((selectors) => (state) => _get(selectors.getAnimals(state), "birds", [])),
+        getBirds: new Duck.Selector(
+            (selectors) => (state) =>
+                _get(selectors.getAnimals(state), 'birds', []),
+        ),
 
         getAnimalsWithTwoFeet: new Duck.Selector((selectors) =>
-            createSelector(selectors.getChickens, selectors.getBirds, (chickens, birds) => ({
-                chickens,
-                birds,
-            }))
+            createSelector(
+                selectors.getChickens,
+                selectors.getBirds,
+                (chickens, birds) => ({
+                    chickens,
+                    birds,
+                }),
+            ),
         ),
     }),
 });

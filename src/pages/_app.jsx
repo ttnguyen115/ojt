@@ -8,8 +8,10 @@ import { Layout } from '@/components';
 import { getDuckEgg, wrapperInitializer } from '@/redux';
 
 // fetch
-import { fetcher } from '@/fetchers';
+import { carsFetcher } from '@/fetchers';
 import React from 'react';
+
+//styles
 import '../app/globals.css';
 const MyApp = ({ Component, pageProps }) => {
     return (
@@ -23,8 +25,9 @@ const options = {};
 
 if (typeof window === 'undefined') {
     options.beforeResult = async (store) => {
-        const animals = await fetcher('models?sort="asc"&year=2015');
-        store.dispatch(exampleDuckCreator.creators.setExample(animals));
+        const cars = await carsFetcher('/models?sort=asc&year=2015');
+        console.log(cars.data);
+        store.dispatch(exampleDuckCreator.creators.setExample(cars.data));
     };
 }
 

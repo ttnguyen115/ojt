@@ -17,6 +17,7 @@
         "@redux-eggs/redux": "^2.2.0",
         "@redux-eggs/redux-toolkit": "^2.2.0",
         "@reduxjs/toolkit": "^2.1.0",
+        "axios": "^1.7.2",
         "extensible-duck": "^1.6.0",
         "immer": "^10.1.1",
         "lodash": "^4.17.21",
