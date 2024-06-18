@@ -8,6 +8,7 @@ const initialState = {
     error: null,
     cars: {},
     makes: {},
+    filters: {},
 };
 
 const duckCreator = new Duck({
@@ -16,7 +17,7 @@ const duckCreator = new Duck({
     consts: {},
     initialState,
 
-    types: ['CLEAR', 'LOADED_CARS', 'LOADED_MAKES'],
+    types: ['CLEAR', 'LOADED_CARS', 'LOADED_MAKES', 'LOADED_FILTERS'],
 
     reducer: (state, action, { types }) => {
         switch (action.type) {
@@ -40,6 +41,16 @@ const duckCreator = new Duck({
                 };
             }
 
+            case types.LOADED_FILTERS: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    filters: payload,
+                    loading: false,
+                    error: null,
+                };
+            }
+
             case types.CLEAR: {
                 return { ...initialState };
             }
@@ -53,6 +64,7 @@ const duckCreator = new Duck({
         clear: () => createAction(types.CLEAR),
         setCars: (payload) => createAction(types.LOADED_CARS, payload),
         setMakes: (payload) => createAction(types.LOADED_MAKES, payload),
+        setFilters: (payload) => createAction(types.LOADED_FILTERS, payload),
     }),
 
     selectors: (duck) => ({
@@ -72,6 +84,11 @@ const duckCreator = new Duck({
                 _get(selectors.getAllStates(state), 'makes', {}),
         ),
 
+        getFilters: new Duck.Selector(
+            (selectors) => (state) =>
+                _get(selectors.getAllStates(state), 'filters', {}),
+        ),
+
         getAllCars: new Duck.Selector((selectors) =>
             createSelector(selectors.getCars, (cars) => ({
                 cars,
@@ -82,6 +99,9 @@ const duckCreator = new Duck({
             createSelector(selectors.getMakes, (makes) => ({
                 makes,
             })),
+        ),
+        getAllFilters: new Duck.Selector((selectors) =>
+            createSelector(selectors.getFilters, (filters) => ({ filters })),
         ),
     }),
 });

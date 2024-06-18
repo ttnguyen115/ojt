@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 export default function getMakeFromId(id: number) {
     const { makes = [] } = useSelector(duckCreator.selectors.getAllMakes);
-    const make: Make = makes.find((make: Make) => make.id === id);
+    const make = makes.find((make: Make) => make.id === id);
     return make.name
 
 }

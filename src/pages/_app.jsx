@@ -14,6 +14,7 @@ import React from 'react';
 
 //styles
 import '../app/globals.css';
+import filtersFetcher from '@/fetchers/filter-fetcher';
 
 const MyApp = ({ Component, pageProps }) => {
     return (
@@ -29,8 +30,10 @@ if (typeof window === 'undefined') {
     options.beforeResult = async (store) => {
         const cars = await carsFetcher('/models?sort=asc&year=2020');
         const makes = await makesFetcher('/makes');
+        const filters = await filtersFetcher();
         store.dispatch(duckCreator.creators.setCars(cars.data));
         store.dispatch(duckCreator.creators.setMakes(makes.data));
+        store.dispatch(duckCreator.creators.setFilters(filters.data));
     };
 }
 
