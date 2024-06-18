@@ -15,7 +15,11 @@ axiosInstance.interceptors.response.use(
         if (error.status === 401) {
             console.error('Unauthorized request', error);
         }
-        console.error('Error in fetching data', error);
+        if (error.status === 404) {
+            console.error('Not Found', error);
+
+        }
+        // console.error('Error in fetching dat a', error);
         return {};
     },
 );
