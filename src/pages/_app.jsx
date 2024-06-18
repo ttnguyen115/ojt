@@ -1,5 +1,5 @@
 // ducks
-import exampleDuckCreator from '@/ducks/exampleDuckCreator';
+import duckCreator from '@/ducks/duck-creator';
 
 // components
 import { Layout } from '@/components';
@@ -9,10 +9,12 @@ import { getDuckEgg, wrapperInitializer } from '@/redux';
 
 // fetch
 import { carsFetcher } from '@/fetchers';
+import { makesFetcher } from '@/fetchers/makes-fetcher';
 import React from 'react';
 
 //styles
 import '../app/globals.css';
+
 const MyApp = ({ Component, pageProps }) => {
     return (
         <Layout>
@@ -25,9 +27,10 @@ const options = {};
 
 if (typeof window === 'undefined') {
     options.beforeResult = async (store) => {
-        const cars = await carsFetcher('/models?sort=asc&year=2015');
-        console.log(cars.data);
-        store.dispatch(exampleDuckCreator.creators.setExample(cars.data));
+        const cars = await carsFetcher('/models?sort=asc&year=2020');
+        const makes = await makesFetcher('/makes');
+        store.dispatch(duckCreator.creators.setCars(cars.data));
+        store.dispatch(duckCreator.creators.setMakes(makes.data));
     };
 }
 
@@ -36,7 +39,7 @@ const collectEggsFromDucks = (ducks) => {
 };
 
 const wrapper = wrapperInitializer.getAppWrapper(
-    collectEggsFromDucks([exampleDuckCreator]),
+    collectEggsFromDucks([duckCreator]),
     options,
 );
 

@@ -3,20 +3,16 @@ import { useSelector } from 'react-redux';
 // helpers
 import { mapDuckEggsToPage } from '@/helpers';
 
-// ducks
-import exampleDuckCreator from '@/ducks/exampleDuckCreator';
-
 // hooks
 import useCustomNavigation from '@/hooks/useCustomNavigation';
 
-
+// components
 import CheckboxFilter from '@/components/shared/filters/check-box-filter';
 import CarHolder from '@/components/shared/car-holder/car-holder';
 import SortAndCompare from '@/components/shared/filters/car-sort-filter';
 import Sort from '@/components/shared/filters/sort/sort';
 import Wallet from '@/components/shared/wallet/wallet';
 import SearchInput from '@/components/inputs/search-input';
-import CompareModal from '@/components/modals/compare-modal';
 
 const SearchCarResults = ({ title }) => {
     const navigateToPage = useCustomNavigation();
