@@ -1,5 +1,31 @@
+/** Binding seeding data to json:
+ *
+ * json.price = seedingData.generateRandomAmount();
+ *
+ * or
+ *
+ * const newResponse = {
+ *  ...,
+ *  price: generateRandomAmount(),
+ *  ...,
+ * }
+ *
+ ** If want to remove any unused properties in order to shorten or flatten the json:
+ *
+ * delete json.price
+ *
+ * or
+ *
+ * const newResponse = {
+ *  ...,
+ *  price: undefined,
+ *  ...,
+ * }
+ */
+
+// TODO: Add unit test for this one
 const seedingData = {
-    generateRandomAmount(year) {
+    generateRandomAmount(year = 0) {
         switch (year) {
             case 2020:
                 return generateDecimals(70_000, 90);
