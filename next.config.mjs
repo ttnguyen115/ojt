@@ -21,6 +21,17 @@ const nextConfig = {
             ],
         },
     ],
+    // add config for preventing external/malicious users
+    // https://nextjs.org/docs/app/api-reference/components/image#remotepatterns
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "picsum.photos",
+                pathname: "/**/**",
+            },
+        ],
+    },
 };
 
 export default nextConfig;
