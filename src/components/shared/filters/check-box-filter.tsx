@@ -7,14 +7,13 @@ import { useSelector } from 'react-redux';
 function CheckboxFilter() {
     const { showMobile } = useSelector(duckCreator.selectors.returnIsMobile);
     const { filters = [] } = useSelector(duckCreator.selectors.getAllFilters);
-    console.log(showMobile);
 
     return (
         <div className=''>
-            {!showMobile ? (
-                <DesktopFilterDropdown components={filters} />
+            {showMobile ? (
+                <MobileFilterModal />
             ) : (
-                <MobileFilterModal filterModalOpen={false} />
+                <DesktopFilterDropdown components={filters} />
             )}
         </div>
     );

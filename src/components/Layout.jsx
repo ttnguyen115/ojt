@@ -9,7 +9,6 @@ import duckCreator from '@/ducks/duck-creator';
 const Layout = ({ children }) => {
     const [isMobile, setIsMobile] = useState(false);
     const [showSearchBar, setShowSearchBar] = useState(false);
-    const { showMobile } = useSelector(duckCreator.selectors.returnIsMobile);
     const dispatch = useDispatch();
     useEffect(() => {
         const handleScroll = () => {

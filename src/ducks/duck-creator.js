@@ -10,6 +10,7 @@ const initialState = {
     cars: {},
     makes: {},
     filters: {},
+    showMobileFilterModal: false,
 };
 
 const duckCreator = new Duck({
@@ -24,6 +25,7 @@ const duckCreator = new Duck({
         'LOADED_MAKES',
         'LOADED_FILTERS',
         'SET_SHOW_MOBILE',
+        'SET_SHOW_MOBILE_FILTER_MODAL',
     ],
 
     reducer: (state, action, { types }) => {
@@ -67,6 +69,15 @@ const duckCreator = new Duck({
                 };
             }
 
+            case types.SET_SHOW_MOBILE_FILTER_MODAL: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    showMobileFilterModal: payload,
+                    loading: false,
+                };
+            }
+
             case types.CLEAR: {
                 return { ...initialState };
             }
@@ -83,6 +94,8 @@ const duckCreator = new Duck({
         setFilters: (payload) => createAction(types.LOADED_FILTERS, payload),
         setShowMobile: (payload) =>
             createAction(types.SET_SHOW_MOBILE, payload),
+        setShowMobileFilterModal: (payload) =>
+            createAction(types.SET_SHOW_MOBILE_FILTER_MODAL, payload),
     }),
 
     selectors: (duck) => ({
@@ -92,45 +105,50 @@ const duckCreator = new Duck({
             (selectors) => (state) => selectors.getDuckState(state),
         ),
 
-        getCars: new Duck.Selector(
-            (selectors) => (state) =>
-                _get(selectors.getAllStates(state), 'cars', {}),
-        ),
-
-        getMakes: new Duck.Selector(
-            (selectors) => (state) =>
-                _get(selectors.getAllStates(state), 'makes', {}),
-        ),
-
-        getFilters: new Duck.Selector(
-            (selectors) => (state) =>
-                _get(selectors.getAllStates(state), 'filters', {}),
-        ),
-
         getIsMobile: new Duck.Selector(
             (selectors) => (state) =>
                 _get(selectors.getAllStates(state), 'showMobile', false),
         ),
 
         getAllCars: new Duck.Selector((selectors) =>
-            createSelector(selectors.getCars, (cars) => ({
-                cars,
-            })),
+            createSelector(
+                (state) => _get(selectors.getAllStates(state), 'cars', {}),
+                (cars) => ({
+                    cars,
+                }),
+            ),
         ),
 
         getAllMakes: new Duck.Selector((selectors) =>
-            createSelector(selectors.getMakes, (makes) => ({
-                makes,
-            })),
+            createSelector(
+                (state) => _get(selectors.getAllStates(state), 'makes', {}),
+                (makes) => ({
+                    makes,
+                }),
+            ),
         ),
+
         getAllFilters: new Duck.Selector((selectors) =>
-            createSelector(selectors.getFilters, (filters) => ({ filters })),
+            createSelector(
+                (state) => _get(selectors.getAllStates(state), 'filters', {}),
+                (filters) => ({ filters }),
+            ),
         ),
 
         returnIsMobile: new Duck.Selector((selectors) =>
             createSelector(selectors.getIsMobile, (showMobile) => ({
                 showMobile,
             })),
+        ),
+
+        openMobileFilterModal: new Duck.Selector((selectors) =>
+            createSelector(
+                (state) =>
+                    _get(selectors.getAllStates(state), 'showMobileFilterModal', false),
+                (showMobileFilterModal) => ({
+                    showMobileFilterModal,
+                }),
+            ),
         ),
     }),
 });

@@ -15,7 +15,7 @@ function DesktopFilterDropdown({ components }) {
         <div className='w-full h-full overflow-y-scroll'>
             <details className=''>
                 <summary className=''>
-                    <b>Bodies</b>
+                    <b>Body Style</b>
                 </summary>
                 <div className='dropdown-content'>
                     {bodies.map((item, index) => (
@@ -29,17 +29,35 @@ function DesktopFilterDropdown({ components }) {
                 </summary>
                 <div className='dropdown-content'>
                     {cylinders.map((item, index) => (
-                        <div key={index}> {item}</div>
+                        <div key={index}>
+                            {' '}
+                            <input
+                                type='checkbox'
+                                name={`cyl-${index + 1}`}
+                                id={`cyl-${index + 1}`}
+                                className='mr-2'
+                            />
+                            <label htmlFor={`cyl-${index + 1}`}>{item}</label>
+                        </div>
                     ))}
                 </div>
             </details>
             <details className=''>
                 <summary className=''>
-                    <b>Fuel Types</b>
+                    <b>Fuel Type</b>
                 </summary>
                 <div className='dropdown-content'>
                     {fuelTypes.map((item, index) => (
-                        <div key={index}> {item}</div>
+                        <div key={index}>
+                            {' '}
+                            <input
+                                type='checkbox'
+                                name={`fuel-${index + 1}`}
+                                className='mr-2'
+                                id={`fuel-${index + 1}`}
+                            />
+                            <label htmlFor={`fuel ${index + 1}`}>{item}</label>
+                        </div>
                     ))}
                 </div>
             </details>
