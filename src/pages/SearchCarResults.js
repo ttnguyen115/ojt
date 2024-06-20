@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // helpers
 import { mapDuckEggsToPage } from '@/helpers';
@@ -13,6 +13,8 @@ import SortAndCompare from '@/components/shared/filters/car-sort-filter';
 import Sort from '@/components/shared/filters/sort/sort';
 import Wallet from '@/components/shared/wallet/wallet';
 import SearchInput from '@/components/inputs/search-input';
+import duckCreator from '@/ducks/duck-creator';
+import { useEffect } from 'react';
 
 const SearchCarResults = ({ title }) => {
     const navigateToPage = useCustomNavigation();
@@ -20,6 +22,14 @@ const SearchCarResults = ({ title }) => {
     const handleClick = () => {
         navigateToPage({ query: '123' });
     };
+
+    const { showMobile } = useSelector(duckCreator.selectors.returnIsMobile);
+
+    useEffect(() => {
+        if (window) console.log(window.innerWidth < 768);
+    }, []);
+
+    // console.log(showMobile);
 
     return (
         <div className='flex flex-col items-center w-full'>
@@ -37,7 +47,7 @@ const SearchCarResults = ({ title }) => {
                     <Sort className='block md:hidden' />
                     <Wallet className='block md:hidden' />
                 </div>
-                <div className='sm:hidden md:block md:col-span-3 items-start border-2 border-gray-200 rounded-md h-1/2'>
+                <div className='sm:hidden md:block md:col-span-3 items-start border-2 border-gray-200 rounded-md h-1/2 overflow-y-scroll'>
                     <CheckboxFilter />
                 </div>
                 <div className='col-span-12 md:col-span-9 w-full flex flex-col gap-4'>

@@ -10,7 +10,7 @@ import { getDuckEgg, wrapperInitializer } from '@/redux';
 // fetch
 import { carsFetcher } from '@/fetchers';
 import { makesFetcher } from '@/fetchers/makes-fetcher';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 //styles
 import '../app/globals.css';
@@ -35,8 +35,8 @@ if (typeof window === 'undefined') {
         store.dispatch(duckCreator.creators.setMakes(makes.data));
         store.dispatch(duckCreator.creators.setFilters(filters.data));
     };
-}
-
+} 
+// console.log(options.beforeResult);
 const collectEggsFromDucks = (ducks) => {
     return ducks.map((duck) => getDuckEgg(duck));
 };

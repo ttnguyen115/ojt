@@ -6,6 +6,7 @@ import { createAction } from '@/redux/createAction';
 const initialState = {
     loading: true,
     error: null,
+    showMobile: false,
     cars: {},
     makes: {},
     filters: {},
@@ -17,7 +18,13 @@ const duckCreator = new Duck({
     consts: {},
     initialState,
 
-    types: ['CLEAR', 'LOADED_CARS', 'LOADED_MAKES', 'LOADED_FILTERS'],
+    types: [
+        'CLEAR',
+        'LOADED_CARS',
+        'LOADED_MAKES',
+        'LOADED_FILTERS',
+        'SET_SHOW_MOBILE',
+    ],
 
     reducer: (state, action, { types }) => {
         switch (action.type) {
@@ -27,7 +34,7 @@ const duckCreator = new Duck({
                     ...state,
                     cars: payload,
                     loading: false,
-                    error: null,
+                    // error: null,
                 };
             }
 
@@ -37,7 +44,7 @@ const duckCreator = new Duck({
                     ...state,
                     makes: payload,
                     loading: false,
-                    error: null,
+                    // error: null,
                 };
             }
 
@@ -47,7 +54,16 @@ const duckCreator = new Duck({
                     ...state,
                     filters: payload,
                     loading: false,
-                    error: null,
+                    // error: null,
+                };
+            }
+
+            case types.SET_SHOW_MOBILE: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    showMobile: payload,
+                    loading: false,
                 };
             }
 
@@ -65,6 +81,8 @@ const duckCreator = new Duck({
         setCars: (payload) => createAction(types.LOADED_CARS, payload),
         setMakes: (payload) => createAction(types.LOADED_MAKES, payload),
         setFilters: (payload) => createAction(types.LOADED_FILTERS, payload),
+        setShowMobile: (payload) =>
+            createAction(types.SET_SHOW_MOBILE, payload),
     }),
 
     selectors: (duck) => ({
@@ -89,6 +107,11 @@ const duckCreator = new Duck({
                 _get(selectors.getAllStates(state), 'filters', {}),
         ),
 
+        getIsMobile: new Duck.Selector(
+            (selectors) => (state) =>
+                _get(selectors.getAllStates(state), 'showMobile', false),
+        ),
+
         getAllCars: new Duck.Selector((selectors) =>
             createSelector(selectors.getCars, (cars) => ({
                 cars,
@@ -102,6 +125,12 @@ const duckCreator = new Duck({
         ),
         getAllFilters: new Duck.Selector((selectors) =>
             createSelector(selectors.getFilters, (filters) => ({ filters })),
+        ),
+
+        returnIsMobile: new Duck.Selector((selectors) =>
+            createSelector(selectors.getIsMobile, (showMobile) => ({
+                showMobile,
+            })),
         ),
     }),
 });
