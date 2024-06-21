@@ -68,7 +68,7 @@ function generateHexColor() {
     const singleColor = () => {
         // Generate a random number between 0 and 0xFFFFFF
         const randomColor = Math.floor(Math.random() * 0xffffff);
-        const hexColor = `#${randomColor.toString().padStart(6, '0')}`;
+        const hexColor = `#${randomColor.toString(16).padStart(4, '0')}`;
         return hexColor;
     };
     const colors = [];

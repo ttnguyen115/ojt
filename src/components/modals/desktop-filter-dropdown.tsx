@@ -1,13 +1,18 @@
 import duckCreator from '@/ducks/duck-creator';
 import { indexOf } from 'lodash';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 function DesktopFilterDropdown({ components }) {
     const bodies = components.bodiestype;
     const cylinders = components.enginescylinders;
     const fuelTypes = components.enginesType;
-    const { interiorColors = [] } = duckCreator.selectors.getAllInteriorColors;
-    const { exteriorColors = [] } = duckCreator.selectors.getAllExteriorColors;
+    const { interiorColors } = useSelector(
+        duckCreator.selectors.getAllInteriorColors,
+    );
+    const { exteriorColors } = useSelector(
+        duckCreator.selectors.getAllExteriorColors,
+    );
     const [mileage, setMileage] = React.useState([0, 0]);
     const handleMileageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.currentTarget.id === 'min-mileage'
@@ -74,28 +79,28 @@ function DesktopFilterDropdown({ components }) {
             <details>
                 <summary>
                     <b>Interior Color</b>
-                    <div className='grid grid-cols-3'>
-                        {interiorColors.map((color, index) => (
-                            <div
-                                key={index}
-                                className='rounded-full'
-                                style={{ backgroundColor: color }}></div>
-                        ))}
-                    </div>
                 </summary>
+                <div className='grid grid-cols-3 container h-32 w-full overflow-y-scroll gap-2'>
+                    {interiorColors.map((color, index) => (
+                        <div
+                            key={index}
+                            className=' border-2 border-gray-200 w-10 h-10 rounded-full'
+                            style={{ backgroundColor: color }}></div>
+                    ))}
+                </div>
             </details>
             <details>
                 <summary>
                     <b>Exterior Color</b>
-                    <div className='grid grid-cols-3'>
-                        {exteriorColors.map((color, index) => (
-                            <div
-                                key={index}
-                                className='rounded-full'
-                                style={{ backgroundColor: color }}></div>
-                        ))}
-                    </div>
                 </summary>
+                <div className='grid grid-cols-3 container h-32 w-full overflow-y-scroll gap-y-2 gap-x-5'>
+                    {exteriorColors.map((color, index) => (
+                        <div
+                            key={index}
+                            className='border-2 border-gray-200 w-10 h-10 rounded-full'
+                            style={{ backgroundColor: color }}></div>
+                    ))}
+                </div>
             </details>
             <details>
                 <summary>
