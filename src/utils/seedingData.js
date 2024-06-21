@@ -54,10 +54,32 @@ const seedingData = {
     generateVehicleImage(width = 200, height = 300) {
         return `https://picsum.photos/${width}/${height}`;
     },
+
+    generateRandomColor() {
+        return generateHexColor();
+    },
 };
 
 function generateDecimals(power, tens) {
     return (Math.random() * power + tens).toFixed(2);
 }
+
+function generateHexColor() {
+    const singleColor = () => {
+        // Generate a random number between 0 and 0xFFFFFF
+        const randomColor = Math.floor(Math.random() * 0xffffff);
+        const hexColor = `#${randomColor.toString().padStart(6, '0')}`;
+        return hexColor;
+    };
+    const colors = [];
+
+    for (let i = 0; i < 10; i++) {
+        colors.push(singleColor());
+    }
+    return colors;
+}
+
+// Example usage:
+console.log(generateHexColor());
 
 export default seedingData;

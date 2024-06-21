@@ -11,6 +11,8 @@ const initialState = {
     makes: {},
     filters: {},
     showMobileFilterModal: false,
+    interiorColors: {},
+    exteriorColors: {},
 };
 
 const duckCreator = new Duck({
@@ -26,6 +28,8 @@ const duckCreator = new Duck({
         'LOADED_FILTERS',
         'SET_SHOW_MOBILE',
         'SET_SHOW_MOBILE_FILTER_MODAL',
+        'SET_EXTERIOR_COLORS',
+        'SET_INTERIOR_COLORS',
     ],
 
     reducer: (state, action, { types }) => {
@@ -64,7 +68,7 @@ const duckCreator = new Duck({
                 const { payload = {} } = action;
                 return {
                     ...state,
-                    showMobile: payload,
+                    showMobile: window.innerWidth < 768 || payload,
                     loading: false,
                 };
             }
@@ -74,6 +78,24 @@ const duckCreator = new Duck({
                 return {
                     ...state,
                     showMobileFilterModal: payload,
+                    loading: false,
+                };
+            }
+
+            case types.SET_EXTERIOR_COLORS: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    exteriorColors: payload,
+                    loading: false,
+                };
+            }
+
+            case types.SET_INTERIOR_COLORS: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    interiorColors: payload,
                     loading: false,
                 };
             }
@@ -96,6 +118,10 @@ const duckCreator = new Duck({
             createAction(types.SET_SHOW_MOBILE, payload),
         setShowMobileFilterModal: (payload) =>
             createAction(types.SET_SHOW_MOBILE_FILTER_MODAL, payload),
+        setExteriorColors: (payload) =>
+            createAction(types.SET_EXTERIOR_COLORS, payload),
+        setInteriorColors: (payload) =>
+            createAction(types.SET_INTERIOR_COLORS, payload),
     }),
 
     selectors: (duck) => ({
@@ -144,10 +170,30 @@ const duckCreator = new Duck({
         openMobileFilterModal: new Duck.Selector((selectors) =>
             createSelector(
                 (state) =>
-                    _get(selectors.getAllStates(state), 'showMobileFilterModal', false),
+                    _get(
+                        selectors.getAllStates(state),
+                        'showMobileFilterModal',
+                        false,
+                    ),
                 (showMobileFilterModal) => ({
                     showMobileFilterModal,
                 }),
+            ),
+        ),
+
+        getAllExteriorColors: new Duck.Selector((selectors) =>
+            createSelector(
+                (state) =>
+                    _get(selectors.getAllStates(state), 'exteriorColors', {}),
+                (exteriorColors) => ({ exteriorColors }),
+            ),
+        ),
+
+        getAllInteriorColors: new Duck.Selector((selectors) =>
+            createSelector(
+                (state) =>
+                    _get(selectors.getAllStates(state), 'interiorColors', {}),
+                (interiorColors) => ({ interiorColors }),
             ),
         ),
     }),

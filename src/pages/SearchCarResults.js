@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
-
 // helpers
 import { mapDuckEggsToPage } from '@/helpers';
 
@@ -13,23 +11,12 @@ import SortAndCompare from '@/components/shared/filters/car-sort-filter';
 import Sort from '@/components/shared/filters/sort/sort';
 import Wallet from '@/components/shared/wallet/wallet';
 import SearchInput from '@/components/inputs/search-input';
-import duckCreator from '@/ducks/duck-creator';
-import { useEffect } from 'react';
-
 const SearchCarResults = ({ title }) => {
     const navigateToPage = useCustomNavigation();
 
     const handleClick = () => {
         navigateToPage({ query: '123' });
     };
-
-    const { showMobile } = useSelector(duckCreator.selectors.returnIsMobile);
-
-    useEffect(() => {
-        if (window) console.log(window.innerWidth < 768);
-    }, []);
-
-    // console.log(showMobile);
 
     return (
         <div className='flex flex-col items-center w-full'>

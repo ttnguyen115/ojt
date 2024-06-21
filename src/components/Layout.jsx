@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import duckCreator from '@/ducks/duck-creator';
 
 const Layout = ({ children }) => {
+    const { showMobile } = useSelector(duckCreator.selectors.returnIsMobile);
+    console.log(showMobile);
     const [isMobile, setIsMobile] = useState(false);
     const [showSearchBar, setShowSearchBar] = useState(false);
     const dispatch = useDispatch();
@@ -37,7 +39,9 @@ const Layout = ({ children }) => {
         };
     }, []);
 
-    dispatch(duckCreator.creators.setShowMobile(isMobile));
+    useEffect(() => {
+        dispatch(duckCreator.creators.setShowMobile(isMobile));
+    }, [isMobile]);
 
     return (
         <div className='flex flex-col min-h-screen'>

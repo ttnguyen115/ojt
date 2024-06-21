@@ -1,5 +1,5 @@
 import duckCreator from '@/ducks/duck-creator';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 function MobileFilterModal() {
@@ -7,10 +7,6 @@ function MobileFilterModal() {
     const { showMobileFilterModal } = useSelector(
         duckCreator.selectors.openMobileFilterModal,
     );
-
-    useEffect(() => {
-        console.log(showMobileFilterModal);
-    }, [showMobileFilterModal]);
 
     return (
         <>

@@ -1,30 +1,40 @@
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger,
-} from '@nextui-org/react';
+import duckCreator from '@/ducks/duck-creator';
+import { indexOf } from 'lodash';
 import React from 'react';
 
 function DesktopFilterDropdown({ components }) {
     const bodies = components.bodiestype;
     const cylinders = components.enginescylinders;
     const fuelTypes = components.enginesType;
+    const { interiorColors = [] } = duckCreator.selectors.getAllInteriorColors;
+    const { exteriorColors = [] } = duckCreator.selectors.getAllExteriorColors;
+    const [mileage, setMileage] = React.useState([0, 0]);
+    const handleMileageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.currentTarget.id === 'min-mileage'
+            ? setMileage([
+                  (mileage[0] = parseInt(e.currentTarget.value)),
+                  mileage[1],
+              ])
+            : setMileage([
+                  mileage[0],
+                  (mileage[1] = parseInt(e.currentTarget.value)),
+              ]);
+    };
+
     return (
         <div className='w-full h-full overflow-y-scroll'>
-            <details className=''>
-                <summary className=''>
+            <details>
+                <summary>
                     <b>Body Style</b>
                 </summary>
                 <div className='dropdown-content'>
-                    {bodies.map((item, index) => (
+                    {bodies.map((item, index: number) => (
                         <div key={index}> {item}</div>
                     ))}
                 </div>
             </details>
-            <details className=''>
-                <summary className=''>
+            <details>
+                <summary>
                     <b>Cylinders</b>
                 </summary>
                 <div className='dropdown-content'>
@@ -42,8 +52,8 @@ function DesktopFilterDropdown({ components }) {
                     ))}
                 </div>
             </details>
-            <details className=''>
-                <summary className=''>
+            <details>
+                <summary>
                     <b>Fuel Type</b>
                 </summary>
                 <div className='dropdown-content'>
@@ -61,37 +71,59 @@ function DesktopFilterDropdown({ components }) {
                     ))}
                 </div>
             </details>
-            <details className=''>
-                <summary className=''>
+            <details>
+                <summary>
                     <b>Interior Color</b>
+                    <div className='grid grid-cols-3'>
+                        {interiorColors.map((color, index) => (
+                            <div
+                                key={index}
+                                className='rounded-full'
+                                style={{ backgroundColor: color }}></div>
+                        ))}
+                    </div>
                 </summary>
             </details>
-            <details className=''>
-                <summary className=''>
+            <details>
+                <summary>
                     <b>Exterior Color</b>
+                    <div className='grid grid-cols-3'>
+                        {exteriorColors.map((color, index) => (
+                            <div
+                                key={index}
+                                className='rounded-full'
+                                style={{ backgroundColor: color }}></div>
+                        ))}
+                    </div>
                 </summary>
             </details>
-            <details className=''>
-                <summary className=''>
+            <details>
+                <summary>
                     <b>Mileage</b>
                 </summary>
                 <div className='flex flex-row justify-between'>
                     <div className='flex flex-col '>
                         <label htmlFor='min-mileage'>Min</label>
                         <input
+                            pattern='[^0-9.]'
                             type='text'
                             placeholder='Min'
-                            className='w-3/4'
+                            className='w-3/4 '
                             id='min-mileage'
+                            value={mileage[0] || 0}
+                            onChange={(e) => handleMileageChange(e)}
                         />
                     </div>
                     <div className='flex flex-col '>
                         <label htmlFor='max-mileage'>Max</label>
                         <input
                             type='text'
+                            pattern='[^0-9.]'
                             placeholder='Max'
                             className='w-3/4'
                             id='max-mileage'
+                            value={mileage[1] || 0}
+                            onChange={(e) => handleMileageChange(e)}
                         />
                     </div>
                 </div>
