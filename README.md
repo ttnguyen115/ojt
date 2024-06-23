@@ -44,28 +44,27 @@ project
 ### Libraries:
 
 ### Backlog: 
+![image](https://github.com/ttnguyen115/ojt/assets/56264793/ae70d872-96f7-44fd-9f3e-76e0ff8a3e4f)
+Car API: https://github.com/ttnguyen115/ojt/blob/master/postman_collection.json
 
-1. Feature: Make UI/UX - Search Cars Page (SCP)
-   ![image](https://github.com/ttnguyen115/ojt/assets/56264793/ae70d872-96f7-44fd-9f3e-76e0ff8a3e4f)
-   Car API: https://github.com/ttnguyen115/ojt/blob/master/postman_collection.json
+1. Feature F10000: Build app layout structure and enhance data from server side in redux store
     - US1001: Split page layout by border with responsive
     - US1002: Create grid of cars with responsive
     - US1003: Making dynamic car item card with data
     - US1004: Fetching car filters API and combining into a single duck for SCP
+      
+2. Feature F20000: Make UI/UX and filter behaviors - Search Car Page (SCP) 
     - US1005: Making UI filters for Desktop view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
     - US1006: Making UI filters for Desktop view part 2 (makes, models, trims, attributes, year)
     - US1007: Making UI filters for Mobile view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
     - US1008: Making UI filters for Mobile view part 2 (makes, models, trims, attributes, year)
       
-3. Car Detail Page (CDP).
-4. Compare Modal with `Compare` toggle button.
-5. Filter chips in SCP.
-6. Add `Spotlight` car at the top of SCP.
-7. Navigate to CDP when click one item in SCP.
-8. Create ducks to manage state SSR
-9. Add fixed and floating `Compare Modal`, `Advertising`
-10. Handle API for mocks in `pages/api/...`
-11. Handle `< Results`, `< Previous`, `Next >` in CDP
-12. Auto scrolling after navigating to CDP to `Finance` component in CDP after clicking item price in SCP
-13. Responsive 
+3. Feature F30000: Make UI/UX and submitting email behavior - Car Detail Page (CDP)
+4. Feature F40000: Make UI/UX - Compare Car Modal 
+5. Feature F50000: Make UI/UX - Filter chips in SCP 
+6. Feature F60000: Make UI/UX - Add Spotlight car at the top of SCP 
+7. Feature F70000: Navigate from SCP to CDP by custom hooks 
+8. Feature F80000: Add filter referrer when navigate from SCP to CDP 
+9. Feature F90000: `< Previous`, `Next >` buttons in CDP
+10. Feature F11000: Auto scrolling down to Finance section after clicking item price and navigating to SCP 
 
