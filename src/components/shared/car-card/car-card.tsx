@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 function CarCard({ car }: { car: Car }) {
     return (
         <>
-            <div className='car-card border-gray-200 border-2 rounded-md h-full '>
+            <div className='car-card border-gray-200 border-2 rounded-md  '>
                 <div className=' '>
                     <img
                         src={car.image}
