@@ -33,8 +33,8 @@ if (typeof window === 'undefined') {
         let cars = await carsFetcher('/models?sort=asc&year=2020');
         const makes = await makesFetcher('/makes');
         const filters = await filtersFetcher();
-        const exteriorColors = seedingData.generateRandomColor();
-        const interiorColors = seedingData.generateRandomColor();
+        const exteriorColors = seedingData.colors[0].exterior;
+        const interiorColors = seedingData.colors[1].interior;
         store.dispatch(duckCreator.creators.setCars(cars.data));
         store.dispatch(duckCreator.creators.setMakes(makes.data));
         store.dispatch(duckCreator.creators.setFilters(filters.data));

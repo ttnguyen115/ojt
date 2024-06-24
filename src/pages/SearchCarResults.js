@@ -11,6 +11,7 @@ import SortAndCompare from '@/components/shared/filters/car-sort-filter';
 import Sort from '@/components/shared/filters/sort/sort';
 import Wallet from '@/components/shared/wallet/wallet';
 import SearchInput from '@/components/inputs/search-input';
+import Link from 'next/link';
 const SearchCarResults = ({ title }) => {
     const navigateToPage = useCustomNavigation();
 
@@ -19,26 +20,31 @@ const SearchCarResults = ({ title }) => {
     };
 
     return (
-        <div className='flex flex-col items-center w-full'>
+        <div className='flex flex-col items-start w-full'>
+            <Link
+                href={'/'}
+                color='#1e3a8a'>
+                {title}
+            </Link>
             <div className='grid md:grid-cols-12 gap-x-4 gap-y-2 w-full'>
-                <div className='col-span-12 border-gray-200 border-2 rounded-md     '>
+                {/* <div className='col-span-12 border-gray-200 border-2 rounded-md     '>
                     <div>Text</div>
                     <div>Text</div>
                     <div className='border-gray-200 border-2 rounded-md flex flex-col lg:flex-row justify-between'>
-                        <SearchInput />
-                        <div>Chips filters</div>
+                    <SearchInput />
+                    <div>Chips filters</div>
                     </div>
-                </div>
-                <div className='col-span-12 items-center sm:flex flex-row md:hidden justify-around border-2 border-gray-200 rounded-md'>
+                </div> */}
+                {/* <div className='col-span-12 items-center sm:flex flex-row md:hidden justify-around border-2 border-gray-200 rounded-md'>
                     <CheckboxFilter />
                     <Sort className='block md:hidden' />
                     <Wallet className='block md:hidden' />
-                </div>
+                </div> */}
                 <div className='sm:hidden md:block md:col-span-3 items-start border-2 border-gray-200 rounded-md h-1/2 overflow-y-scroll'>
                     <CheckboxFilter />
                 </div>
                 <div className='col-span-12 md:col-span-9 w-full flex flex-col gap-4'>
-                    <SortAndCompare />
+                    {/* <SortAndCompare /> */}
                     <CarHolder />
                 </div>
             </div>

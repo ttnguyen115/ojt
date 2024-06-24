@@ -10,6 +10,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@fortawesome/fontawesome": "^1.1.8",
         "@nextui-org/react": "^2.4.1",
         "@redux-devtools/extension": "^3.3.0",
         "@redux-eggs/core": "^2.2.0",
@@ -18,9 +19,11 @@
         "@redux-eggs/redux-toolkit": "^2.2.0",
         "@reduxjs/toolkit": "^2.1.0",
         "axios": "^1.7.2",
+        "color-namer": "^1.4.0",
         "extensible-duck": "^1.6.0",
         "immer": "^10.1.1",
         "lodash": "^4.17.21",
+        "lucide-react": "^0.395.0",
         "next": "14.2.3",
         "react": "^18",
         "react-dom": "^18",
@@ -30,6 +33,7 @@
         "reselect": "^5.1.1"
     },
     "devDependencies": {
+        "@faker-js/faker": "^8.4.1",
         "@types/node": "20.14.2",
         "@types/react": "18.3.3",
         "eslint": "^8",

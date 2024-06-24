@@ -1,5 +1,5 @@
 import duckCreator from "@/ducks/duck-creator";
-import { Make } from "@/types/make";
+import { Make } from "@/contracts/types/make";
 import { useSelector } from "react-redux";
 
 export default function getMakeFromId(id: number) {

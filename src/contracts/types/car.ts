@@ -5,5 +5,6 @@ export type Car = {
     name: string,
     make: Make,
     price: number,
-
+    mileage: number,
+    image: string
 }

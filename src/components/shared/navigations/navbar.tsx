@@ -1,14 +1,88 @@
+import IconLucide from '@/components/icon/lucide-icon';
+import {
+    NavbarContent,
+    NavbarItem,
+    Navbar,
+    NavbarMenuToggle,
+    NavbarBrand,
+    Button,
+    NavbarMenu,
+    NavbarMenuItem,
+} from '@nextui-org/react';
+import { CircleUser, Icon, Wallet } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-function Navbar() {
+function NavbarComponent() {
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+    const components = [
+        'Used Cars',
+        'New Cars',
+        'Private Seller Cars',
+        'Sell My Car',
+        'Instant Cash Offer',
+        'Car Research & Tools',
+        'Find Local Dealers',
+    ];
     return (
-        <div className='w-screen h-14 border-gray-200 border-2 rounded-sm flex flex-row items-center justify-center'>
-            <div className=' w-4/5 justify-start flex flex-row lg:mx-auto'>
-                <p> navbar</p>
-            </div>
-        </div>
+        <Navbar
+            shouldHideOnScroll
+            onMenuOpenChange={setIsMenuOpen}
+            className=' flex flex-row justify-center bg-blue-900 text-white font-semibold'>
+            <NavbarContent>
+                <NavbarMenuToggle
+                    aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+                    className='md:hidden'
+                />
+                <NavbarBrand>
+                    <p className='font-bold text-inherit'>Autotrader</p>
+                </NavbarBrand>
+            </NavbarContent>
+
+            <NavbarContent className='  bg-blue-900 '>
+                <div className='hidden md:flex space-x-4'>
+                    {components.map((item, index) => (
+                        <>
+                            <NavbarItem
+                                key={index}
+                                className='hover:cursor-pointer'>
+                                {item}
+                            </NavbarItem>
+                        </>
+                    ))}
+                </div>
+                <div className='flex flex-row  space-x-4'>
+                    <NavbarItem>
+                        <Wallet />
+                    </NavbarItem>
+                    <NavbarItem>
+                        <CircleUser />
+                    </NavbarItem>
+                </div>
+            </NavbarContent>
+
+            <NavbarMenu>
+                {components.map((item, index) => (
+                    <NavbarMenuItem key={`${item}-${index}`}>
+                        <Link
+                            color={
+                                index === 2
+                                    ? 'primary'
+                                    : index === components.length - 1
+                                    ? 'danger'
+                                    : 'foreground'
+                            }
+                            className='w-full'
+                            href='#'
+                            size='lg'>
+                            {item}
+                        </Link>
+                    </NavbarMenuItem>
+                ))}
+            </NavbarMenu>
+        </Navbar>
     );
 }
 
-export default Navbar;
+export default NavbarComponent;

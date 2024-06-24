@@ -5,6 +5,10 @@
 body {
     background-color: #fff;
 }
+
+html {
+    scroll-behavior: smooth;
+}
 *:focus {
     outline: none;
 }
@@ -37,14 +41,15 @@ summary::after {
         no-repeat;
     background-size: cover;
     transition: 0.2s;
+    /* display: ; */
 }
 
 details[open] > summary::after {
     transform: rotate(180deg);
 }
 
-summary::-webkit-details-marker {
-    display: none;
+details {
+    height: 100%;
 }
 
 details {
@@ -52,13 +57,37 @@ details {
     padding-right: 20px;
     justify-content: center;
     cursor: pointer;
+    scroll-margin-top: 100px;
+}
+
+.divider {
+    @apply border-b border-gray-200 py-4;
+}
+
+:target::before .divider:nth-last-child() {
+    @apply border-none py-0;
+}
+
+.divider:before {
+    height: 100px;
+}
+
+.car-card {
+    min-width: 100%;
+    min-height: 540px;
+}
+
+.car-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
 }
 
 summary {
-    /* position: sticky; */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 10px;
 }
 
 input {
@@ -69,11 +98,19 @@ label {
     @apply text-gray-800;
 }
 
-.dropdown-content {
+.dropdown-container {
     overflow-y: scroll;
     height: 8rem /* 128px */;
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.dropdown-container > div > label {
+    cursor: pointer;
+}
+
+input {
+    cursor: pointer;
 }
 
 .overflow-y-scroll::-webkit-scrollbar {
