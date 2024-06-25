@@ -27,7 +27,6 @@ function NavbarComponent() {
     ];
     return (
         <Navbar
-            shouldHideOnScroll
             onMenuOpenChange={setIsMenuOpen}
             className=' flex flex-row justify-center bg-blue-900 text-white font-semibold'>
             <NavbarContent>
@@ -52,14 +51,6 @@ function NavbarComponent() {
                         </>
                     ))}
                 </div>
-                <div className='flex flex-row  space-x-4'>
-                    <NavbarItem>
-                        <Wallet />
-                    </NavbarItem>
-                    <NavbarItem>
-                        <CircleUser />
-                    </NavbarItem>
-                </div>
             </NavbarContent>
 
             <NavbarMenu>
@@ -74,8 +65,7 @@ function NavbarComponent() {
                                     : 'foreground'
                             }
                             className='w-full'
-                            href='#'
-                            size='lg'>
+                            href='#'>
                             {item}
                         </Link>
                     </NavbarMenuItem>

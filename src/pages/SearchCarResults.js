@@ -7,11 +7,11 @@ import useCustomNavigation from '@/hooks/useCustomNavigation';
 // components
 import CheckboxFilter from '@/components/shared/filters/check-box-filter';
 import CarHolder from '@/components/shared/car-holder/car-holder';
+import Link from 'next/link';
 import SortAndCompare from '@/components/shared/filters/car-sort-filter';
 import Sort from '@/components/shared/filters/sort/sort';
 import Wallet from '@/components/shared/wallet/wallet';
 import SearchInput from '@/components/inputs/search-input';
-import Link from 'next/link';
 const SearchCarResults = ({ title }) => {
     const navigateToPage = useCustomNavigation();
 
@@ -40,7 +40,7 @@ const SearchCarResults = ({ title }) => {
                     <Sort className='block md:hidden' />
                     <Wallet className='block md:hidden' />
                 </div> */}
-                <div className='sm:hidden md:block md:col-span-3 items-start border-2 border-gray-200 rounded-md h-1/2 overflow-y-scroll'>
+                <div className='sm:hidden md:block md:col-span-3 items-start border-2 border-gray-200 rounded-md h-fit overflow-y-scroll'>
                     <CheckboxFilter />
                 </div>
                 <div className='col-span-12 md:col-span-9 w-full flex flex-col gap-4'>

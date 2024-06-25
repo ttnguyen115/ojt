@@ -2,15 +2,18 @@ import React from 'react';
 import { seedingData } from '../../../utils';
 import { Car } from '../../../contracts/types/car';
 import { faker } from '@faker-js/faker';
+import Divider from '../Divider/divider';
 function CarCard({ car }: { car: Car }) {
     return (
         <>
-            <div className='car-card border-gray-200 border-2 rounded-md  '>
-                <div className=' '>
-                    <img
-                        src={car.image}
-                        alt='car'
-                    />
+            <div className='car-card border-gray-200 border-2 rounded-md '>
+                <div className='bg-gray-500'>
+                    <div className='max-w-sm mx-auto   h- '>
+                        <img
+                            src={car.image}
+                            alt='car'
+                        />
+                    </div>
                 </div>
                 <div className='p-4 flex flex-col justify-between'>
                     <h4 className='font-semibold'>{`${car.make} ${car.name} `}</h4>
@@ -21,16 +24,17 @@ function CarCard({ car }: { car: Car }) {
                     </p>
                     <h3
                         suppressHydrationWarning={true}
-                        className='font-bold'>
+                        className='font-bold text-2xl'>
                         {Number(car.price).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'USD',
                             maximumFractionDigits: 0,
                         })}
                     </h3>
+                    <Divider />
                     <div
                         suppressHydrationWarning={true}
-                        className=''>
+                        className='text-sm text-gray-500'>
                         {faker.location.streetAddress()}
                     </div>
                 </div>
