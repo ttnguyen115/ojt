@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 //components
 import {
     NavbarContent,
@@ -36,9 +35,6 @@ function NavbarComponent() {
                     aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                     className='md:hidden'
                 />
-                <NavbarBrand>
-                    <p className='font-bold text-inherit'>Autotrader</p>
-                </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent className='  bg-blue-900 '>
