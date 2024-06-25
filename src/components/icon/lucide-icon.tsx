@@ -1,4 +1,7 @@
-import { IIconProps } from '@/contracts/interfaces/IIconProps';
+//interface
+import { IIconProps } from '@contracts/interfaces/IIconProps';
+
+//icon import
 import { icons } from 'lucide-react';
 
 const IconLucide: React.FC<IIconProps> = ({ name, color, size, className }) => {

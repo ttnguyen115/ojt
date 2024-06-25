@@ -1,4 +1,6 @@
 import React from 'react';
+
+//components
 import Sort from './sort/sort';
 import Wallet from '../wallet/wallet';
 import Compare from './compare/compare';

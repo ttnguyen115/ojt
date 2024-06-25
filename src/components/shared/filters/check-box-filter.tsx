@@ -1,8 +1,14 @@
-import DesktopFilterDropdown from '@/components/modals/desktop-filter-dropdown';
-import MobileFilterModal from '@/components/modals/mobile-filter-modal';
-import duckCreator from '@/ducks/duck-creator';
 import React from 'react';
+
+//reudx
 import { useSelector } from 'react-redux';
+
+//duck
+import duckCreator from '@ducks/duck-creator';
+
+//components
+import DesktopFilterDropdown from '@components/modals/desktop-filter-dropdown';
+import MobileFilterModal from '@components/modals/mobile-filter-modal';
 
 function CheckboxFilter() {
     const { showMobile } = useSelector(duckCreator.selectors.returnIsMobile);

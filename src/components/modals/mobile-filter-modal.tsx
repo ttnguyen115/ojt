@@ -1,6 +1,11 @@
-import duckCreator from '@/ducks/duck-creator';
+//react
 import React from 'react';
+
+//redux
 import { useDispatch, useSelector } from 'react-redux';
+
+//duck
+import duckCreator from '@ducks/duck-creator';
 
 function MobileFilterModal() {
     const dispatch = useDispatch();

@@ -61,8 +61,14 @@ details {
     scroll-margin-top: 200px;
 }
 
+summary:hover {
+    @apply text-blue-600;
+}
+
 .divider {
-    @apply border-b border-gray-200 py-4;
+    @apply border-b border-gray-200 py-2;
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
 }
 
 :target::before .divider:nth-last-child() {
@@ -95,6 +101,10 @@ summary {
     padding-bottom: 10px;
 }
 
+details[open] > summary {
+    border-bottom: 2px solid #e5e7eb;
+}
+
 input {
     @apply border-2 border-gray-200 rounded-md p-2;
 }
@@ -108,6 +118,8 @@ label {
     height: 8rem /* 128px */;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .dropdown-container > div > label {

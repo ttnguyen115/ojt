@@ -1,3 +1,4 @@
+import React from 'react';
 // ducks
 import duckCreator from '@/ducks/duck-creator';
 
@@ -8,15 +9,17 @@ import { Layout } from '@/components';
 import { getDuckEgg, wrapperInitializer } from '@/redux';
 
 // fetch
-import { carsFetcher } from '@/fetchers';
-import { makesFetcher } from '@/fetchers/makes-fetcher';
-import React, { useMemo } from 'react';
+import filtersFetcher from '@/fetchers/filter-fetcher';
 
 //styles
 import '../app/globals.css';
-import filtersFetcher from '@/fetchers/filter-fetcher';
+
+
+
+//components
 import { seedingData } from '../utils';
-import { filter } from 'lodash';
+import { carsFetcher } from '@fetchers/index';
+import { makesFetcher } from '@fetchers/makes-fetcher';
 
 const MyApp = ({ Component, pageProps }) => {
     return (

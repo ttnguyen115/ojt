@@ -1,4 +1,7 @@
-import IconLucide from '@/components/icon/lucide-icon';
+import React from 'react';
+
+
+//components
 import {
     NavbarContent,
     NavbarItem,
@@ -9,9 +12,7 @@ import {
     NavbarMenu,
     NavbarMenuItem,
 } from '@nextui-org/react';
-import { CircleUser, Icon, Wallet } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
 
 function NavbarComponent() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -28,7 +29,8 @@ function NavbarComponent() {
     return (
         <Navbar
             onMenuOpenChange={setIsMenuOpen}
-            className=' flex flex-row justify-center bg-blue-900 text-white font-semibold'>
+            className=' flex flex-row justify-center bg-blue-900 text-white font-semibold'
+        >
             <NavbarContent>
                 <NavbarMenuToggle
                     aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -40,12 +42,13 @@ function NavbarComponent() {
             </NavbarContent>
 
             <NavbarContent className='  bg-blue-900 '>
-                <div className='hidden md:flex space-x-4'>
+                <div className='hidden md:flex space-x-10'>
                     {components.map((item, index) => (
                         <>
                             <NavbarItem
                                 key={index}
-                                className='hover:cursor-pointer'>
+                                className='hover:cursor-pointer'
+                            >
                                 {item}
                             </NavbarItem>
                         </>
@@ -65,7 +68,8 @@ function NavbarComponent() {
                                     : 'foreground'
                             }
                             className='w-full'
-                            href='#'>
+                            href='#'
+                        >
                             {item}
                         </Link>
                     </NavbarMenuItem>

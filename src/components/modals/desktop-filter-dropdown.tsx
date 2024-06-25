@@ -1,9 +1,18 @@
-import duckCreator from '@/ducks/duck-creator';
-import { seedingData } from '@/utils';
-import { ntc } from '@/utils/ntc';
+//duck
+import duckCreator from '@ducks/duck-creator';
+
+//get color name
+import { ntc } from '@utils/ntc';
+
+//lodash
 import { indexOf } from 'lodash';
+
+//react
 import React, { MouseEventHandler } from 'react';
+
+//redux
 import { useSelector } from 'react-redux';
+
 function DesktopFilterDropdown({ components }) {
     const bodies = components.bodiestype;
     const cylinders = components.enginescylinders;
@@ -47,7 +56,7 @@ function DesktopFilterDropdown({ components }) {
     return (
         <div className='w-full h-full overflow-y-scroll '>
             <div className='divider'>
-                <details id='mileage'>
+                <details id='mileage '>
                     <summary>
                         <b>Mileage</b>
                     </summary>
@@ -55,7 +64,8 @@ function DesktopFilterDropdown({ components }) {
                         <div className='flex flex-col '>
                             <label
                                 htmlFor='min-mileage'
-                                className='text-gray-400 font-semibold'>
+                                className='text-gray-400 font-semibold'
+                            >
                                 Min
                             </label>
                             <input
@@ -71,7 +81,8 @@ function DesktopFilterDropdown({ components }) {
                         <div className='flex flex-col '>
                             <label
                                 htmlFor='max-mileage'
-                                className='text-gray-400 font-semibold'>
+                                className='text-gray-400 font-semibold'
+                            >
                                 Max
                             </label>
                             <input
@@ -92,15 +103,14 @@ function DesktopFilterDropdown({ components }) {
                     <summary>
                         <a
                             href='#bodies'
-                            onClick={(e) => handleAnchorTagClick(e, 'bodies')}>
+                            onClick={(e) => handleAnchorTagClick(e, 'bodies')}
+                        >
                             <b>Body Style</b>
                         </a>
                     </summary>
                     <div className='dropdown-container'>
                         {bodies.map((item: string, index: number) => (
-                            <div
-                                key={index}
-                                className=''>
+                            <div key={index}>
                                 <input
                                     type='checkbox'
                                     name={`body-${index + 1}`}
@@ -109,7 +119,8 @@ function DesktopFilterDropdown({ components }) {
                                 />
                                 <label
                                     htmlFor={`body-${index + 1}`}
-                                    className='mr-2'>
+                                    className='mr-2'
+                                >
                                     {item.charAt(0).toUpperCase() +
                                         item.slice(1)}
                                 </label>
@@ -126,7 +137,8 @@ function DesktopFilterDropdown({ components }) {
                                 href='#fuel-type'
                                 onClick={(e) =>
                                     handleAnchorTagClick(e, 'fuel-type')
-                                }>
+                                }
+                            >
                                 Fuel Type{' '}
                             </a>
                         </b>
@@ -157,12 +169,13 @@ function DesktopFilterDropdown({ components }) {
                                 href='#interior-color'
                                 onClick={(e) =>
                                     handleAnchorTagClick(e, 'interior-color')
-                                }>
+                                }
+                            >
                                 Interior Color
                             </a>
                         </b>
                     </summary>
-                    <div className='grid grid-cols-3 container h-40 w-full overflow-y-scroll gap-2'>
+                    <div className='grid grid-cols-3 container h-40 w-full overflow-y-scroll gap-y-2 gap-x-5 my-4'>
                         {interiorColors.map((color: string, index: number) => (
                             <div className='flex flex-col items-center'>
                                 <div
@@ -170,7 +183,8 @@ function DesktopFilterDropdown({ components }) {
                                     className=' border-2 border-gray-200 w-10 h-10 rounded-full'
                                     style={{
                                         backgroundColor: `#${color}`,
-                                    }}></div>
+                                    }}
+                                ></div>
                                 <div className='text-center'>
                                     {ntc.name(color)[1]}
                                 </div>
@@ -187,12 +201,13 @@ function DesktopFilterDropdown({ components }) {
                                 href='#exterior-color'
                                 onClick={(e) =>
                                     handleAnchorTagClick(e, 'exterior-color')
-                                }>
+                                }
+                            >
                                 Exterior Color
                             </a>
                         </b>
                     </summary>
-                    <div className='grid grid-cols-3 container h-32 w-full overflow-y-scroll gap-y-2 gap-x-5'>
+                    <div className='grid grid-cols-3 container h-32 w-full overflow-y-scroll gap-y-2 gap-x-5 my-4'>
                         {exteriorColors.map((color: string, index: number) => (
                             <div className='flex flex-col items-center'>
                                 <div
@@ -200,7 +215,8 @@ function DesktopFilterDropdown({ components }) {
                                     className='border-2 border-gray-200 w-10 h-10 rounded-full'
                                     style={{
                                         backgroundColor: `#${color}`,
-                                    }}></div>
+                                    }}
+                                ></div>
                                 <div className='text-center'>
                                     {ntc.name(color)[1]}
                                 </div>
@@ -218,7 +234,8 @@ function DesktopFilterDropdown({ components }) {
                                 href='#cylinders'
                                 onClick={(e) =>
                                     handleAnchorTagClick(e, 'cylinders')
-                                }>
+                                }
+                            >
                                 Cylinders{' '}
                             </a>
                         </b>
@@ -233,9 +250,8 @@ function DesktopFilterDropdown({ components }) {
                                     className='mr-2'
                                 />
                                 <label
-                                    htmlFor={`cyl-${
-                                        index + 1
-                                    }`}>{`${item} cylinders`}</label>
+                                    htmlFor={`cyl-${index + 1}`}
+                                >{`${item} cylinders`}</label>
                             </div>
                         ))}
                     </div>

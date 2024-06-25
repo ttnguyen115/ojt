@@ -1,4 +1,7 @@
+//hooks
 import { useEffect, useMemo, useState } from 'react';
+
+//components
 import Footer from './footer';
 // import SearchBar from './shared/searchbar/search-bar';
 // import CompareModal from './modals/compare-modal';

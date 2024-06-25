@@ -18,8 +18,19 @@
             }
         ],
         "strictNullChecks": true,
+        "baseUrl": "./src",
         "paths": {
-            "@/*": ["./src/*"]
+            "@components/*": ["./components/*"],
+            "@constants/*": ["./constants/*"],
+            "@contracts/*": ["./contracts/*"],
+            "@ducks/*": ["./ducks/*"],
+            "@fetchers/*": ["./fetchers/*"],
+            "@helpers/*": ["./helpers/*"],
+            "@hooks/*": ["./hooks/*"],
+            "@mocks/*": ["./mocks/*"],
+            "@pages/*": ["./pages/*"],
+            "@redux/*": ["./redux/*"],
+            "@utils/*": ["./utils/*"]
         }
     },
     "include": [
