@@ -2,20 +2,21 @@
 import React from 'react';
 
 //duck
-import duckCreator from '@/ducks/duck-creator';
+import duckCreator from '@ducks/duck-creator';
 
 //redux
 import { useSelector } from 'react-redux';
 
 //data generator
-import { getMakeFromId, seedingData } from '@/utils';
 import { faker } from '@faker-js/faker';
+import seedingData from '@utils/seedingData';
+import getMakeFromId from '@utils/get-make-from-id';
 
 //components
 import CarCard from '../car-card/car-card';
 
 //types
-import { Car } from '@/contracts/types/car';
+import { Car } from '@contracts/types/car';
 
 function CarHolder() {
     const { cars = [] } = useSelector(duckCreator.selectors.getAllCars);

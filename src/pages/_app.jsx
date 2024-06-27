@@ -1,6 +1,5 @@
 import React from 'react';
 // ducks
-import duckCreator from '@/ducks/duck-creator';
 
 // components
 import { Layout } from '@/components';
@@ -14,12 +13,11 @@ import filtersFetcher from '@/fetchers/filter-fetcher';
 //styles
 import '../app/globals.css';
 
-
-
 //components
 import { seedingData } from '../utils';
 import { carsFetcher } from '@fetchers/index';
 import { makesFetcher } from '@fetchers/makes-fetcher';
+import duckCreator from '@ducks/duck-creator';
 
 const MyApp = ({ Component, pageProps }) => {
     return (
