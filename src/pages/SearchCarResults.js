@@ -1,46 +1,44 @@
-import { useSelector } from "react-redux";
-
 // helpers
-import { mapDuckEggsToPage } from "@/helpers";
-
-// ducks
-import exampleDuckCreator from "@/ducks/exampleDuckCreator";
+import { mapDuckEggsToPage } from '@/helpers';
 
 // hooks
-import useCustomNavigation from "@/hooks/useCustomNavigation";
+import useCustomNavigation from '@/hooks/useCustomNavigation';
+
+// components
+import Link from 'next/link';
+import CheckboxFilter from '@components/shared/filters/check-box-filter';
+import CarHolder from '@components/shared/car-holder/car-holder';
 
 const SearchCarResults = ({ title }) => {
-
-    const { chickens = [], birds = [] } = useSelector(exampleDuckCreator.selectors.getAnimalsWithTwoFeet);
-
     const navigateToPage = useCustomNavigation();
 
     const handleClick = () => {
-        navigateToPage({ query: "123" });
+        navigateToPage({ query: '123' });
     };
 
     return (
-        <>
-            <h1>{title}</h1>
-            <div>Chickens</div>
-            <ul>
-                {chickens.map((chicken) => (
-                    <li key={chicken.id}>{chicken.label}</li>
-                ))}
-            </ul>
-            <div>Birds</div>
-            <ul>
-                {birds.map((bird) => (
-                    <li key={bird.id}>{bird.label}</li>
-                ))}
-            </ul>
-            <button onClick={handleClick}>Click</button>
-        </>
+        <div className='flex flex-col items-start w-full'>
+            <Link
+                href={'/'}
+                color='#1e3a8a'
+            >
+                {title}
+            </Link>
+            <div className='grid md:grid-cols-12 gap-x-4 gap-y-2 w-full'>
+                <div className='sm:hidden md:block md:col-span-3 items-start border-2 border-gray-200 rounded-md h-fit overflow-y-scroll'>
+                    <CheckboxFilter />
+                </div>
+                <div className='col-span-12 md:col-span-9 w-full flex flex-col gap-4'>
+                    {/* <SortAndCompare /> */}
+                    <CarHolder />
+                </div>
+            </div>
+        </div>
     );
 };
 
 SearchCarResults.getInitialProps = async (context) => {
-    return { title: "SearchCarResults" };
+    return { title: 'SearchCarResults' };
 };
 
 const { WrappedPage } = mapDuckEggsToPage(SearchCarResults, {
