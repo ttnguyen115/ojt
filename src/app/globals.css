@@ -34,6 +34,12 @@ h6 {
     @apply text-sm; /* Sets font size to 0.875rem */
 }
 
+@media (min-width: 1024px) {
+    header {
+        justify-content: center !important;
+    }
+}
+
 summary::after {
     content: '';
     width: 18px;
@@ -58,7 +64,7 @@ details {
     padding-right: 20px;
     justify-content: center;
     cursor: pointer;
-    scroll-margin-top: 200px;
+    scroll-margin-top: 300px;
 }
 
 summary:hover {
@@ -69,10 +75,6 @@ summary:hover {
     @apply border-b border-gray-200 py-2;
     /* margin-top: 10px;
     margin-bottom: 10px; */
-}
-
-:target::before .divider:nth-last-child() {
-    @apply border-none py-0;
 }
 
 .divider:before {
@@ -101,10 +103,6 @@ summary {
     padding-bottom: 10px;
 }
 
-details[open] > summary {
-    border-bottom: 2px solid #e5e7eb;
-}
-
 input {
     @apply border-2 border-gray-200 rounded-md p-2;
 }
@@ -115,11 +113,10 @@ label {
 
 .dropdown-container {
     overflow-y: scroll;
-    height: 8rem /* 128px */;
+    height: max-content;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    @apply border-t-2 border-gray-200;
 }
 
 .dropdown-container > div > label {

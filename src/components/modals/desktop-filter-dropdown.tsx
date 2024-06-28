@@ -1,27 +1,27 @@
 //duck
-import FilterComponent from '@components/shared/filters/filter-component';
 import duckCreator from '@ducks/duck-creator';
 
-//get color name
-import { ntc } from '@utils/ntc';
-
-//lodash
-import { indexOf } from 'lodash';
-
 //react
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEvent, MouseEventHandler } from 'react';
 
 //redux
 import { useSelector } from 'react-redux';
+
+//components
+import { CheckboxInput, TextInput } from '@components/inputs/input';
+import FilterComponent, {
+    ColorFilter,
+} from '@components/shared/filters/filter-component';
 
 function DesktopFilterDropdown({ components }) {
     const bodies = components.bodiestype;
     const cylinders = components.enginescylinders;
     const fuelTypes = components.enginesType;
-    const { interiorColors } = useSelector(
+
+    const { interiorColors }: any = useSelector(
         duckCreator.selectors.getAllInteriorColors,
     );
-    const { exteriorColors } = useSelector(
+    const { exteriorColors }: any = useSelector(
         duckCreator.selectors.getAllExteriorColors,
     );
 
@@ -56,171 +56,115 @@ function DesktopFilterDropdown({ components }) {
 
     return (
         <div className='w-full h-full overflow-y-scroll '>
-            {/* <FilterComponent
-                key={1}
+            <FilterComponent
                 filterName='Mileage'
-                filterValues={}
-            /> */}
-            <div className='divider'>
-                <details id='bodies'>
-                    <summary>
-                        <a
-                            href='#bodies'
-                            onClick={(e) => handleAnchorTagClick(e, 'bodies')}
-                        >
-                            <b>Body Style</b>
-                        </a>
-                    </summary>
-                    <div className='dropdown-container'>
-                        {bodies.map((item: string, index: number) => (
-                            <div key={index}>
-                                <input
-                                    type='checkbox'
-                                    name={`body-${index + 1}`}
-                                    id={`body-${index + 1}`}
-                                    className='mr-2'
-                                />
-                                <label
-                                    htmlFor={`body-${index + 1}`}
-                                    className='mr-2'
-                                >
-                                    {item.charAt(0).toUpperCase() +
-                                        item.slice(1)}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </details>
-                Fi
-            </div>
-            <div className='divider'>
-                <details id='fuel-type'>
-                    <summary>
-                        <b>
-                            <a
-                                href='#fuel-type'
-                                onClick={(e) =>
-                                    handleAnchorTagClick(e, 'fuel-type')
+                id='mileage'
+            >
+                <div className='flex flex-row justify-between'>
+                    <TextInput
+                        filterName='Min'
+                        id='mileage'
+                        onChange={handleMileageChange}
+                        placeholder='Min'
+                        value={mileage[0] || 0}
+                        className='flex-col-reverse'
+                    />
+                    <TextInput
+                        filterName='Max'
+                        id='mileage'
+                        onChange={handleMileageChange}
+                        placeholder='Max'
+                        value={mileage[1] || 0}
+                        className='flex-col-reverse'
+                    />
+                </div>
+            </FilterComponent>
+            <FilterComponent
+                filterName='Body Style'
+                href='#bodies'
+                id='bodies'
+                onClick={(e: MouseEvent<HTMLAnchorElement, MouseEvent>) =>
+                    handleAnchorTagClick(e, 'bodies')
+                }
+            >
+                <div className='dropdown-container'>
+                    {bodies.map((item: string, index: number) => (
+                        <div key={index}>
+                            <CheckboxInput
+                                filterName={item}
+                                id={`body-${index + 1}`}
+                                onChange={() => {}}
+                                // className='flex-row items-start'
+                            />
+                        </div>
+                    ))}
+                </div>
+            </FilterComponent>
+            <FilterComponent
+                filterName='Fuel Type'
+                href='#fuel-type'
+                id='fuel-type'
+                onClick={(e: MouseEvent<HTMLAnchorElement, MouseEvent>) =>
+                    handleAnchorTagClick(e, 'fuel-type')
+                }
+            >
+                <div className='dropdown-container'>
+                    {fuelTypes.map((item: string, index: number) => (
+                        <div key={index}>
+                            <CheckboxInput
+                                filterName={
+                                    item.charAt(0).toUpperCase() + item.slice(1)
                                 }
-                            >
-                                Fuel Type{' '}
-                            </a>
-                        </b>
-                    </summary>
-                    <div className='dropdown-container'>
-                        {fuelTypes.map((item: string, index: number) => (
-                            <div key={index}>
-                                <input
-                                    type='checkbox'
-                                    name={`fuel-${index + 1}`}
-                                    className='mr-2'
-                                    id={`fuel-${index + 1}`}
-                                />
-                                <label htmlFor={`fuel-${index + 1}`}>
-                                    {item.charAt(0).toUpperCase() +
-                                        item.slice(1)}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </details>
-            </div>
-            <div className='divider'>
-                <details id='interior-color'>
-                    <summary>
-                        <b>
-                            <a
-                                href='#interior-color'
-                                onClick={(e) =>
-                                    handleAnchorTagClick(e, 'interior-color')
-                                }
-                            >
-                                Interior Color
-                            </a>
-                        </b>
-                    </summary>
-                    <div className='grid grid-cols-3 container h-40 w-full overflow-y-scroll gap-y-2 gap-x-5 my-4'>
-                        {interiorColors.map((color: string, index: number) => (
-                            <div className='flex flex-col items-center'>
-                                <div
-                                    key={color}
-                                    className=' border-2 border-gray-200 w-10 h-10 rounded-full'
-                                    style={{
-                                        backgroundColor: `#${color}`,
-                                    }}
-                                ></div>
-                                <div className='text-center'>
-                                    {ntc.name(color)[1]}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </details>
-            </div>
-            <div className='divider'>
-                <details id='exterior-color'>
-                    <summary>
-                        <b>
-                            <a
-                                href='#exterior-color'
-                                onClick={(e) =>
-                                    handleAnchorTagClick(e, 'exterior-color')
-                                }
-                            >
-                                Exterior Color
-                            </a>
-                        </b>
-                    </summary>
-                    <div className='grid grid-cols-3 container h-32 w-full overflow-y-scroll gap-y-2 gap-x-5 my-4'>
-                        {exteriorColors.map((color: string, index: number) => (
-                            <div className='flex flex-col items-center'>
-                                <div
-                                    key={color}
-                                    className='border-2 border-gray-200 w-10 h-10 rounded-full'
-                                    style={{
-                                        backgroundColor: `#${color}`,
-                                    }}
-                                ></div>
-                                <div className='text-center'>
-                                    {ntc.name(color)[1]}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </details>
-            </div>
-            <div className='divider '>
-                <details id='cylinders'>
-                    <summary>
-                        <b>
-                            {' '}
-                            <a
-                                href='#cylinders'
-                                onClick={(e) =>
-                                    handleAnchorTagClick(e, 'cylinders')
-                                }
-                            >
-                                Cylinders{' '}
-                            </a>
-                        </b>
-                    </summary>
-                    <div className='dropdown-container'>
-                        {cylinders.map((item: number, index: number) => (
-                            <div key={index}>
-                                <input
-                                    type='checkbox'
-                                    name={`cyl-${index + 1}`}
-                                    id={`cyl-${index + 1}`}
-                                    className='mr-2'
-                                />
-                                <label
-                                    htmlFor={`cyl-${index + 1}`}
-                                >{`${item} cylinders`}</label>
-                            </div>
-                        ))}
-                    </div>
-                </details>
-            </div>
+                                id={`fuel-${index + 1}`}
+                                onChange={() => {}}
+                                // className='flex-row items-start'
+                            />
+                        </div>
+                    ))}
+                </div>
+            </FilterComponent>
+            <FilterComponent
+                filterName='Interior Color'
+                href='#interior-color'
+                id='interior-color'
+                onClick={(e: MouseEvent<HTMLAnchorElement, MouseEvent>) =>
+                    handleAnchorTagClick(e, 'interior-color')
+                }
+            >
+                <ColorFilter colors={interiorColors} />
+            </FilterComponent>
+
+            <FilterComponent
+                filterName='Exterior Color'
+                href='#exterior-color'
+                id='exterior-color'
+                onClick={(e: MouseEvent<HTMLAnchorElement, MouseEvent>) =>
+                    handleAnchorTagClick(e, 'exterior-color')
+                }
+            >
+                <ColorFilter colors={exteriorColors} />
+            </FilterComponent>
+            <FilterComponent
+                filterName='Cylinders'
+                href='#cylinders'
+                id='cylinders'
+                onClick={(e: MouseEvent<HTMLAnchorElement, MouseEvent>) =>
+                    handleAnchorTagClick(e, 'cylinders')
+                }
+            >
+                <div className='dropdown-container '>
+                    {cylinders.map((item: string, index: number) => (
+                        <div key={index}>
+                            <CheckboxInput
+                                filterName={`${item} cylinders`}
+                                id={`cyl-${index + 1}`}
+                                onChange={() => {}}
+                                // className='flex-row items-start'
+                            />
+                        </div>
+                    ))}
+                </div>
+            </FilterComponent>
         </div>
     );
 }

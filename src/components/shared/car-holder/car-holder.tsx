@@ -39,7 +39,7 @@ function CarHolder() {
                 {cars.length > 0 &&
                     cars.slice(10, 25).map((car: Car) => (
                         <div
-                            className='sm:col-span-12 md:col-span-6 lg:col-span-4'
+                            className='sm:col-span-12 md:col-span-4'
                             key={car.id}
                         >
                             <CarCard car={car} />

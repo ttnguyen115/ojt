@@ -2,13 +2,10 @@ import React from 'react';
 // ducks
 
 // components
-import { Layout } from '@/components';
 
 // redux
-import { getDuckEgg, wrapperInitializer } from '@/redux';
 
 // fetch
-import filtersFetcher from '@/fetchers/filter-fetcher';
 
 //styles
 import '../app/globals.css';
@@ -18,6 +15,9 @@ import { seedingData } from '../utils';
 import { carsFetcher } from '@fetchers/index';
 import { makesFetcher } from '@fetchers/makes-fetcher';
 import duckCreator from '@ducks/duck-creator';
+import Layout from '@components/Layout';
+import { getDuckEgg, wrapperInitializer } from '@redux/store';
+import filtersFetcher from '@fetchers/filter-fetcher';
 
 const MyApp = ({ Component, pageProps }) => {
     return (
@@ -43,7 +43,6 @@ if (typeof window === 'undefined') {
         store.dispatch(duckCreator.creators.setInteriorColors(interiorColors));
     };
 }
-// console.log(options.beforeResult);
 const collectEggsFromDucks = (ducks) => {
     return ducks.map((duck) => getDuckEgg(duck));
 };

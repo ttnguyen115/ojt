@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 //components
 import {
@@ -10,12 +10,28 @@ import {
     Button,
     NavbarMenu,
     NavbarMenuItem,
+    NextUIProvider,
 } from '@nextui-org/react';
 import Link from 'next/link';
 
 function NavbarComponent() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
+    const ref = useRef(null);
+
+    useEffect(() => {
+        const handleOutSideClick = (event) => {
+            if (!ref.current?.contains(event.target)) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        window.addEventListener('mousedown', handleOutSideClick);
+
+        return () => {
+            window.removeEventListener('mousedown', handleOutSideClick);
+        };
+    }, [ref]);
     const components = [
         'Used Cars',
         'New Cars',
@@ -27,32 +43,32 @@ function NavbarComponent() {
     ];
     return (
         <Navbar
+            isMenuOpen={isMenuOpen}
+            maxWidth={'full'}
             onMenuOpenChange={setIsMenuOpen}
-            className=' flex flex-row justify-center bg-blue-900 text-white font-semibold'
+            className=' bg-blue-900 text-white font-semibold'
+            ref={ref}
         >
-            <NavbarContent>
-                <NavbarMenuToggle
-                    aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-                    className='md:hidden'
-                />
-            </NavbarContent>
-
-            <NavbarContent className='  bg-blue-900 '>
-                <div className='hidden md:flex space-x-10'>
+            <NavbarMenuToggle
+                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+                className='lg:hidden'
+            />
+            <div className='hidden lg:flex space-x-10 flex-row justify-center content-center '>
+                <NavbarContent justify='center'>
                     {components.map((item, index) => (
                         <>
                             <NavbarItem
-                                key={index}
+                                key={item}
                                 className='hover:cursor-pointer'
                             >
                                 {item}
                             </NavbarItem>
                         </>
                     ))}
-                </div>
-            </NavbarContent>
+                </NavbarContent>
+            </div>
 
-            <NavbarMenu>
+            <NavbarMenu className='w-full h-fit'>
                 {components.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>
                         <Link
@@ -64,7 +80,8 @@ function NavbarComponent() {
                                     : 'foreground'
                             }
                             className='w-full'
-                            href='#'
+                            href='/'
+                            onClick={() => setIsMenuOpen(false)}
                         >
                             {item}
                         </Link>
