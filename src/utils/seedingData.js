@@ -24,6 +24,31 @@
  */
 
 // TODO: Add unit test for this one
+var exteriorColors = [
+    '000000',
+    '0000ff',
+    'a52a2a',
+    '800020',
+    '808080',
+    '008000',
+    'f9f9f9',
+    'ff0000',
+    'c0c0c0',
+    'ffffff',
+];
+
+var interiorColors = [
+    'f5f5dc',
+    '000000',
+    '0000ff',
+    'a52a2a',
+    '333333',
+    '808080',
+    'f9f9f9',
+    'ff0000',
+    'd2b48c',
+    'ffffff',
+];
 const seedingData = {
     generateRandomAmount(year = 0) {
         switch (year) {
@@ -54,10 +79,27 @@ const seedingData = {
     generateVehicleImage(width = 200, height = 300) {
         return `https://picsum.photos/${width}/${height}`;
     },
+
+    colors: [{ exterior: exteriorColors }, { interior: interiorColors }],
 };
 
 function generateDecimals(power, tens) {
     return (Math.random() * power + tens).toFixed(2);
 }
+
+// function generateHexColor() {
+//     const singleColor = () => {
+//         // Generate a random number between 0 and 0xFFFFFF
+//         const randomColor = Math.floor(Math.random() * 0xffffff);
+//         const hexColor = `#${randomColor.toString(16).padStart(2, '0')}`;
+//         return hexColor;
+//     };
+//     const colors = [];
+
+//     for (let i = 0; i < 10; i++) {
+//         colors.push(singleColor());
+//     }
+//     return colors;
+// }
 
 export default seedingData;

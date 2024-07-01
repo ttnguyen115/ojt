@@ -1,5 +1,5 @@
-import { owners } from "@/mocks/owners";
+// import { owners } from "@/mocks/owners";
 
-export default function handler(req, res) {
-    setTimeout(() => res.status(200).json(owners), 3000);
-}
+// export default function handler(req, res) {
+//     setTimeout(() => res.status(200).json(owners), 3000);
+// }
