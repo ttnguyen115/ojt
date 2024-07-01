@@ -73,7 +73,7 @@ function FilterComponent({
     href?: string;
     children: ReactNode;
     id: string;
-    onClick?: MouseEvent<HTMLAnchorElement, MouseEvent>;
+    onClick?: () => void;
 }) {
     return (
         <div className='divider'>
@@ -82,7 +82,7 @@ function FilterComponent({
                     {href ? (
                         <a
                             href={href}
-                            onClick={(e) => onClick(e)}
+                            onClick={onClick}
                         >
                             <b>{filterName}</b>
                         </a>

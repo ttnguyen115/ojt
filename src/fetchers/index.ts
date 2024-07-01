@@ -7,8 +7,10 @@ export const axiosInstance = axios.create({
     headers: {
         Authorization:
             `Bearer ${process.env.TOKEN}`,
+        "Content-Type": "text/plain"
     },
 });
+
 axiosInstance.interceptors.response.use(
     (response) => {
         if (response.status === 200) {
