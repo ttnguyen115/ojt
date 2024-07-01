@@ -56,8 +56,8 @@ project
 2. Feature F20000: Make UI/UX and filter behaviors - Search Car Page (SCP)
     - US1005: Making UI filters for Desktop view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
     - US1006: Making UI filters for Desktop view part 2 (makes, models, trims, attributes, year)
-    - US1007: Making functional behaviors for filters
     - US1008: Making UI filters for Mobile view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
+    - US1007: Making functional behaviors for filters
     - US1009: Making UI filters for Mobile view part 2 (makes, models, trims, attributes, year)
       
 3. Feature F30000: Make UI/UX and submitting email behavior - Car Detail Page (CDP)

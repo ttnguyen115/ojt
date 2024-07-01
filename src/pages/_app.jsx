@@ -31,7 +31,7 @@ const options = {};
 
 if (typeof window === 'undefined') {
     options.beforeResult = async (store) => {
-        let cars = await carsFetcher('/models?sort=asc&year=2020');
+        let cars = await carsFetcher('/models?sort=asc&year=2019');
         const makes = await makesFetcher('/makes');
         const filters = await filtersFetcher();
         const exteriorColors = seedingData.colors[0].exterior;
