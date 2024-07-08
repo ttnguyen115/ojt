@@ -1,4 +1,4 @@
-import { Make } from "./make"
+import { Trim } from "./trim"
 
 export type Car = {
     id: number,
@@ -7,5 +7,7 @@ export type Car = {
     price: number,
     mileage: number,
     image: string
-    make_name: string
+    make_name?: string,
+    trims?: Trim[]
 }
+

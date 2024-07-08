@@ -27,4 +27,4 @@ axiosInstance.interceptors.response.use(
     },
 );
 
-export { default as carsFetcher } from './cars-fetcher';
+export { default as carsFetcher } from './carsFetcher';

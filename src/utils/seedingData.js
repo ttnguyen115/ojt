@@ -23,6 +23,9 @@
  * }
  */
 
+import { faker } from '@faker-js/faker';
+import getMakeFromId from './makeUtils/getMakeFromId';
+
 // TODO: Add unit test for this one
 var exteriorColors = [
     '000000',
@@ -81,25 +84,27 @@ const seedingData = {
     },
 
     colors: [{ exterior: exteriorColors }, { interior: interiorColors }],
+    carDataGenerator(cars, makes) {
+        return generateCarData(cars, makes);
+    },
 };
 
 function generateDecimals(power, tens) {
     return (Math.random() * power + tens).toFixed(2);
 }
 
-// function generateHexColor() {
-//     const singleColor = () => {
-//         // Generate a random number between 0 and 0xFFFFFF
-//         const randomColor = Math.floor(Math.random() * 0xffffff);
-//         const hexColor = `#${randomColor.toString(16).padStart(2, '0')}`;
-//         return hexColor;
-//     };
-//     const colors = [];
-
-//     for (let i = 0; i < 10; i++) {
-//         colors.push(singleColor());
-//     }
-//     return colors;
-// }
+function generateCarData(cars, makes) {
+    cars.length > 0 &&
+        cars.forEach((car) => {
+            car.mileage = seedingData.generateRandomAmount(2020);
+            car.make_name = getMakeFromId(makes, car.make_id);
+            car.price = faker.number.int({
+                min: 10000,
+                max: 300000,
+            });
+            car.image = seedingData.generateVehicleImage();
+        });
+    return cars;
+}
 
 export default seedingData;

@@ -56,16 +56,14 @@ project
 2. Feature F20000: Make UI/UX and filter behaviors - Search Car Page (SCP)
     - US1005: Making UI filters for Desktop view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
     - US1006: Making UI filters for Desktop view part 2 (makes, models, trims, attributes, year)
-    - US1008: Making UI filters for Mobile view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
     - US1007: Making functional behaviors for filters
+    - US1008: Making UI filters for Mobile view part 1 (vehicle bodies, vehicle engines, exterior color, interior color, mileage)
     - US1009: Making UI filters for Mobile view part 2 (makes, models, trims, attributes, year)
-      
 3. Feature F30000: Make UI/UX and submitting email behavior - Car Detail Page (CDP)
-4. Feature F40000: Make UI/UX - Compare Car Modal 
-5. Feature F50000: Make UI/UX - Filter chips in SCP 
-6. Feature F60000: Make UI/UX - Add Spotlight car at the top of SCP 
-7. Feature F70000: Navigate from SCP to CDP by custom hooks 
-8. Feature F80000: Add filter referrer when navigate from SCP to CDP 
+4. Feature F40000: Make UI/UX - Compare Car Modal
+5. Feature F50000: Make UI/UX - Filter chips in SCP
+6. Feature F60000: Make UI/UX - Add Spotlight car at the top of SCP
+7. Feature F70000: Navigate from SCP to CDP by custom hooks
+8. Feature F80000: Add filter referrer when navigate from SCP to CDP
 9. Feature F90000: `< Previous`, `Next >` buttons in CDP
-10. Feature F11000: Auto scrolling down to Finance section after clicking item price and navigating to SCP 
-
+10. Feature F11000: Auto scrolling down to Finance section after clicking item price and navigating to SCP

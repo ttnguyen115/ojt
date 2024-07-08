@@ -19,6 +19,7 @@
         "@redux-eggs/redux-toolkit": "^2.2.0",
         "@reduxjs/toolkit": "^2.2.5",
         "axios": "^1.7.2",
+        "clsx": "^2.1.1",
         "color-namer": "^1.4.0",
         "extensible-duck": "^1.6.0",
         "immer": "^10.1.1",
@@ -34,7 +35,7 @@
     },
     "devDependencies": {
         "@faker-js/faker": "^8.4.1",
-        "@types/node": "20.14.9",
+        "@types/node": "^20.14.9",
         "@types/react": "18.3.3",
         "eslint": "^9",
         "eslint-config-next": "14.2.4",

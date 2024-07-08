@@ -1,6 +1,5 @@
 //components
-
-import SearchInput from "@components/inputs/search-input";
+import SearchInput from "@components/inputs/searchInput";
 import Sort from "../filters/sort/sort";
 import Wallet from "../wallet/wallet";
 import Compare from "../filters/compare/compare";

@@ -1,70 +1,68 @@
-//duck
-import duckCreator from '@ducks/duck-creator';
-
 //react
-import React, { MouseEvent, MouseEventHandler, useEffect } from 'react';
-
-//redux
-import { useSelector } from 'react-redux';
+import React, {
+    ChangeEvent,
+    MouseEvent,
+    MouseEventHandler,
+    useEffect,
+    useState,
+} from 'react';
 
 //components
 import { CheckboxInput, TextInput } from '@components/inputs/input';
 import FilterComponent, {
     ColorFilter,
-} from '@components/shared/filters/filter-component';
-import { set } from 'lodash';
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger,
-    Select,
-    SelectItem,
-} from '@nextui-org/react';
+} from '@components/shared/filters/filterComponent';
+import { Select, SelectItem } from '@nextui-org/react';
+
+//types
 import { Make } from '@contracts/types/make';
 import { Car } from '@contracts/types/car';
-import { trimsFetcher } from '@fetchers/cars-fetcher';
 
-function DesktopFilterDropdown({ components }) {
-    const bodies = components.bodiestype;
-    const cylinders = components.enginescylinders;
-    const fuelTypes = components.enginesType;
-    const { makes = [] } = useSelector(duckCreator.selectors.getAllMakes);
-    const { cars = [] } = useSelector(duckCreator.selectors.getAllCars);
+//redux-selectors
+import {
+    getCars,
+    getExteriorColors,
+    getFilters,
+    getInteriorColors,
+    getMakes,
+} from '@redux/selectors';
+import getMakeFromId from '@utils/makeUtils/getMakeFromId';
+import { filterCars, filterTrims, getMakeCarsNumber } from '@utils/carUtils';
 
-    const [mileage, setMileage] = React.useState([0, 0]);
-    const [year, setYear] = React.useState([0, 0]);
-    const [selectedCar, setSelectedCar] = React.useState<Car>({} as Car);
-    const [loading, setLoading] = React.useState(true);
-    const [filteredModels, setFilteredModels] = React.useState<Car[]>(cars);
-    const { interiorColors }: any = useSelector(
-        duckCreator.selectors.getAllInteriorColors,
-    );
-    const { exteriorColors }: any = useSelector(
-        duckCreator.selectors.getAllExteriorColors,
-    );
+function DesktopFilterDropdown() {
+    const filters = getFilters();
 
-    const handleMileageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.currentTarget.id === 'min-mileage'
-            ? setMileage([
-                  (mileage[0] = parseInt(e.currentTarget.value)),
-                  mileage[1],
-              ])
-            : setMileage([
-                  mileage[0],
-                  (mileage[1] = parseInt(e.currentTarget.value)),
-              ]);
-    };
+    const cars = getCars();
+    const makes = getMakes();
+    const interiorColors = getInteriorColors();
+    const exteriorColors = getExteriorColors();
+    const [mileage, setMileage] = useState([0, 0]);
+    const [year, setYear] = useState([0, 0]);
+    const [selectedCar, setSelectedCar] = useState<Car>({} as Car);
+    const [loading, setLoading] = useState(true);
+    const [filteredModels, setFilteredModels] = useState<Car[]>(cars as Car[]);
+    const [trims, setTrims] = useState<Car[]>([] as Car[]);
 
-    const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.currentTarget.id === 'min-year'
-            ? setYear([(year[0] = parseInt(e.currentTarget.value)), year[1]])
-            : setYear([year[0], (year[1] = parseInt(e.currentTarget.value))]);
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.currentTarget;
+        const splitId = id.split('-');
+        if (splitId[0] === 'min') {
+            if (splitId[1] === 'mileage') {
+                setMileage([parseInt(value), mileage[1]]);
+            } else {
+                setYear([parseInt(value), year[1]]);
+            }
+        } else if (splitId[0] === 'max') {
+            if (splitId[1] === 'mileage') {
+                setMileage([mileage[0], parseInt(value)]);
+            } else {
+                setYear([year[0], parseInt(value)]);
+            }
+        }
     };
 
     const handleAnchorTagClick = (
-        e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+        e: MouseEvent<HTMLAnchorElement, MouseEvent>,
         detailsId: string,
     ) => {
         e.preventDefault();
@@ -82,12 +80,7 @@ function DesktopFilterDropdown({ components }) {
     const getMakeCars = () => {
         {
             if (cars.length > 0 && makes.length > 0) {
-                makes.forEach((make: Make) => {
-                    const numberOfCars = cars.filter(
-                        (car: Car) => car.make_id === make.id,
-                    ).length;
-                    make.numberOfCars = numberOfCars;
-                });
+                getMakeCarsNumber(makes, cars);
                 setLoading(false);
             }
         }
@@ -95,32 +88,31 @@ function DesktopFilterDropdown({ components }) {
 
     const getMakeName = (makeId: number) => {
         setSelectedCar({ ...selectedCar, make_id: makeId });
-        const make = makes.find((make: Make) => make.id === makeId);
-        setSelectedCar({ ...selectedCar, make_name: make?.name, name: '' });
-        filterModels(makeId);
+        const make = getMakeFromId(makes, makeId);
+        setSelectedCar({ ...selectedCar, make_name: make, name: '' });
+        if (make) {
+            filterModels(makeId);
+        }
     };
 
     const filterModels = (makeId: number) => {
-        const filteredModels = cars.filter(
-            (car: Car) => car.make_id === makeId,
-        );
+        setTrims([]);
+        const filteredModels = filterCars(cars, makeId);
         setFilteredModels(filteredModels);
     };
 
-    const fetchTrims = async (modelId: number, makeId: number) => {
-        const res = await trimsFetcher(
-            `/trims?verbose=yes&year=2019&make_model_id=${modelId}&make_id=${makeId}`,
-        );
-        console.log(res.data);
+    const getModelTrims = (modelId: number) => {
+        const modelTrims = filterTrims(filteredModels, modelId);
+        setTrims(modelTrims);
     };
+
+    useEffect(() => {
+        getModelTrims(selectedCar.id);
+    }, [selectedCar]);
 
     useEffect(() => {
         getMakeCars();
     }, []);
-
-    useEffect(() => {
-        console.log(selectedCar);
-    }, [selectedCar]);
 
     return (
         <div className='w-full h-full overflow-y-scroll '>
@@ -132,17 +124,21 @@ function DesktopFilterDropdown({ components }) {
                     >
                         <div className='flex flex-row justify-between'>
                             <TextInput
+                                inputStyle='w-4/5'
                                 filterName='Min'
                                 id='year'
-                                onChange={handleYearChange}
+                                onChange={(e) => {
+                                    handleInputChange(e);
+                                }}
                                 placeholder='Min'
                                 value={year[0] || 0}
                                 className='flex-col-reverse'
                             />
                             <TextInput
+                                inputStyle='w-4/5'
                                 filterName='Max'
                                 id='year'
-                                onChange={handleYearChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder='Max'
                                 value={year[1] || 0}
                                 className='flex-col-reverse'
@@ -159,8 +155,9 @@ function DesktopFilterDropdown({ components }) {
                     >
                         <div className='dropdown-container'>
                             <p className='text-gray-400 font-semibold py-2'>
-                                {`${selectedCar.make_name} ${selectedCar.name}` ||
-                                    'Vehicle 1'}
+                                {typeof selectedCar.name !== 'undefined'
+                                    ? `${selectedCar.make_name} ${selectedCar.name}`
+                                    : 'Vehicle 1'}
                             </p>
                             <div>
                                 {makes.length > 0 && (
@@ -208,32 +205,26 @@ function DesktopFilterDropdown({ components }) {
                                             isEnabled: false,
                                         }}
                                     >
-                                        {filteredModels.map(
-                                            (car: Car, index: number) => (
-                                                <SelectItem
-                                                    key={car.id}
-                                                    value={car.name}
-                                                    onClick={async () => {
-                                                        setSelectedCar({
-                                                            ...selectedCar,
-                                                            name: car.name,
-                                                            id: car.id,
-                                                        });
-                                                        await fetchTrims(
-                                                            car.id,
-                                                            car.make_id,
-                                                        );
-                                                    }}
-                                                >
-                                                    {`${car.name}`}
-                                                </SelectItem>
-                                            ),
-                                        )}
+                                        {filteredModels.map((car: Car) => (
+                                            <SelectItem
+                                                key={car.id}
+                                                value={car.name}
+                                                onClick={() => {
+                                                    setSelectedCar({
+                                                        ...selectedCar,
+                                                        name: car.name,
+                                                        id: car.id,
+                                                    });
+                                                }}
+                                            >
+                                                {`${car.name}`}
+                                            </SelectItem>
+                                        ))}
                                     </Select>
                                 )}
                             </div>
                             <div>
-                                {selectedCar.name && (
+                                {trims.length > 0 && (
                                     <Select
                                         label='Trims'
                                         name='trims'
@@ -246,14 +237,18 @@ function DesktopFilterDropdown({ components }) {
                                             isEnabled: false,
                                         }}
                                     >
-                                        {filteredModels.map((car: Car) => (
-                                            <SelectItem
-                                                key={car.id}
-                                                value={car.name}
-                                            >
-                                                {`${car.name}`}
-                                            </SelectItem>
-                                        ))}
+                                        {trims.flatMap((car) =>
+                                            car.trims
+                                                ? car.trims.map((trim) => (
+                                                      <SelectItem
+                                                          key={trim.id}
+                                                          value={trim.id}
+                                                      >
+                                                          {trim.name}
+                                                      </SelectItem>
+                                                  ))
+                                                : [],
+                                        )}
                                     </Select>
                                 )}
                             </div>
@@ -265,17 +260,19 @@ function DesktopFilterDropdown({ components }) {
                     >
                         <div className='flex flex-row justify-between'>
                             <TextInput
+                                inputStyle='w-4/5'
                                 filterName='Min'
                                 id='mileage'
-                                onChange={handleMileageChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder='Min'
                                 value={mileage[0] || 0}
                                 className='flex-col-reverse'
                             />
                             <TextInput
+                                inputStyle='w-4/5'
                                 filterName='Max'
                                 id='mileage'
-                                onChange={handleMileageChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder='Max'
                                 value={mileage[1] || 0}
                                 className='flex-col-reverse'
@@ -291,16 +288,19 @@ function DesktopFilterDropdown({ components }) {
                         ) => handleAnchorTagClick(e, 'bodies')}
                     >
                         <div className='dropdown-container'>
-                            {bodies.map((item: string, index: number) => (
-                                <div key={index}>
-                                    <CheckboxInput
-                                        filterName={item}
-                                        id={`body-${index + 1}`}
-                                        onChange={() => {}}
-                                        // className='flex-row items-start'
-                                    />
-                                </div>
-                            ))}
+                            {filters.bodiestype.map(
+                                (item: string, index: number) => (
+                                    <div key={index}>
+                                        <CheckboxInput
+                                            inputStyle='mr-2'
+                                            filterName={item}
+                                            id={`body-${index + 1}`}
+                                            onChange={() => {}}
+                                            // className='flex-row items-start'
+                                        />
+                                    </div>
+                                ),
+                            )}
                         </div>
                     </FilterComponent>
                     <FilterComponent
@@ -312,19 +312,22 @@ function DesktopFilterDropdown({ components }) {
                         ) => handleAnchorTagClick(e, 'fuel-type')}
                     >
                         <div className='dropdown-container'>
-                            {fuelTypes.map((item: string, index: number) => (
-                                <div key={index}>
-                                    <CheckboxInput
-                                        filterName={
-                                            item.charAt(0).toUpperCase() +
-                                            item.slice(1)
-                                        }
-                                        id={`fuel-${index + 1}`}
-                                        onChange={() => {}}
-                                        // className='flex-row items-start'
-                                    />
-                                </div>
-                            ))}
+                            {filters.enginesType.map(
+                                (item: string, index: number) => (
+                                    <div key={index}>
+                                        <CheckboxInput
+                                            inputStyle='mr-2'
+                                            filterName={
+                                                item.charAt(0).toUpperCase() +
+                                                item.slice(1)
+                                            }
+                                            id={`fuel-${index + 1}`}
+                                            onChange={() => {}}
+                                            // className='flex-row items-start'
+                                        />
+                                    </div>
+                                ),
+                            )}
                         </div>
                     </FilterComponent>
                     <FilterComponent
@@ -357,15 +360,18 @@ function DesktopFilterDropdown({ components }) {
                         ) => handleAnchorTagClick(e, 'cylinders')}
                     >
                         <div className='dropdown-container '>
-                            {cylinders.map((item: string, index: number) => (
-                                <div key={index}>
-                                    <CheckboxInput
-                                        filterName={`${item} cylinders`}
-                                        id={`cyl-${index + 1}`}
-                                        onChange={() => {}}
-                                    />
-                                </div>
-                            ))}
+                            {filters.enginescylinders.map(
+                                (item: number, index: number) => (
+                                    <div key={index}>
+                                        <CheckboxInput
+                                            inputStyle='mr-2'
+                                            filterName={`${item} cylinders`}
+                                            id={`cyl-${index + 1}`}
+                                            onChange={() => {}}
+                                        />
+                                    </div>
+                                ),
+                            )}
                         </div>
                     </FilterComponent>
                 </>
