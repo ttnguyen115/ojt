@@ -12,9 +12,6 @@ import { getCars } from '@redux/selectors';
 
 function CarHolder() {
     const cars: Car[] = getCars();
-    // let makes = getMakes();
-
-    // cars = seedingData.carDataGenerator(cars, makes);
     return (
         <div className='border-gray-200 border-2 rounded-md w-full p-4'>
             <div className='mb-4'>CarHolder</div>
