@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 //components
 import DesktopFilterDropdown from '@components/modals/DesktopFilterDropdown';
@@ -11,9 +11,9 @@ function CheckboxFilter() {
     const showMobile = getShowMobile();
 
     return (
-        <div>
+        <Fragment>
             {showMobile ? <MobileFilterModal /> : <DesktopFilterDropdown />}
-        </div>
+        </Fragment>
     );
 }
 

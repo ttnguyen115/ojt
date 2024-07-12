@@ -1,12 +1,6 @@
 //react
 import React from 'react';
 
-//duck
-import duckCreator from '@ducks/duckCreator';
-
-//data generator
-import seedingData from '@utils/seedingData';
-
 //components
 import CarCard from '../carCard/carCard';
 
@@ -14,13 +8,13 @@ import CarCard from '../carCard/carCard';
 import { Car } from '@contracts/types/car';
 
 //redux-selectors
-import { getCars, getMakes } from '@redux/selectors';
-CarCard;
-function CarHolder() {
-    let cars = getCars();
-    let makes = getMakes();
+import { getCars } from '@redux/selectors';
 
-    cars = seedingData.carDataGenerator(cars, makes);
+function CarHolder() {
+    const cars: Car[] = getCars();
+    // let makes = getMakes();
+
+    // cars = seedingData.carDataGenerator(cars, makes);
     return (
         <div className='border-gray-200 border-2 rounded-md w-full p-4'>
             <div className='mb-4'>CarHolder</div>

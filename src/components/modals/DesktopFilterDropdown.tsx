@@ -1,6 +1,7 @@
 //react
 import React, {
     ChangeEvent,
+    Fragment,
     MouseEvent,
     MouseEventHandler,
     useEffect,
@@ -127,9 +128,7 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Min'
                                 id='year'
-                                onChange={(e) => {
-                                    handleInputChange(e);
-                                }}
+                                onChange={handleInputChange}
                                 placeholder='Min'
                                 value={year[0] || 0}
                                 className='flex-col-reverse'
@@ -138,7 +137,7 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Max'
                                 id='year'
-                                onChange={(e) => handleInputChange(e)}
+                                onChange={handleInputChange}
                                 placeholder='Max'
                                 value={year[1] || 0}
                                 className='flex-col-reverse'
@@ -263,7 +262,7 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Min'
                                 id='mileage'
-                                onChange={(e) => handleInputChange(e)}
+                                onChange={handleInputChange}
                                 placeholder='Min'
                                 value={mileage[0] || 0}
                                 className='flex-col-reverse'
@@ -272,7 +271,7 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Max'
                                 id='mileage'
-                                onChange={(e) => handleInputChange(e)}
+                                onChange={handleInputChange}
                                 placeholder='Max'
                                 value={mileage[1] || 0}
                                 className='flex-col-reverse'
@@ -290,7 +289,7 @@ function DesktopFilterDropdown() {
                         <div className='dropdown-container'>
                             {filters.bodiestype.map(
                                 (item: string, index: number) => (
-                                    <div key={index}>
+                                    <Fragment key={index}>
                                         <CheckboxInput
                                             inputStyle='mr-2'
                                             filterName={item}
@@ -298,7 +297,7 @@ function DesktopFilterDropdown() {
                                             onChange={() => {}}
                                             // className='flex-row items-start'
                                         />
-                                    </div>
+                                    </Fragment>
                                 ),
                             )}
                         </div>

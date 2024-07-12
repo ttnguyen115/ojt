@@ -8,8 +8,8 @@ import { getDuckEgg, wrapperInitializer } from '@redux/store';
 // fetchers
 import filtersFetcher from '@fetchers/filterFetcher';
 import { seedingData } from '../utils';
-import { carsFetcher } from '@fetchers/index';
 import { makesFetcher } from '@fetchers/makesFetcher';
+import carsFetcher, { trimsFetcher } from '@fetchers/carsFetcher';
 
 //styles
 import '../app/globals.css';
@@ -17,7 +17,6 @@ import '../app/globals.css';
 //layout
 import Layout from '@components/Layout';
 import { getCars, getMakes } from '@redux/selectors';
-import { trimsFetcher } from '@fetchers/carsFetcher';
 
 const MyApp = ({ Component, pageProps }) => {
     return (

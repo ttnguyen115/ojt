@@ -94,6 +94,7 @@ function generateDecimals(power, tens) {
 }
 
 function generateCarData(cars, makes) {
+    
     cars.length > 0 &&
         cars.forEach((car) => {
             car.mileage = seedingData.generateRandomAmount(2020);

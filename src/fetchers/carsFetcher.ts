@@ -1,4 +1,4 @@
-import { axiosInstance } from '.';
+import { axiosInstance } from './axiosInstance';
 
 export default async function carsFetcher(url: string) {
     const data = await axiosInstance.get(url);
