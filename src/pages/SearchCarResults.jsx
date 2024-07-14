@@ -1,13 +1,14 @@
 // helpers
+import { mapDuckEggsToPage } from '@helpers/mapDuckEggsToPage';
 
 // hooks
+import useCustomNavigation from '@hooks/useCustomNavigation';
 
 // components
 import Link from 'next/link';
-import CheckboxFilter from '@components/shared/filters/check-box-filter';
-import CarHolder from '@components/shared/car-holder/car-holder';
-import { mapDuckEggsToPage } from '@helpers/mapDuckEggsToPage';
-import useCustomNavigation from '@hooks/useCustomNavigation';
+import CheckboxFilter from '@components/shared/filters/checkboxFilter';
+import CarHolder from '@components/shared/carHolder/carHolder';
+
 const SearchCarResults = ({ title }) => {
     const navigateToPage = useCustomNavigation();
 

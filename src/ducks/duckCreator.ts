@@ -1,7 +1,10 @@
-import Duck from 'extensible-duck';
-import { createSelector } from 'reselect';
+//lodash
 import _get from 'lodash/get';
+
+//redux
+import { createSelector } from 'reselect';
 import { createAction } from '@redux/createAction';
+import Duck from 'extensible-duck';
 
 const initialState = {
     loading: true,

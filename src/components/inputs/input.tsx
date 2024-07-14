@@ -1,4 +1,4 @@
-import { FilterInput } from '@components/shared/filters/filter-component';
+import { FilterInput } from '@components/shared/filters/filterComponent';
 import React, { ChangeEventHandler } from 'react';
 
 export function TextInput({
@@ -7,7 +7,8 @@ export function TextInput({
     placeholder,
     id,
     onChange,
-    className,
+    className = '',
+    inputStyle = '',
 }: {
     filterName: string;
     value: string | number;
@@ -15,6 +16,7 @@ export function TextInput({
     id: string;
     onChange: ChangeEventHandler<HTMLInputElement>;
     className?: string;
+    inputStyle?: string;
 }) {
     return (
         <FilterInput
@@ -25,17 +27,19 @@ export function TextInput({
             placeholder={placeholder}
             onChange={onChange}
             className={className}
+            inputStyle={inputStyle}
         />
     );
 }
 
 export function CheckboxInput({
     filterName,
-    value,
-    placeholder,
+    value = '',
+    placeholder = '',
     id,
     onChange,
-    className,
+    className = '',
+    inputStyle = '',
 }: {
     filterName: string;
     value?: string | number;
@@ -43,6 +47,7 @@ export function CheckboxInput({
     id: string;
     onChange: ChangeEventHandler<HTMLInputElement>;
     className?: string;
+    inputStyle?: string;
 }) {
     return (
         <FilterInput
@@ -53,6 +58,7 @@ export function CheckboxInput({
             placeholder={placeholder}
             onChange={onChange}
             className={className}
+            inputStyle={inputStyle}
         />
     );
 }

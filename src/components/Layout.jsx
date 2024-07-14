@@ -4,7 +4,7 @@ import Footer from './footer';
 // import CompareModal from './modals/compare-modal';
 // import { useDispatch, useSelector } from 'react-redux';
 // import duckCreator from '@/ducks/duck-creator';
-import NavbarComponent from './shared/navigations/navbar';
+import NavbarComponent from './shared/navigations/navBar';
 
 const Layout = ({ children }) => {
     // const { showMobile } = useSelector(duckCreator.selectors.returnIsMobile);

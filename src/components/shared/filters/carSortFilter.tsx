@@ -17,7 +17,7 @@ function SortAndCompare() {
             </div>
             <div className='border-gray-200 border-2 rounded-md p-4'>
                 <div className='mb-2'>Text</div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4  gap-4'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4'>
                     {criterias.map((criteria, index) => (
                         <div
                             key={index}
