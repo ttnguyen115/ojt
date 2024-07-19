@@ -8,6 +8,7 @@ export type Car = {
     mileage: number,
     image: string
     make_name?: string,
-    trims?: Trim[]
+    trims?: Trim[],
+    selectedTrim?: string,
 }
 

@@ -4,11 +4,12 @@ const baseUrl = 'https://carapi.app/api';
 
 export const axiosInstance = axios.create({
     baseURL: baseUrl,
-
+    headers: {
+        // Authorization:
+        //     `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+        "Content-Type": "text/plain"
+    },
 });
-
-axiosInstance.defaults.headers.common['Authorization'] = process.env.NEXT_PUBLIC_TOKEN
-
 
 axiosInstance.interceptors.response.use(
     (response) => {

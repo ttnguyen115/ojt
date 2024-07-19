@@ -1,5 +1,5 @@
 //react
-import React from 'react';
+import React, { memo } from 'react';
 
 //divider
 import Divider from '../Divider/divider';
@@ -27,7 +27,7 @@ function CarCard({ car }: { car: Car }) {
                             alt='car'
                             width={100}
                             height={100}
-                            priority={false}
+                            priority={true}
                         />
                     </div>
                 </div>
@@ -58,4 +58,4 @@ function CarCard({ car }: { car: Car }) {
     );
 }
 
-export default CarCard;
+export default memo(CarCard);

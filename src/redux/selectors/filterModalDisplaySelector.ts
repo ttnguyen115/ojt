@@ -1,4 +1,7 @@
+//duck
 import duckCreator from "@ducks/duckCreator";
+
+//redux
 import { useSelector } from "react-redux";
 
 const getShowMobileFilterModal = () => {

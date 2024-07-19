@@ -94,18 +94,19 @@ function generateDecimals(power, tens) {
 }
 
 function generateCarData(cars, makes) {
-    
-    cars.length > 0 &&
-        cars.forEach((car) => {
-            car.mileage = seedingData.generateRandomAmount(2020);
-            car.make_name = getMakeFromId(makes, car.make_id);
-            car.price = faker.number.int({
+    return cars.map((car) => {
+        return {
+            ...car,
+            mileage: seedingData.generateRandomAmount(2020),
+            make_name: getMakeFromId(makes, car.make_id),
+            price: faker.number.int({
                 min: 10000,
                 max: 300000,
-            });
-            car.image = seedingData.generateVehicleImage();
-        });
-    return cars;
+            }),
+            image: seedingData.generateVehicleImage(),
+            trims: [], // Initialize trims as an empty array
+        };
+    });
 }
 
 export default seedingData;

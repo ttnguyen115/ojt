@@ -1,6 +1,6 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosIntance";
 
-export async function makesFetcher(url: string) {
+export default async function makesFetcher(url: string) {
     const data = await axiosInstance.get(url);
     return data || {};
 

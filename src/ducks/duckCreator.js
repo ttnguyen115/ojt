@@ -16,6 +16,7 @@ const initialState = {
     showMobileFilterModal: false,
     interiorColors: {},
     exteriorColors: {},
+    query: {},
 };
 
 const duckCreator = new Duck({
@@ -33,6 +34,8 @@ const duckCreator = new Duck({
         'SET_SHOW_MOBILE_FILTER_MODAL',
         'SET_EXTERIOR_COLORS',
         'SET_INTERIOR_COLORS',
+        'SET_QUERY',
+        'UPDATE_STATE',
     ],
 
     reducer: (state, action, { types }) => {
@@ -107,6 +110,23 @@ const duckCreator = new Duck({
                 return { ...initialState };
             }
 
+            case types.SET_QUERY: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    query: payload,
+                    loading: false,
+                };
+            }
+
+            case types.UPDATE_STATE: {
+                const { payload } = action;
+                return {
+                    ...state,
+                    filters: { ...state.filters, [payload.key]: payload.data },
+                };
+            }
+
             default:
                 return state;
         }
@@ -125,6 +145,8 @@ const duckCreator = new Duck({
             createAction(types.SET_EXTERIOR_COLORS, payload),
         setInteriorColors: (payload) =>
             createAction(types.SET_INTERIOR_COLORS, payload),
+        setQuery: (payload) => createAction(types.SET_QUERY, payload),
+        updateState: (payload) => createAction(types.UPDATE_STATE, payload),
     }),
 
     selectors: (duck) => ({
@@ -139,6 +161,14 @@ const duckCreator = new Duck({
                 _get(selectors.getAllStates(state), 'showMobile', false),
         ),
 
+        getLoading: new Duck.Selector((selectors) =>
+            createSelector(
+                (state) => _get(selectors.getAllStates(state), 'loading', true),
+                (loading) => ({
+                    loading,
+                }),
+            ),
+        ),
         getAllCars: new Duck.Selector((selectors) =>
             createSelector(
                 (state) => _get(selectors.getAllStates(state), 'cars', {}),
@@ -197,6 +227,12 @@ const duckCreator = new Duck({
                 (state) =>
                     _get(selectors.getAllStates(state), 'interiorColors', {}),
                 (interiorColors) => ({ interiorColors }),
+            ),
+        ),
+        getQuery: new Duck.Selector((selectors) =>
+            createSelector(
+                (state) => _get(selectors.getAllStates(state), 'query', {}),
+                (query) => ({ query }),
             ),
         ),
     }),

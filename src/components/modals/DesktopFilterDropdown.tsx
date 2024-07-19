@@ -1,12 +1,5 @@
 //react
-import React, {
-    ChangeEvent,
-    Fragment,
-    MouseEvent,
-    MouseEventHandler,
-    useEffect,
-    useState,
-} from 'react';
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 
 //components
 import { CheckboxInput, TextInput } from '@components/inputs/input';
@@ -18,6 +11,7 @@ import { Select, SelectItem } from '@nextui-org/react';
 //types
 import { Make } from '@contracts/types/make';
 import { Car } from '@contracts/types/car';
+import { Filter } from '@contracts/index';
 
 //redux-selectors
 import {
@@ -27,22 +21,57 @@ import {
     getInteriorColors,
     getMakes,
 } from '@redux/selectors';
+
+//utils
 import getMakeFromId from '@utils/makeUtils/getMakeFromId';
 import { filterCars, filterTrims, getMakeCarsNumber } from '@utils/carUtils';
 
+//hooks
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import duckCreator from '@ducks/duckCreator';
+
 function DesktopFilterDropdown() {
     const filters = getFilters();
+    const dispatch = useDispatch();
 
     const cars = getCars();
     const makes = getMakes();
     const interiorColors = getInteriorColors();
+
     const exteriorColors = getExteriorColors();
+
     const [mileage, setMileage] = useState([0, 0]);
     const [year, setYear] = useState([0, 0]);
     const [selectedCar, setSelectedCar] = useState<Car>({} as Car);
+
     const [loading, setLoading] = useState(true);
     const [filteredModels, setFilteredModels] = useState<Car[]>(cars as Car[]);
     const [trims, setTrims] = useState<Car[]>([] as Car[]);
+
+    const [filter, setFilter] = useState<Filter>(filters);
+    const [urlParams, setUrlParams] = useState<
+        { key: string; value: string }[] | null
+    >(null);
+
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const router = useRouter();
+
+    function pushUrlParams(key: string, value: string | number) {
+        const params = new URLSearchParams(searchParams?.toString());
+        params.set(key, value.toString());
+        router.push({
+            pathname: pathname,
+            query: params.toString(),
+        });
+    }
+
+    const getParamValueFromState = (key: string) => {
+        const param = searchParams?.get(key);
+        return param;
+    };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.currentTarget;
@@ -60,6 +89,7 @@ function DesktopFilterDropdown() {
                 setYear([year[0], parseInt(value)]);
             }
         }
+        pushUrlParams(`${splitId[0]}_${splitId[1]}`, parseInt(value) || 0);
     };
 
     const handleAnchorTagClick = (
@@ -107,9 +137,17 @@ function DesktopFilterDropdown() {
         setTrims(modelTrims);
     };
 
-    useEffect(() => {
-        getModelTrims(selectedCar.id);
-    }, [selectedCar]);
+    const handleFilterCars = async (car: Car) => {
+        setSelectedCar({
+            ...selectedCar,
+            id: car.id,
+        });
+        pushUrlParams('model', car.name);
+    };
+
+    // useEffect(() => {
+    //     getModelTrims(selectedCar.id);
+    // }, [selectedCar.make_name]);
 
     useEffect(() => {
         getMakeCars();
@@ -128,7 +166,9 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Min'
                                 id='year'
-                                onChange={handleInputChange}
+                                onChange={(e) => {
+                                    handleInputChange(e);
+                                }}
                                 placeholder='Min'
                                 value={year[0] || 0}
                                 className='flex-col-reverse'
@@ -137,7 +177,7 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Max'
                                 id='year'
-                                onChange={handleInputChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder='Max'
                                 value={year[1] || 0}
                                 className='flex-col-reverse'
@@ -158,7 +198,7 @@ function DesktopFilterDropdown() {
                                     ? `${selectedCar.make_name} ${selectedCar.name}`
                                     : 'Vehicle 1'}
                             </p>
-                            <div>
+                            <>
                                 {makes.length > 0 && (
                                     <Select
                                         label='Select Make'
@@ -179,8 +219,20 @@ function DesktopFilterDropdown() {
                                                 }
                                                 key={item.id}
                                                 value={item.id}
-                                                onClick={() =>
-                                                    getMakeName(item.id)
+                                                onClick={(e) => {
+                                                    getMakeName(item.id);
+                                                    e.preventDefault();
+                                                    pushUrlParams(
+                                                        'make',
+                                                        item.name,
+                                                    );
+                                                    pushUrlParams('model', '');
+                                                }}
+                                                isSelected={
+                                                    item.name ==
+                                                    getParamValueFromState(
+                                                        'make',
+                                                    )!
                                                 }
                                                 className='font-bold'
                                             >
@@ -189,8 +241,8 @@ function DesktopFilterDropdown() {
                                         ))}
                                     </Select>
                                 )}
-                            </div>
-                            <div>
+                            </>
+                            <>
                                 {selectedCar.make_name && (
                                     <Select
                                         label='Models'
@@ -208,12 +260,17 @@ function DesktopFilterDropdown() {
                                             <SelectItem
                                                 key={car.id}
                                                 value={car.name}
-                                                onClick={() => {
+                                                onClick={async () => {
                                                     setSelectedCar({
                                                         ...selectedCar,
                                                         name: car.name,
                                                         id: car.id,
                                                     });
+                                                    pushUrlParams(
+                                                        'model',
+                                                        car.name,
+                                                    );
+                                                    await handleFilterCars(car);
                                                 }}
                                             >
                                                 {`${car.name}`}
@@ -221,8 +278,8 @@ function DesktopFilterDropdown() {
                                         ))}
                                     </Select>
                                 )}
-                            </div>
-                            <div>
+                            </>
+                            <>
                                 {trims.length > 0 && (
                                     <Select
                                         label='Trims'
@@ -242,6 +299,17 @@ function DesktopFilterDropdown() {
                                                       <SelectItem
                                                           key={trim.id}
                                                           value={trim.id}
+                                                          onClick={() => {
+                                                              setSelectedCar({
+                                                                  ...selectedCar,
+                                                                  selectedTrim:
+                                                                      trim.name,
+                                                              });
+                                                              pushUrlParams(
+                                                                  'trim',
+                                                                  trim.name,
+                                                              );
+                                                          }}
                                                       >
                                                           {trim.name}
                                                       </SelectItem>
@@ -250,7 +318,7 @@ function DesktopFilterDropdown() {
                                         )}
                                     </Select>
                                 )}
-                            </div>
+                            </>
                         </div>
                     </FilterComponent>
                     <FilterComponent
@@ -262,7 +330,7 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Min'
                                 id='mileage'
-                                onChange={handleInputChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder='Min'
                                 value={mileage[0] || 0}
                                 className='flex-col-reverse'
@@ -271,7 +339,7 @@ function DesktopFilterDropdown() {
                                 inputStyle='w-4/5'
                                 filterName='Max'
                                 id='mileage'
-                                onChange={handleInputChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder='Max'
                                 value={mileage[1] || 0}
                                 className='flex-col-reverse'
@@ -288,16 +356,16 @@ function DesktopFilterDropdown() {
                     >
                         <div className='dropdown-container'>
                             {filters.bodiestype.map(
-                                (item: string, index: number) => (
-                                    <Fragment key={index}>
+                                (item: any, index: number) => (
+                                    <div key={index}>
                                         <CheckboxInput
                                             inputStyle='mr-2'
-                                            filterName={item}
+                                            filterName={item.type}
                                             id={`body-${index + 1}`}
                                             onChange={() => {}}
                                             // className='flex-row items-start'
                                         />
-                                    </Fragment>
+                                    </div>
                                 ),
                             )}
                         </div>
@@ -312,13 +380,15 @@ function DesktopFilterDropdown() {
                     >
                         <div className='dropdown-container'>
                             {filters.enginesType.map(
-                                (item: string, index: number) => (
+                                (item: any, index: number) => (
                                     <div key={index}>
                                         <CheckboxInput
                                             inputStyle='mr-2'
                                             filterName={
-                                                item.charAt(0).toUpperCase() +
-                                                item.slice(1)
+                                                item.engine_type
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                item.engine_type.slice(1)
                                             }
                                             id={`fuel-${index + 1}`}
                                             onChange={() => {}}
@@ -329,6 +399,7 @@ function DesktopFilterDropdown() {
                             )}
                         </div>
                     </FilterComponent>
+
                     <FilterComponent
                         filterName='Interior Color'
                         href='#interior-color'
@@ -350,7 +421,7 @@ function DesktopFilterDropdown() {
                     >
                         <ColorFilter colors={exteriorColors} />
                     </FilterComponent>
-                    <FilterComponent
+                    {/* <FilterComponent
                         filterName='Cylinders'
                         href='#cylinders'
                         id='cylinders'
@@ -372,7 +443,7 @@ function DesktopFilterDropdown() {
                                 ),
                             )}
                         </div>
-                    </FilterComponent>
+                    </FilterComponent> */}
                 </>
             )}
         </div>

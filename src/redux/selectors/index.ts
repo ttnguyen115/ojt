@@ -5,3 +5,4 @@ export { default as getShowMobileFilterModal } from './filterModalDisplaySelecto
 export { default as getMakes } from './makesSelector'
 export { default as getShowMobile } from './mobileDisplaySelectors'
 export { default as getFilters } from './filtersSelector'
+export { default as getLoading } from './loadingSelector'
