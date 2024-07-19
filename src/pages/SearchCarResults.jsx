@@ -15,7 +15,7 @@ import handleFilterCars from '@fetchers/fetchFilteredData';
 import { useDispatch } from 'react-redux';
 import duckCreator from '@ducks/duckCreator';
 
-const SearchCarResults = ({ title, slugging }) => {
+const SearchCarResults = () => {
     const router = useRouter();
     const { query } = router;
     const navigateToPage = useCustomNavigation();
@@ -33,19 +33,35 @@ const SearchCarResults = ({ title, slugging }) => {
                 const data = await handleFilterCars(model, make);
                 console.log('ga', data);
 
-                await dispatch(
-                    duckCreator.creators.setExteriorColors(data.colors),
-                );
-                await dispatch(
+                const newCars = new Set();
+
+                data.cars.forEach((car) => {
+                    car = car.make_model_trim.make_model;
+                    if (!newCars.has(car.name)) {
+                        newCars.add({
+                            id: car.id,
+                            make_id: car.make.id,
+                            make_name: car.make.name,
+                            name: car.name,
+                            price: car.msrp,
+                        });
+                    }
+                });
+                console.log('nc', newCars);
+
+                dispatch(duckCreator.creators.setCars(Array.from(newCars)));
+
+                dispatch(duckCreator.creators.setExteriorColors(data.colors));
+                dispatch(
                     duckCreator.creators.setInteriorColors(data.intColors),
                 );
-                await dispatch(
+                dispatch(
                     duckCreator.creators.updateState({
                         data: data.engines,
                         key: 'enginesType',
                     }),
                 );
-                await dispatch(
+                dispatch(
                     duckCreator.creators.updateState({
                         data: data.bodies,
                         key: 'bodiestype',
