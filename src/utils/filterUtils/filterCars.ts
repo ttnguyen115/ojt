@@ -1,8 +1,10 @@
 import { Car } from "@contracts/index";
 
-export default function filterCars(cars: Car[], makeId: number) {
-    const models = cars.filter(
-        (car: Car) => car.make_id === makeId,
-    );
-    return models
+export default function filterCars(cars: Car[], makeName: string) {
+    if (makeName !== '') {
+        const models = cars.filter(
+            (car: Car) => car.make_name === makeName,
+        );
+        return models
+    } else return cars
 }

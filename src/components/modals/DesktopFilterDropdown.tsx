@@ -60,11 +60,11 @@ function DesktopFilterDropdown() {
     const router = useRouter();
 
     function pushUrlParams(key: string, value: string | number) {
-        const params = new URLSearchParams(searchParams?.toString());
-        params.set(key, value.toString());
+        const newQuery = { ...router.query, [key]: value.toString() };
+
         router.push({
             pathname: pathname,
-            query: params.toString(),
+            query: newQuery,
         });
     }
 
@@ -117,41 +117,24 @@ function DesktopFilterDropdown() {
         }
     };
 
-    const getMakeName = (makeId: number) => {
-        setSelectedCar({ ...selectedCar, make_id: makeId });
-        const make = getMakeFromId(makes, makeId);
-        setSelectedCar({ ...selectedCar, make_name: make, name: '' });
-        if (make) {
-            filterModels(makeId);
-        }
-    };
-
-    const filterModels = (makeId: number) => {
+    const filterModels = (makeName: string) => {
         setTrims([]);
-        const filteredModels = filterCars(cars, makeId);
+        const filteredModels = filterCars(cars, makeName);
         setFilteredModels(filteredModels);
     };
-
-    const getModelTrims = (modelId: number) => {
-        const modelTrims = filterTrims(filteredModels, modelId);
-        setTrims(modelTrims);
-    };
-
-    const handleFilterCars = async (car: Car) => {
-        setSelectedCar({
-            ...selectedCar,
-            id: car.id,
-        });
-        pushUrlParams('model', car.name);
-    };
-
-    // useEffect(() => {
-    //     getModelTrims(selectedCar.id);
-    // }, [selectedCar.make_name]);
 
     useEffect(() => {
         getMakeCars();
     }, []);
+
+    useEffect(() => {
+        setSelectedCar({
+            ...selectedCar,
+            make_name: router.query.make?.toString() || '',
+            name: router.query.model?.toString() || '',
+        });
+        filterModels(router.query.make?.toString() || '');
+    }, [router.query]);
 
     return (
         <div className='w-full h-full overflow-y-scroll '>
@@ -205,40 +188,37 @@ function DesktopFilterDropdown() {
                                         name='makes'
                                         id='makes'
                                         className='flex flex-row justify-between w-full p-2 content-center text-gray-900'
-                                        placeholder='Any Make'
+                                        placeholder={
+                                            router.query.make?.toString() ||
+                                            'Any Make'
+                                        }
                                         variant='bordered'
                                         radius='sm'
                                         scrollShadowProps={{
                                             isEnabled: false,
                                         }}
+                                        items={makes}
                                     >
-                                        {makes.map((item: Make) => (
+                                        {(make) => (
                                             <SelectItem
                                                 isDisabled={
-                                                    item.numberOfCars === 0
+                                                    make.numberOfCars === 0
                                                 }
-                                                key={item.id}
-                                                value={item.id}
+                                                key={make.id}
+                                                value={make.id}
                                                 onClick={(e) => {
-                                                    getMakeName(item.id);
                                                     e.preventDefault();
                                                     pushUrlParams(
                                                         'make',
-                                                        item.name,
+                                                        make.name,
                                                     );
-                                                    pushUrlParams('model', '');
+                                                    // pushUrlParams('model', '');  
                                                 }}
-                                                isSelected={
-                                                    item.name ==
-                                                    getParamValueFromState(
-                                                        'make',
-                                                    )!
-                                                }
                                                 className='font-bold'
                                             >
-                                                {`${item.name} (${item.numberOfCars})`}
+                                                {`${make.name} (${make.numberOfCars})`}
                                             </SelectItem>
-                                        ))}
+                                        )}
                                     </Select>
                                 )}
                             </>
@@ -249,33 +229,32 @@ function DesktopFilterDropdown() {
                                         name='models'
                                         id='models'
                                         className='flex flex-row justify-between w-full p-2 content-center text-gray-900'
-                                        placeholder='Any'
+                                        placeholder={
+                                            router.query.model?.toString() ||
+                                            'Any'
+                                        }
                                         variant='bordered'
                                         radius='sm'
                                         scrollShadowProps={{
                                             isEnabled: false,
                                         }}
+                                        items={filteredModels}
                                     >
-                                        {filteredModels.map((car: Car) => (
+                                        {(car: Car) => (
                                             <SelectItem
                                                 key={car.id}
                                                 value={car.name}
-                                                onClick={async () => {
-                                                    setSelectedCar({
-                                                        ...selectedCar,
-                                                        name: car.name,
-                                                        id: car.id,
-                                                    });
+                                                onClick={(e) => {
+                                                    e.preventDefault();
                                                     pushUrlParams(
                                                         'model',
                                                         car.name,
                                                     );
-                                                    await handleFilterCars(car);
                                                 }}
                                             >
                                                 {`${car.name}`}
                                             </SelectItem>
-                                        ))}
+                                        )}
                                     </Select>
                                 )}
                             </>
@@ -392,7 +371,6 @@ function DesktopFilterDropdown() {
                                             }
                                             id={`fuel-${index + 1}`}
                                             onChange={() => {}}
-                                            // className='flex-row items-start'
                                         />
                                     </div>
                                 ),
