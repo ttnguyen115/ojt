@@ -3,7 +3,6 @@ import bodyStyleFetcher from "./bodyStyleFetcher";
 import engineFetcher from "./engineFetcher";
 import exteriorColorFetcher from "./exteriorColorFetcher";
 import interiorColorFetcher from "./interiorColorFetcher";
-import carsFetcher from "./carsFetcher";
 
 const handleFilterCars = async (model: string, make: string) => {
 
@@ -29,7 +28,7 @@ const handleFilterCars = async (model: string, make: string) => {
     const intColors = filterState(intColorsRes, ['name', 'rgb']);
 
 
-    return data = { bodies, engines, colors, intColors, cars: bodiesRes };
+    return data = { bodies, engines, colors, intColors };
 };
 
 export default handleFilterCars;

@@ -46,6 +46,9 @@ if (typeof window === 'undefined') {
 
         store.dispatch(duckCreator.creators.setCars(cars.data));
         store.dispatch(duckCreator.creators.setMakes(makes.data));
+        // store.dispatch(duckCreator.creators.setFilters(filters.data));
+        // store.dispatch(duckCreator.creators.setExteriorColors(exteriorColors));
+        // store.dispatch(duckCreator.creators.setInteriorColors(interiorColors));
     };
 }
 const collectEggsFromDucks = (ducks) => {

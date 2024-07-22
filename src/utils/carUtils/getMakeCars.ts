@@ -5,7 +5,6 @@ export default function getMakeCarsNumber(makes: Make[], cars: Car[]) {
         const numberOfCars = cars.filter(
             (car: Car) => car.make_id === make.id,
         ).length;
-        make.numberOfCars = numberOfCars
+        make = { ...make, numberOfCars: numberOfCars }
     });
-    return makes
 }

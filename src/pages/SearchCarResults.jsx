@@ -15,7 +15,7 @@ import handleFilterCars from '@fetchers/fetchFilteredData';
 import { useDispatch } from 'react-redux';
 import duckCreator from '@ducks/duckCreator';
 
-const SearchCarResults = () => {
+const SearchCarResults = ({ title, slugging }) => {
     const router = useRouter();
     const { query } = router;
     const navigateToPage = useCustomNavigation();
@@ -33,35 +33,19 @@ const SearchCarResults = () => {
                 const data = await handleFilterCars(model, make);
                 console.log('ga', data);
 
-                const newCars = new Set();
-
-                data.cars.forEach((car) => {
-                    car = car.make_model_trim.make_model;
-                    if (!newCars.has(car.name)) {
-                        newCars.add({
-                            id: car.id,
-                            make_id: car.make.id,
-                            make_name: car.make.name,
-                            name: car.name,
-                            price: car.msrp,
-                        });
-                    }
-                });
-                console.log('nc', newCars);
-
-                dispatch(duckCreator.creators.setCars(Array.from(newCars)));
-
-                dispatch(duckCreator.creators.setExteriorColors(data.colors));
-                dispatch(
+                await dispatch(
+                    duckCreator.creators.setExteriorColors(data.colors),
+                );
+                await dispatch(
                     duckCreator.creators.setInteriorColors(data.intColors),
                 );
-                dispatch(
+                await dispatch(
                     duckCreator.creators.updateState({
                         data: data.engines,
                         key: 'enginesType',
                     }),
                 );
-                dispatch(
+                await dispatch(
                     duckCreator.creators.updateState({
                         data: data.bodies,
                         key: 'bodiestype',
