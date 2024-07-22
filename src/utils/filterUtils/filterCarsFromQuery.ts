@@ -1,8 +1,9 @@
-import filterState from "@utils/filterUtils/filterState";
-import bodyStyleFetcher from "./bodyStyleFetcher";
-import engineFetcher from "./engineFetcher";
-import exteriorColorFetcher from "./exteriorColorFetcher";
-import interiorColorFetcher from "./interiorColorFetcher";
+import bodyStyleFetcher from "@fetchers/bodyStyleFetcher";
+import filterState from "./filterState";
+import engineFetcher from "@fetchers/engineFetcher";
+import exteriorColorFetcher from "@fetchers/exteriorColorFetcher";
+import interiorColorFetcher from "@fetchers/interiorColorFetcher";
+
 
 const handleFilterCars = async (model: string, make: string) => {
 

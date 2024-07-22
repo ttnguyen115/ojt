@@ -23,24 +23,20 @@ import {
 } from '@redux/selectors';
 
 //utils
-import getMakeFromId from '@utils/makeUtils/getMakeFromId';
 import { filterCars, filterTrims, getMakeCarsNumber } from '@utils/carUtils';
 
 //hooks
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import duckCreator from '@ducks/duckCreator';
 
 function DesktopFilterDropdown() {
     const filters = getFilters();
-    const dispatch = useDispatch();
+    const exteriorColors = getExteriorColors();
 
     const cars = getCars();
     const makes = getMakes();
     const interiorColors = getInteriorColors();
-
-    const exteriorColors = getExteriorColors();
 
     const [mileage, setMileage] = useState([0, 0]);
     const [year, setYear] = useState([0, 0]);
@@ -50,12 +46,6 @@ function DesktopFilterDropdown() {
     const [filteredModels, setFilteredModels] = useState<Car[]>(cars as Car[]);
     const [trims, setTrims] = useState<Car[]>([] as Car[]);
 
-    const [filter, setFilter] = useState<Filter>(filters);
-    const [urlParams, setUrlParams] = useState<
-        { key: string; value: string }[] | null
-    >(null);
-
-    const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
 
@@ -67,11 +57,6 @@ function DesktopFilterDropdown() {
             query: newQuery,
         });
     }
-
-    const getParamValueFromState = (key: string) => {
-        const param = searchParams?.get(key);
-        return param;
-    };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.currentTarget;
@@ -212,7 +197,6 @@ function DesktopFilterDropdown() {
                                                         'make',
                                                         make.name,
                                                     );
-                                                    // pushUrlParams('model', '');  
                                                 }}
                                                 className='font-bold'
                                             >

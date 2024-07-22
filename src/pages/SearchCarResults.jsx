@@ -11,9 +11,10 @@ import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 //utils
-import handleFilterCars from '@fetchers/fetchFilteredData';
+import handleFilterCars from '@utils/filterUtils/filterCarsFromQuery';
 import { useDispatch } from 'react-redux';
 import duckCreator from '@ducks/duckCreator';
+import carsFetcher from '@fetchers/carsFetcher';
 
 const SearchCarResults = ({ title, slugging }) => {
     const router = useRouter();
@@ -31,7 +32,13 @@ const SearchCarResults = ({ title, slugging }) => {
 
             try {
                 const data = await handleFilterCars(model, make);
-                console.log('ga', data);
+                const cars = await carsFetcher(
+                    `/models?sort=asc&year=2019&make=${make || ''}&model=${
+                        model || ''
+                    }`,
+                );
+
+                await dispatch(duckCreator.creators.setCars(cars.data));
 
                 await dispatch(
                     duckCreator.creators.setExteriorColors(data.colors),
