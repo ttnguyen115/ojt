@@ -36,6 +36,7 @@ const duckCreator = new Duck({
         'SET_INTERIOR_COLORS',
         'SET_QUERY',
         'UPDATE_STATE',
+        'SET_FILTERED_CARS',
     ],
 
     reducer: (state, action, { types }) => {
@@ -106,6 +107,14 @@ const duckCreator = new Duck({
                 };
             }
 
+            case types.SET_FILTERED_CARS: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    filters: { ...state.filters, filteredCars: payload },
+                };
+            }
+
             case types.CLEAR: {
                 return { ...initialState };
             }
@@ -146,6 +155,8 @@ const duckCreator = new Duck({
         setInteriorColors: (payload) =>
             createAction(types.SET_INTERIOR_COLORS, payload),
         setQuery: (payload) => createAction(types.SET_QUERY, payload),
+        setFilteredCars: (payload) =>
+            createAction(types.SET_FILTERED_CARS, payload),
         updateState: (payload) => createAction(types.UPDATE_STATE, payload),
     }),
 

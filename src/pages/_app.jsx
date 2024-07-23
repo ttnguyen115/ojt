@@ -16,6 +16,7 @@ import Layout from '@components/Layout';
 import carsFetcher, { trimsFetcher } from '@fetchers/carsFetcher';
 import makesFetcher from '@fetchers/makesFetcher';
 import filtersFetcher from '@fetchers/filterFetcher';
+import { getMakeCarsNumber } from '@utils/carUtils';
 
 const MyApp = ({ Component, pageProps }) => {
     return (
@@ -38,16 +39,19 @@ const options = {};
 if (typeof window === 'undefined') {
     options.beforeResult = async (store) => {
         let cars = await carsFetcher('/models?sort=asc&year=2019');
-        cars.data.forEach(async (car) => {
-            car = await fetchTrims(car);
-        });
+        // cars.data.forEach(async (car) => {
+        //     car = await fetchTrims(car);
+        // });
         const makes = await makesFetcher('/makes');
-        cars.data = seedingData.carDataGenerator(cars.data, makes.data);
-
+        if (cars.data.length > 0 && makes.data.length > 0) {
+            makes.data = getMakeCarsNumber(makes.data, cars.data);
+        }
+        // cars.data = seedingData.carDataGenerator(cars.data, makes.data);
         store.dispatch(duckCreator.creators.setCars(cars.data));
         store.dispatch(duckCreator.creators.setMakes(makes.data));
     };
 }
+
 const collectEggsFromDucks = (ducks) => {
     return ducks.map((duck) => getDuckEgg(duck));
 };

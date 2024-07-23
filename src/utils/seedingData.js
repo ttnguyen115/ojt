@@ -94,6 +94,7 @@ function generateDecimals(power, tens) {
 }
 
 function generateCarData(cars, makes) {
+    console.log('gg', cars, makes);
     return cars.map((car) => {
         return {
             ...car,

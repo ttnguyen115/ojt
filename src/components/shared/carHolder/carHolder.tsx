@@ -1,5 +1,5 @@
 //react
-import React from 'react';
+import React, { useEffect } from 'react';
 
 //components
 import CarCard from '../carCard/carCard';
@@ -8,22 +8,23 @@ import CarCard from '../carCard/carCard';
 import { Car } from '@contracts/types/car';
 
 //redux-selectors
-import { getCars } from '@redux/selectors';
-
+import { getFilters } from '@redux/selectors';
 function CarHolder() {
-    let cars = getCars();
+
+    let filters = getFilters();
 
     return (
         <div className='w-full '>
             <div className='grid grid-cols-12 gap-4 '>
-                {cars.map((car: Car) => (
-                    <div
-                        className='sm:col-span-12 md:col-span-4'
-                        key={car.id}
-                    >
-                        <CarCard car={car} />
-                    </div>
-                ))}
+                {filters.filteredCars &&
+                    filters.filteredCars.map((car: Car) => (
+                        <div
+                            className='sm:col-span-12 md:col-span-4'
+                            key={car.id}
+                        >
+                            <CarCard car={car} />
+                        </div>
+                    ))}
             </div>
         </div>
     );

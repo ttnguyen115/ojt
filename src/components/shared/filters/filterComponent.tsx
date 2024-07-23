@@ -1,5 +1,4 @@
-//utils
-import { ntc } from '@utils/ntc';
+//react
 import React, { ChangeEventHandler, MouseEvent, ReactNode } from 'react';
 
 function handleInputPattern(inputType: string) {

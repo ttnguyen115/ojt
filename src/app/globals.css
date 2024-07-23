@@ -135,6 +135,10 @@ input {
     border-radius: 100%;
 }
 
+.custom-x-index {
+    z-index: 1000;
+}
+
 select {
     @apply border-2 border-gray-200 rounded-md;
 }

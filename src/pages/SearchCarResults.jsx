@@ -15,11 +15,15 @@ import handleFilterCars from '@utils/filterUtils/filterCarsFromQuery';
 import { useDispatch } from 'react-redux';
 import duckCreator from '@ducks/duckCreator';
 import carsFetcher from '@fetchers/carsFetcher';
+import seedingData from '@utils/seedingData';
+import { getMakes } from '@redux/selectors';
 
 const SearchCarResults = ({ title, slugging }) => {
     const router = useRouter();
     const { query } = router;
     const navigateToPage = useCustomNavigation();
+
+    const makes = getMakes();
 
     const dispatch = useDispatch();
     const handleClick = () => {
@@ -32,27 +36,35 @@ const SearchCarResults = ({ title, slugging }) => {
 
             try {
                 const data = await handleFilterCars(model, make);
+                const models = await carsFetcher(
+                    `/models?sort=asc&year=2019&make=${make || ''}`,
+                );
                 const cars = await carsFetcher(
                     `/models?sort=asc&year=2019&make=${make || ''}&model=${
                         model || ''
                     }`,
                 );
 
-                await dispatch(duckCreator.creators.setCars(cars.data));
+                console.log('models', models.data);
 
-                await dispatch(
-                    duckCreator.creators.setExteriorColors(data.colors),
-                );
-                await dispatch(
+                dispatch(duckCreator.creators.setCars(models.data));
+                dispatch(duckCreator.creators.setExteriorColors(data.colors));
+                dispatch(
                     duckCreator.creators.setInteriorColors(data.intColors),
                 );
-                await dispatch(
+
+                dispatch(
+                    duckCreator.creators.setFilteredCars(
+                        seedingData.carDataGenerator(cars.data, makes),
+                    ),
+                );
+                dispatch(
                     duckCreator.creators.updateState({
                         data: data.engines,
                         key: 'enginesType',
                     }),
                 );
-                await dispatch(
+                dispatch(
                     duckCreator.creators.updateState({
                         data: data.bodies,
                         key: 'bodiestype',
@@ -64,7 +76,6 @@ const SearchCarResults = ({ title, slugging }) => {
         };
 
         fetchData();
-        console.log('q', query);
     }, [query]);
 
     return (
@@ -88,6 +99,11 @@ SearchCarResults.getInitialProps = async (context) => {
 
     try {
         const fetchedData = await handleFilterCars(model, make);
+
+        context.store.dispatch(
+            duckCreator.creators.setMakes(fetchedData.makes),
+        );
+
         context.store.dispatch(
             duckCreator.creators.setExteriorColors(fetchedData.colors),
         );
