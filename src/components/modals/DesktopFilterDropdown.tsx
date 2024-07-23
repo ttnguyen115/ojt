@@ -106,7 +106,6 @@ function DesktopFilterDropdown() {
             name: router.query.model?.toString() || '',
         });
         setFilteredModels(cars);
-        console.log('c', cars);
     }, [router.query, cars]);
 
     return (
