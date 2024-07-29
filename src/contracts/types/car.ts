@@ -33,6 +33,7 @@ export interface Car {
     selectedTrim: string
     make_name: string;
     make_id: number;
+    bodyType: string;
 }
 
 export interface MakeModel {

@@ -172,6 +172,10 @@ function DesktopFilterDropdown() {
                                                         make.name,
                                                     );
                                                 }}
+                                                isSelected={
+                                                    selectedCar.make_name ===
+                                                    make.name
+                                                }
                                                 className='font-bold'
                                             >
                                                 {`${make.name} (${make.numberOfCars})`}
