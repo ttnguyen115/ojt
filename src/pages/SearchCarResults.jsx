@@ -1,29 +1,29 @@
 // helpers
 import { mapDuckEggsToPage } from '@helpers/mapDuckEggsToPage';
+import seedingData from '@utils/seedingData';
+import handleFilterCars from '@utils/filterUtils/filterCarsFromQuery';
+import duckCreator from '@ducks/duckCreator';
 
 // hooks
 import useCustomNavigation from '@hooks/useCustomNavigation';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 
-// components
+//selectors
+import { getFilters } from '@redux/selectors';
+
+//axios
+import localInstance from '@fetchers/localInstance';
 import CheckboxFilter from '@components/shared/filters/checkboxFilter';
 import CarHolder from '@components/shared/carHolder/carHolder';
-import { useContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
-
-//utils
-import handleFilterCars from '@utils/filterUtils/filterCarsFromQuery';
-import { useDispatch } from 'react-redux';
-import duckCreator from '@ducks/duckCreator';
-import carsFetcher from '@fetchers/carsFetcher';
-import seedingData from '@utils/seedingData';
-import { getMakes } from '@redux/selectors';
+import { getMakeCarsNumber } from '@utils/carUtils';
 
 const SearchCarResults = ({ title, slugging }) => {
-    const router = useRouter();
-    const { query } = router;
-    const navigateToPage = useCustomNavigation();
+    const { query } = useRouter();
+    const filters = getFilters();
 
-    const makes = getMakes();
+    const navigateToPage = useCustomNavigation();
 
     const dispatch = useDispatch();
     const handleClick = () => {
@@ -35,28 +35,49 @@ const SearchCarResults = ({ title, slugging }) => {
             const { make, model } = query;
 
             try {
-                const data = await handleFilterCars(model, make);
-                const models = await carsFetcher(
-                    `/models?sort=asc&year=2019&make=${make || ''}`,
+                dispatch(duckCreator.creators.setLoading(true));
+                const data = await handleFilterCars(
+                    model?.toString() || '',
+                    make?.toString() || '',
                 );
-                const cars = await carsFetcher(
-                    `/models?sort=asc&year=2019&make=${make || ''}&model=${
-                        model || ''
-                    }`,
-                );
+                const makes = getMakeCarsNumber(data.makes, data.models);
 
-                console.log('models', models.data);
-
-                dispatch(duckCreator.creators.setCars(models.data));
-                dispatch(duckCreator.creators.setExteriorColors(data.colors));
-                dispatch(
-                    duckCreator.creators.setInteriorColors(data.intColors),
+                const filteredCars = seedingData.carDataGenerator(
+                    data.cars,
+                    data.makes,
                 );
 
                 dispatch(
-                    duckCreator.creators.setFilteredCars(
-                        seedingData.carDataGenerator(cars.data, makes),
-                    ),
+                    duckCreator.creators.updateState({
+                        key: 'makes',
+                        data: makes,
+                    }),
+                );
+
+                dispatch(
+                    duckCreator.creators.updateState({
+                        key: 'filteredCars',
+                        data: filteredCars,
+                    }),
+                );
+                dispatch(
+                    duckCreator.creators.updateState({
+                        key: 'cars',
+                        data: data.makeModels,
+                    }),
+                );
+
+                dispatch(
+                    duckCreator.creators.updateState({
+                        key: 'exteriorColors',
+                        data: data.colors,
+                    }),
+                );
+                dispatch(
+                    duckCreator.creators.updateState({
+                        key: 'interiorColors',
+                        data: data.intColors,
+                    }),
                 );
                 dispatch(
                     duckCreator.creators.updateState({
@@ -67,7 +88,7 @@ const SearchCarResults = ({ title, slugging }) => {
                 dispatch(
                     duckCreator.creators.updateState({
                         data: data.bodies,
-                        key: 'bodiestype',
+                        key: 'bodiesType',
                     }),
                 );
             } catch (error) {
@@ -81,7 +102,10 @@ const SearchCarResults = ({ title, slugging }) => {
     return (
         <div className='flex flex-col items-start w-full'>
             <div className='grid md:grid-cols-12 gap-x-4 gap-y-2 w-full'>
-                <div className='sm:hidden lg:block lg:col-span-3 items-start border-2 border-gray-200 rounded-md h-fit overflow-y-scroll'>
+                <div
+                    suppressHydrationWarning
+                    className='hidden lg:block lg:col-span-3 relative items-start border-2 border-gray-200 rounded-md h-fit overflow-y-scroll'
+                >
                     <CheckboxFilter />
                 </div>
                 <div className='col-span-12 lg:col-span-9 w-full flex flex-col gap-4'>
@@ -99,16 +123,31 @@ SearchCarResults.getInitialProps = async (context) => {
 
     try {
         const fetchedData = await handleFilterCars(model, make);
-
+        const makes = getMakeCarsNumber(fetchedData.makes, fetchedData.models);
         context.store.dispatch(
-            duckCreator.creators.setMakes(fetchedData.makes),
+            duckCreator.creators.updateState({
+                key: 'makes',
+                data: makes,
+            }),
+        );
+        context.store.dispatch(
+            duckCreator.creators.updateState({
+                key: 'exteriorColors',
+                data: fetchedData.colors,
+            }),
+        );
+        context.store.dispatch(
+            duckCreator.creators.updateState({
+                key: 'interiorColors',
+                data: fetchedData.intColors,
+            }),
         );
 
         context.store.dispatch(
-            duckCreator.creators.setExteriorColors(fetchedData.colors),
-        );
-        context.store.dispatch(
-            duckCreator.creators.setInteriorColors(fetchedData.intColors),
+            duckCreator.creators.updateState({
+                key: 'filteredCars',
+                data: seedingData.carDataGenerator(cars.data, filters.makes),
+            }),
         );
         context.store.dispatch(
             duckCreator.creators.updateState({
@@ -119,7 +158,7 @@ SearchCarResults.getInitialProps = async (context) => {
         context.store.dispatch(
             duckCreator.creators.updateState({
                 data: fetchedData.bodies,
-                key: 'bodiestype',
+                key: 'bodiesType',
             }),
         );
     } catch (error) {

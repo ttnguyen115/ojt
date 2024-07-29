@@ -5,17 +5,14 @@ import _get from 'lodash/get';
 import { createSelector } from 'reselect';
 import { createAction } from '@redux/createAction';
 import Duck from 'extensible-duck';
+import { set } from 'lodash';
 
 const initialState = {
     loading: true,
     error: null,
     showMobile: false,
-    cars: {},
-    makes: {},
     filters: {},
     showMobileFilterModal: false,
-    interiorColors: {},
-    exteriorColors: {},
     query: {},
 };
 
@@ -27,40 +24,25 @@ const duckCreator = new Duck({
 
     types: [
         'CLEAR',
-        'LOADED_CARS',
-        'LOADED_MAKES',
+        'LOADING_DATA',
         'LOADED_FILTERS',
         'SET_SHOW_MOBILE',
         'SET_SHOW_MOBILE_FILTER_MODAL',
-        'SET_EXTERIOR_COLORS',
-        'SET_INTERIOR_COLORS',
         'SET_QUERY',
+        'SET_TRIMS',
         'UPDATE_STATE',
         'SET_FILTERED_CARS',
     ],
 
     reducer: (state, action, { types }) => {
         switch (action.type) {
-            case types.LOADED_CARS: {
+            case types.LOADING_DATA: {
                 const { payload = {} } = action;
                 return {
                     ...state,
-                    cars: payload,
-                    loading: false,
-                    // error: null,
+                    loading: payload,
                 };
             }
-
-            case types.LOADED_MAKES: {
-                const { payload = {} } = action;
-                return {
-                    ...state,
-                    makes: payload,
-                    loading: false,
-                    // error: null,
-                };
-            }
-
             case types.LOADED_FILTERS: {
                 const { payload = {} } = action;
                 return {
@@ -89,29 +71,12 @@ const duckCreator = new Duck({
                 };
             }
 
-            case types.SET_EXTERIOR_COLORS: {
-                const { payload = {} } = action;
-                return {
-                    ...state,
-                    exteriorColors: payload,
-                    loading: false,
-                };
-            }
-
-            case types.SET_INTERIOR_COLORS: {
-                const { payload = {} } = action;
-                return {
-                    ...state,
-                    interiorColors: payload,
-                    loading: false,
-                };
-            }
-
             case types.SET_FILTERED_CARS: {
                 const { payload = {} } = action;
                 return {
                     ...state,
                     filters: { ...state.filters, filteredCars: payload },
+                    loading: false,
                 };
             }
 
@@ -127,12 +92,21 @@ const duckCreator = new Duck({
                     loading: false,
                 };
             }
+            case types.SET_QUERY: {
+                const { payload = {} } = action;
+                return {
+                    ...state,
+                    filters: { ...state.filters, trims: payload },
+                    loading: false,
+                };
+            }
 
             case types.UPDATE_STATE: {
                 const { payload } = action;
                 return {
                     ...state,
                     filters: { ...state.filters, [payload.key]: payload.data },
+                    loading: false,
                 };
             }
 
@@ -143,20 +117,14 @@ const duckCreator = new Duck({
 
     creators: ({ types }) => ({
         clear: () => createAction(types.CLEAR),
-        setCars: (payload) => createAction(types.LOADED_CARS, payload),
-        setMakes: (payload) => createAction(types.LOADED_MAKES, payload),
+        setLoading: (payload) => createAction(types.LOADING_DATA, payload),
         setFilters: (payload) => createAction(types.LOADED_FILTERS, payload),
         setShowMobile: (payload) =>
             createAction(types.SET_SHOW_MOBILE, payload),
         setShowMobileFilterModal: (payload) =>
             createAction(types.SET_SHOW_MOBILE_FILTER_MODAL, payload),
-        setExteriorColors: (payload) =>
-            createAction(types.SET_EXTERIOR_COLORS, payload),
-        setInteriorColors: (payload) =>
-            createAction(types.SET_INTERIOR_COLORS, payload),
         setQuery: (payload) => createAction(types.SET_QUERY, payload),
-        setFilteredCars: (payload) =>
-            createAction(types.SET_FILTERED_CARS, payload),
+        setTrims: (payload) => createAction(types.SET_TRIMS, payload),
         updateState: (payload) => createAction(types.UPDATE_STATE, payload),
     }),
 

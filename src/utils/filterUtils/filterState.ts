@@ -1,5 +1,5 @@
 
-const filterState = (data, keysToFilter) => {
+const filterState = (data: any[], keysToFilter: string[]) => {
     const bodiesMap = new Map();
 
     data.forEach((body) => {

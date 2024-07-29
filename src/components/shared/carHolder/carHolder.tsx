@@ -1,5 +1,5 @@
 //react
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 
 //components
 import CarCard from '../carCard/carCard';
@@ -8,26 +8,37 @@ import CarCard from '../carCard/carCard';
 import { Car } from '@contracts/types/car';
 
 //redux-selectors
-import { getFilters } from '@redux/selectors';
+import { getFilters, getLoading } from '@redux/selectors';
 function CarHolder() {
-
     let filters = getFilters();
-
+    const loading = getLoading();
     return (
         <div className='w-full '>
-            <div className='grid grid-cols-12 gap-4 '>
-                {filters.filteredCars &&
-                    filters.filteredCars.map((car: Car) => (
-                        <div
-                            className='sm:col-span-12 md:col-span-4'
-                            key={car.id}
-                        >
-                            <CarCard car={car} />
-                        </div>
-                    ))}
-            </div>
+            {!loading ? (
+                <div
+                    className='grid grid-cols-12 gap-4 '
+                    suppressHydrationWarning
+                >
+                    {filters.filteredCars && filters.filteredCars.length > 0 ? (
+                        filters.filteredCars.map((car: Car) => (
+                            <div
+                                className='sm:col-span-12 md:col-span-4'
+                                key={car.id}
+                            >
+                                <CarCard car={car} />
+                            </div>
+                        ))
+                    ) : (
+                        <div>No cars found</div>
+                    )}
+                </div>
+            ) : (
+                <div className='flex flex-row justify-center items-center text-center my-auto content-center'>
+                    Loading...
+                </div>
+            )}
         </div>
     );
 }
 
-export default CarHolder;
+export default memo(CarHolder);

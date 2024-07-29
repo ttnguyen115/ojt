@@ -1,7 +1,8 @@
 import axios from "axios";
+import localInstance from "./localInstance";
 
 export default async function filtersFetcher() {
-    const results = await axios.get('http://localhost:3000/api/filters')
+    const results = await localInstance.get('/filters')
 
     return results || {};
 }

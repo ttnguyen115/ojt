@@ -43,7 +43,7 @@ function CarCard({ car }: { car: Car }) {
                         suppressHydrationWarning
                         className='font-bold text-2xl'
                     >
-                        {/* {convertToCurrency(car.price)} */}
+                        {convertToCurrency(car.price)}
                     </h3>
                     <Divider />
                     <div

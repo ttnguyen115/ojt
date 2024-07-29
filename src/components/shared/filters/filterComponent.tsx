@@ -63,6 +63,7 @@ export function FilterInput({
                 className={inputStyle}
                 id={placeholder && returnId(id, placeholder)}
                 value={value}
+                defaultValue={value}
                 onChange={onChange}
             />
             <label
@@ -89,7 +90,10 @@ function FilterComponent({
     onClick?;
 }) {
     return (
-        <div className='divider'>
+        <div
+            className='divider'
+            suppressHydrationWarning
+        >
             <details id={id}>
                 <summary>
                     {href ? (

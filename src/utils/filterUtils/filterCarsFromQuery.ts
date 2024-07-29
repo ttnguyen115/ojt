@@ -1,38 +1,37 @@
-import bodyStyleFetcher from "@fetchers/bodyStyleFetcher";
+//utils
 import filterState from "./filterState";
-import engineFetcher from "@fetchers/engineFetcher";
-import exteriorColorFetcher from "@fetchers/exteriorColorFetcher";
-import interiorColorFetcher from "@fetchers/interiorColorFetcher";
-import makesFetcher from "@fetchers/makesFetcher";
+
+//axios
+import localInstance from "@fetchers/localInstance";
 
 
 const handleFilterCars = async (model: string, make: string) => {
 
     let data = {}
-    const bodiesRes = await bodyStyleFetcher(model || '', make || '');
-    const bodies = filterState(bodiesRes, ['type']);
 
-    const makesRes = await makesFetcher('/makes');
-
-
-    const enginesRes = await engineFetcher(model || '', make || '');
-    const engines = filterState(enginesRes, ['engine_type']);
+    const modelsRes = await localInstance.get(`/cars`);
+    const makeModelsRes = await localInstance.get(`/cars?make=${make || ''}`);
+    const carsRes = await localInstance.get(`/cars?model=${model || ''}&make=${make || ''}`);
+    const makesRes = await localInstance.get('/makes');
 
 
-    const extColorsRes = await exteriorColorFetcher(
-        model || '',
-        make || '',
-    );
-    const colors = filterState(extColorsRes, ['name', 'rgb']);
-
-    const intColorsRes = await interiorColorFetcher(
-        model || '',
-        make || '',
-    );
-    const intColors = filterState(intColorsRes, ['name', 'rgb']);
+    const bodiesRes = await localInstance.get(`/bodies?verbose=yes&model=${model || ''}&make=${make || ''}`);
+    const bodies = filterState(bodiesRes.data, ['type']);
 
 
-    return data = { bodies, engines, colors, intColors, makes: makesRes.data };
+
+    const enginesRes = await localInstance.get(`/engines?model=${model || ''}&make=${make || ''}`);
+    const engines = filterState(enginesRes.data, ['engine_type']);
+
+
+    const extColorsRes = await localInstance.get(`/exterior-colors?model=${model || ''}&make=${make || ''}`);
+    const colors = filterState(extColorsRes.data, ['name', 'rgb']);
+
+    const intColorsRes = await localInstance.get(`/interior-colors?model=${model || ''}&make=${make || ''}`);
+    const intColors = filterState(intColorsRes.data, ['name', 'rgb']);
+
+
+    return data = { bodies, engines, colors, intColors, makes: makesRes.data, models: modelsRes.data, makeModels: makeModelsRes.data, cars: carsRes.data };
 };
 
 export default handleFilterCars;

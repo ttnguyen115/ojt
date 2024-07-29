@@ -15,40 +15,22 @@ import FilterComponent, {
 import { Select, SelectItem } from '@nextui-org/react';
 
 //types
-import { Make } from '@contracts/types/make';
 import { Car } from '@contracts/types/car';
-import { Filter } from '@contracts/index';
 
 //redux-selectors
-import {
-    getCars,
-    getExteriorColors,
-    getFilters,
-    getInteriorColors,
-    getMakes,
-} from '@redux/selectors';
-
-//utils
-import { filterCars, filterTrims, getMakeCarsNumber } from '@utils/carUtils';
+import { getFilters } from '@redux/selectors';
 
 //hooks
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 
 function DesktopFilterDropdown() {
     const filters = getFilters();
-    const exteriorColors = getExteriorColors();
-
-    const makes = getMakes();
-    const interiorColors = getInteriorColors();
-    const cars = getCars();
 
     const [mileage, setMileage] = useState([0, 0]);
     const [year, setYear] = useState([0, 0]);
     const [selectedCar, setSelectedCar] = useState<Car>({} as Car);
 
-    const [loading, setLoading] = useState(true);
     const [filteredModels, setFilteredModels] = useState<Car[]>([]);
     const [trims, setTrims] = useState<Car[]>([]);
 
@@ -56,6 +38,9 @@ function DesktopFilterDropdown() {
     const router = useRouter();
 
     function pushUrlParams(key: string, value: string | number) {
+        if (key === 'make') {
+            router.query.model = '';
+        }
         const newQuery = { ...router.query, [key]: value.toString() };
 
         router.push({
@@ -105,12 +90,12 @@ function DesktopFilterDropdown() {
             make_name: router.query.make?.toString() || '',
             name: router.query.model?.toString() || '',
         });
-        setFilteredModels(cars);
-    }, [router.query, cars]);
+        setFilteredModels(filters.cars);
+    }, [router.query, filters]);
 
     return (
-        <div className='w-full h-full overflow-y-scroll '>
-            {
+        <div className='w-full h-full overflow-y-scroll'>
+            {filters && (
                 <>
                     <FilterComponent
                         filterName='Year'
@@ -147,19 +132,22 @@ function DesktopFilterDropdown() {
                             e: MouseEvent<HTMLAnchorElement, MouseEvent>,
                         ) => handleAnchorTagClick(e, 'makes')}
                     >
-                        <div className='dropdown-container'>
+                        <div
+                            className='dropdown-container z-10'
+                            suppressHydrationWarning
+                        >
                             <p className='text-gray-400 font-semibold py-2'>
                                 {typeof selectedCar.name !== 'undefined'
                                     ? `${selectedCar.make_name} ${selectedCar.name}`
                                     : 'Vehicle 1'}
                             </p>
                             <>
-                                {makes.length > 0 && (
+                                {filters.makes && filters.makes.length > 0 && (
                                     <Select
                                         label='Select Make'
                                         name='makes'
                                         id='makes'
-                                        className='flex flex-row justify-between w-full p-2 content-center text-gray-900'
+                                        className='flex flex-row justify-between w-full p-2 content-center text-gray-900 z-10'
                                         placeholder={
                                             router.query.make?.toString() ||
                                             'Any Make'
@@ -169,13 +157,13 @@ function DesktopFilterDropdown() {
                                         scrollShadowProps={{
                                             isEnabled: false,
                                         }}
-                                        items={makes}
+                                        items={filters.makes}
                                     >
                                         {(make) => (
                                             <SelectItem
-                                                // isDisabled={
-                                                //     make.numberOfCars === 0
-                                                // }
+                                                isDisabled={
+                                                    make.numberOfCars === 0
+                                                }
                                                 key={make.id}
                                                 value={make.id}
                                                 onPress={() => {
@@ -183,7 +171,6 @@ function DesktopFilterDropdown() {
                                                         'make',
                                                         make.name,
                                                     );
-                                                    // pushUrlParams('model', '');
                                                 }}
                                                 className='font-bold'
                                             >
@@ -194,7 +181,7 @@ function DesktopFilterDropdown() {
                                 )}
                             </>
                             <>
-                                {selectedCar.make_name && (
+                                {selectedCar.make_name && filteredModels && (
                                     <Select
                                         label='Models'
                                         name='models'
@@ -233,44 +220,44 @@ function DesktopFilterDropdown() {
                                 )}
                             </>
                             <>
-                                {trims.length > 0 && (
-                                    <Select
-                                        label='Trims'
-                                        name='trims'
-                                        id='trims'
-                                        className='flex flex-row justify-between w-full p-2 content-center text-gray-900'
-                                        placeholder='Any'
-                                        variant='bordered'
-                                        radius='sm'
-                                        scrollShadowProps={{
-                                            isEnabled: false,
-                                        }}
-                                    >
-                                        {trims.flatMap((car) =>
-                                            car.trims
-                                                ? car.trims.map((trim) => (
-                                                      <SelectItem
-                                                          key={trim.id}
-                                                          value={trim.id}
-                                                          onPress={() => {
-                                                              setSelectedCar({
-                                                                  ...selectedCar,
-                                                                  selectedTrim:
-                                                                      trim.name,
-                                                              });
-                                                              pushUrlParams(
-                                                                  'trim',
+                                {/* {trims.length > 0 && selectedCar.name && ( */}
+                                <Select
+                                    label='Trims'
+                                    name='trims'
+                                    id='trims'
+                                    className='flex flex-row justify-between w-full p-2 content-center text-gray-900 '
+                                    placeholder='Any'
+                                    variant='bordered'
+                                    radius='sm'
+                                    scrollShadowProps={{
+                                        isEnabled: false,
+                                    }}
+                                >
+                                    {trims.flatMap((car) =>
+                                        car.trims
+                                            ? car.trims.map((trim) => (
+                                                  <SelectItem
+                                                      key={trim.id}
+                                                      value={trim.id}
+                                                      onPress={() => {
+                                                          setSelectedCar({
+                                                              ...selectedCar,
+                                                              selectedTrim:
                                                                   trim.name,
-                                                              );
-                                                          }}
-                                                      >
-                                                          {trim.name}
-                                                      </SelectItem>
-                                                  ))
-                                                : [],
-                                        )}
-                                    </Select>
-                                )}
+                                                          });
+                                                          pushUrlParams(
+                                                              'trim',
+                                                              trim.name,
+                                                          );
+                                                      }}
+                                                  >
+                                                      {trim.name}
+                                                  </SelectItem>
+                                              ))
+                                            : [],
+                                    )}
+                                </Select>
+                                {/* )} */}
                             </>
                         </div>
                     </FilterComponent>
@@ -308,18 +295,19 @@ function DesktopFilterDropdown() {
                         ) => handleAnchorTagClick(e, 'bodies')}
                     >
                         <div className='dropdown-container'>
-                            {filters.bodiestype.map(
-                                (item: any, index: number) => (
-                                    <Fragment key={index}>
-                                        <CheckboxInput
-                                            inputStyle='mr-2'
-                                            filterName={item.type}
-                                            id={`body-${index + 1}`}
-                                            onChange={() => {}}
-                                        />
-                                    </Fragment>
-                                ),
-                            )}
+                            {filters.bodiesType &&
+                                filters.bodiesType.map(
+                                    (item: any, index: number) => (
+                                        <Fragment key={index}>
+                                            <CheckboxInput
+                                                inputStyle='mr-2'
+                                                filterName={item.type}
+                                                id={`body-${index + 1}`}
+                                                onChange={() => {}}
+                                            />
+                                        </Fragment>
+                                    ),
+                                )}
                         </div>
                     </FilterComponent>
                     <FilterComponent
@@ -331,49 +319,53 @@ function DesktopFilterDropdown() {
                         ) => handleAnchorTagClick(e, 'fuel-type')}
                     >
                         <div className='dropdown-container'>
-                            {filters.enginesType.map(
-                                (item: any, index: number) => (
-                                    <Fragment key={index}>
-                                        <CheckboxInput
-                                            inputStyle='mr-2'
-                                            filterName={
-                                                item.engine_type
-                                                    .charAt(0)
-                                                    .toUpperCase() +
-                                                item.engine_type.slice(1)
-                                            }
-                                            id={`fuel-${index + 1}`}
-                                            onChange={() => {}}
-                                        />
-                                    </Fragment>
-                                ),
-                            )}
+                            {filters.enginesType &&
+                                filters.enginesType.map(
+                                    (item: any, index: number) => (
+                                        <Fragment key={index}>
+                                            <CheckboxInput
+                                                inputStyle='mr-2'
+                                                filterName={
+                                                    item.engine_type
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    item.engine_type.slice(1)
+                                                }
+                                                id={`fuel-${index + 1}`}
+                                                onChange={() => {}}
+                                            />
+                                        </Fragment>
+                                    ),
+                                )}
                         </div>
                     </FilterComponent>
+                    {filters.interiorColors && (
+                        <FilterComponent
+                            filterName='Interior Color'
+                            href='#interior-color'
+                            id='interior-color'
+                            onClick={(
+                                e: MouseEvent<HTMLAnchorElement, MouseEvent>,
+                            ) => handleAnchorTagClick(e, 'interior-color')}
+                        >
+                            <ColorFilter colors={filters.interiorColors} />
+                        </FilterComponent>
+                    )}
 
-                    <FilterComponent
-                        filterName='Interior Color'
-                        href='#interior-color'
-                        id='interior-color'
-                        onClick={(
-                            e: MouseEvent<HTMLAnchorElement, MouseEvent>,
-                        ) => handleAnchorTagClick(e, 'interior-color')}
-                    >
-                        <ColorFilter colors={interiorColors} />
-                    </FilterComponent>
-
-                    <FilterComponent
-                        filterName='Exterior Color'
-                        href='#exterior-color'
-                        id='exterior-color'
-                        onClick={(
-                            e: MouseEvent<HTMLAnchorElement, MouseEvent>,
-                        ) => handleAnchorTagClick(e, 'exterior-color')}
-                    >
-                        <ColorFilter colors={exteriorColors} />
-                    </FilterComponent>
+                    {filters.exteriorColors && (
+                        <FilterComponent
+                            filterName='Exterior Color'
+                            href='#exterior-color'
+                            id='exterior-color'
+                            onClick={(
+                                e: MouseEvent<HTMLAnchorElement, MouseEvent>,
+                            ) => handleAnchorTagClick(e, 'exterior-color')}
+                        >
+                            <ColorFilter colors={filters.exteriorColors} />
+                        </FilterComponent>
+                    )}
                 </>
-            }
+            )}
         </div>
     );
 }

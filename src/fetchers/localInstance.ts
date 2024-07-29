@@ -3,11 +3,6 @@ import { error } from "console";
 
 const localInstance = axios.create({
     baseURL: 'http://localhost:3000/api',
-    headers: {
-        // Authorization:
-        //     `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-        "Content-Type": "text/plain"
-    },
 })
 
 localInstance.interceptors.response.use((res) => {
