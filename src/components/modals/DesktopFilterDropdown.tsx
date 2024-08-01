@@ -38,14 +38,28 @@ function DesktopFilterDropdown() {
     const router = useRouter();
 
     function pushUrlParams(key: string, value: string | number) {
-        if (key === 'make') {
-            router.query.model = '';
+        const currentQuery = new URLSearchParams(
+            router.query as Record<string, string>,
+        );
+
+        if (key === 'make' && router.query.model) {
+            currentQuery.delete('model'); // Clear 'model' if 'make' is provided
         }
-        const newQuery = { ...router.query, [key]: value.toString() };
+
+        if (key === 'body') {
+            const existingValues = currentQuery.getAll(key);
+            existingValues.push(value.toString());
+            currentQuery.delete(key); // Clear all existing values
+            existingValues.forEach((val) => currentQuery.append(key, val)); // Append all values
+        } else {
+            currentQuery.set(key, value.toString()); // Set or replace value for other keys
+        }
+
+        console.log('Final query string:', currentQuery.toString());
 
         router.push({
             pathname: pathname,
-            query: newQuery,
+            query: currentQuery.toString(), // Converts URLSearchParams back to a query string
         });
     }
 
@@ -65,7 +79,9 @@ function DesktopFilterDropdown() {
                 setYear([year[0], parseInt(value)]);
             }
         }
-        pushUrlParams(`${splitId[0]}_${splitId[1]}`, parseInt(value) || 0);
+        setTimeout(() => {
+            pushUrlParams(`${splitId[0]}_${splitId[1]}`, parseInt(value) || 0);
+        }, 2000);
     };
 
     const handleAnchorTagClick = (
@@ -84,6 +100,19 @@ function DesktopFilterDropdown() {
         }
     };
 
+    const handleCheckboxChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        name: string,
+        item: string,
+    ) => {
+        const { id, checked } = e.target;
+        const splitId = id.split('-');
+        console.log(e.target.value, 'id', id);
+        if (checked) {
+            pushUrlParams(name, item);
+        }
+    };
+
     useEffect(() => {
         setSelectedCar({
             ...selectedCar,
@@ -91,6 +120,11 @@ function DesktopFilterDropdown() {
             name: router.query.model?.toString() || '',
         });
         setFilteredModels(filters.cars);
+        setMileage([
+            ...mileage,
+            (mileage[0] = Number(router.query.min_mileage) || 0),
+            (mileage[1] = Number(router.query.max_mileage) || 0),
+        ]);
     }, [router.query, filters]);
 
     return (
@@ -275,7 +309,7 @@ function DesktopFilterDropdown() {
                                 filterName='Min'
                                 id='mileage'
                                 onChange={(e) => handleInputChange(e)}
-                                placeholder='Min'
+                                placeholder={'Min'}
                                 value={mileage[0] || 0}
                                 className='flex-col-reverse'
                             />
@@ -307,7 +341,14 @@ function DesktopFilterDropdown() {
                                                 inputStyle='mr-2'
                                                 filterName={item.type}
                                                 id={`body-${index + 1}`}
-                                                onChange={() => {}}
+                                                value={item.type}
+                                                onChange={(e) => {
+                                                    handleCheckboxChange(
+                                                        e,
+                                                        'body',
+                                                        item.type,
+                                                    );
+                                                }}
                                             />
                                         </Fragment>
                                     ),

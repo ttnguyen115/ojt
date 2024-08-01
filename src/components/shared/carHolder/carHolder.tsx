@@ -10,7 +10,7 @@ import { Car } from '@contracts/types/car';
 //redux-selectors
 import { getFilters, getLoading } from '@redux/selectors';
 function CarHolder() {
-    let filters = getFilters();
+    const filters = getFilters();
     const loading = getLoading();
     return (
         <div className='w-full '>

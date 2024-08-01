@@ -5,7 +5,8 @@ import _get from 'lodash/get';
 import { createSelector } from 'reselect';
 import { createAction } from '@redux/createAction';
 import Duck from 'extensible-duck';
-import { set } from 'lodash';
+
+//split to smaller duck for each state
 
 const initialState = {
     loading: true,

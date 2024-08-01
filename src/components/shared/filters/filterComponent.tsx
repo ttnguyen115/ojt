@@ -1,5 +1,6 @@
 //react
-import React, { ChangeEventHandler, MouseEvent, ReactNode } from 'react';
+import { Color } from '@contracts/types/color';
+import React, { ChangeEventHandler, ReactNode } from 'react';
 
 function handleInputPattern(inputType: string) {
     return inputType === 'text' ? '[0-9]*' : '';
@@ -15,10 +16,10 @@ function splitColorName(color: string) {
     return color.split(' ')[1];
 }
 
-export function ColorFilter({ colors }: { colors: string[] }) {
+export function ColorFilter({ colors }: { colors: Color[] }) {
     return (
         <div className='grid grid-cols-3 container h-40 w-full overflow-y-scroll gap-y-2 gap-x-5 my-4'>
-            {colors.map((color: any) => (
+            {colors.map((color:Color) => (
                 <div
                     className='flex flex-col items-center'
                     key={color.name}

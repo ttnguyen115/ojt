@@ -27,12 +27,12 @@ function CarCard({ car }: { car: Car }) {
                             alt='car'
                             width={100}
                             height={100}
-                            priority={true}
+                            priority
                         />
                     </div>
                 </div>
                 <div className='p-4 flex flex-col justify-between'>
-                    <h2 className='font-bold'>{`${car.make_name} ${car.name} `}</h2>
+                    <h2 className='font-bold'>{`${car.year} ${car.make_name} ${car.name} `}</h2>
                     <p
                         className='font-semibold text-gray-500 py-2'
                         suppressHydrationWarning

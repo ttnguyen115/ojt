@@ -4,9 +4,10 @@ import filterState from "./filterState";
 
 //axios
 import localInstance from "@fetchers/localInstance";
+import seedingData from "@utils/seedingData";
 
 
-const handleFilterCars = async (model: string, make: string) => {
+const fetchCarsFromQuery = async (model: string, make: string) => {
 
     let data = {}
 
@@ -20,24 +21,22 @@ const handleFilterCars = async (model: string, make: string) => {
     const bodies = filterState(bodiesRes.data, ['type']);
 
     const cars = new Set<Car>([])
+
     bodiesRes.data.map((body) => {
-        console.log('body', body.make_model_trim);
 
         const foundCar: Car = carsRes.data.find((car: Car) => car.id === body.make_model_trim.make_model.id)
-        // const foundBody = 
-        cars.add(foundCar)
-        // const found = car.id === body.make_model_trim.make_model.id
-        // if (found) {
-        //     const updatedCar = { ...car, year: body.make_model_trim.year, bodyType: body.type }
-        //     console.log('uc', updatedCar);
-        //     updatedCars.push(updatedCar)
-        //     carsRes.data = updatedCars
-
-        // }
+        if (!foundCar) return
+        if (!cars.has(foundCar)) {
+            const updatedCar: Car = { ...foundCar, year: body.make_model_trim.year, body_type: body.type, price: body.make_model_trim.msrp, make_name: body.make_model_trim.make_model.make.name, image: seedingData.generateVehicleImage(200, 200), mileage: seedingData.generateRandomAmount(2020) }
+            cars.add(updatedCar)
+        }
     })
 
-    console.log('cars', Array.from(cars));
+    const trimsRes = await localInstance.get(`/trims`, { params: { model: model || '', make: make || '' } });
+    console.log('trimsRes', trimsRes);
+
     const enginesRes = await localInstance.get(`/engines?model=${model || ''}&make=${make || ''}`);
+
     const engines = filterState(enginesRes.data, ['engine_type']);
 
 
@@ -48,7 +47,7 @@ const handleFilterCars = async (model: string, make: string) => {
     const intColors = filterState(intColorsRes.data, ['name', 'rgb']);
 
 
-    return data = { bodies, engines, colors, intColors, makes: makesRes.data, models: modelsRes.data, makeModels: makeModelsRes.data, cars: carsRes.data };
+    return data = { bodies, engines, colors, intColors, makes: makesRes.data, models: modelsRes.data, makeModels: makeModelsRes.data, cars: Array.from(cars) };
 };
 
-export default handleFilterCars;
+export default fetchCarsFromQuery;

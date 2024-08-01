@@ -1,7 +1,7 @@
 // helpers
 import { mapDuckEggsToPage } from '@helpers/mapDuckEggsToPage';
-import seedingData from '@utils/seedingData';
-import handleFilterCars from '@utils/filterUtils/filterCarsFromQuery';
+
+// ducks
 import duckCreator from '@ducks/duckCreator';
 
 // hooks
@@ -15,15 +15,23 @@ import { getFilters } from '@redux/selectors';
 
 //axios
 import localInstance from '@fetchers/localInstance';
+
+//components
 import CheckboxFilter from '@components/shared/filters/checkboxFilter';
 import CarHolder from '@components/shared/carHolder/carHolder';
+
+//utils
+import seedingData from '@utils/seedingData';
 import { getMakeCarsNumber } from '@utils/carUtils';
+import fetchCarsFromQuery from '@utils/filterUtils/fetchCarsFromQuery';
+import filterDataWithQuery from '@utils/filterUtils/filterDataWithQuery';
 
 const SearchCarResults = ({ title, slugging }) => {
     const { query } = useRouter();
     const filters = getFilters();
 
     const navigateToPage = useCustomNavigation();
+    const { make, model } = query;
 
     const dispatch = useDispatch();
     const handleClick = () => {
@@ -32,20 +40,13 @@ const SearchCarResults = ({ title, slugging }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const { make, model } = query;
-
             try {
                 dispatch(duckCreator.creators.setLoading(true));
-                const data = await handleFilterCars(
+                const data = await fetchCarsFromQuery(
                     model?.toString() || '',
                     make?.toString() || '',
                 );
                 const makes = getMakeCarsNumber(data.makes, data.models);
-
-                const filteredCars = seedingData.carDataGenerator(
-                    data.cars,
-                    data.makes,
-                );
 
                 dispatch(
                     duckCreator.creators.updateState({
@@ -57,7 +58,7 @@ const SearchCarResults = ({ title, slugging }) => {
                 dispatch(
                     duckCreator.creators.updateState({
                         key: 'filteredCars',
-                        data: filteredCars,
+                        data: data.cars,
                     }),
                 );
                 dispatch(
@@ -91,13 +92,15 @@ const SearchCarResults = ({ title, slugging }) => {
                         key: 'bodiesType',
                     }),
                 );
+                console.log('engines', data.engines);
+                filterDataWithQuery(filters.filteredCars, ['Sedan', 'gas']);
             } catch (error) {
                 console.error(error);
             }
         };
 
         fetchData();
-    }, [query]);
+    }, [make, model]);
 
     return (
         <div className='flex flex-col items-start w-full'>
@@ -119,10 +122,9 @@ const SearchCarResults = ({ title, slugging }) => {
 
 SearchCarResults.getInitialProps = async (context) => {
     const { make, model } = context.query;
-    let data = {};
 
     try {
-        const fetchedData = await handleFilterCars(model, make);
+        const fetchedData = await fetchCarsFromQuery(model, make);
         const makes = getMakeCarsNumber(fetchedData.makes, fetchedData.models);
         context.store.dispatch(
             duckCreator.creators.updateState({
@@ -166,7 +168,6 @@ SearchCarResults.getInitialProps = async (context) => {
     }
     return {
         title: 'SearchCarResults',
-        slugging: data || {},
     };
 };
 

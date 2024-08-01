@@ -1,7 +1,7 @@
 import { axiosInstance } from "./axiosInstance"
 
 const exteriorColorFetcher = async (modelName: string, make: string) => {
-    const res = await axiosInstance.get(`/exterior-colors?make=${make}&model=${modelName}&year=2019`)
+    const res = await axiosInstance.get(`/exterior-colors?year=2019`, { params: { model: modelName, make: make } })
 
     return res.data
 }
