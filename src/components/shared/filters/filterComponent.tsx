@@ -19,7 +19,7 @@ function splitColorName(color: string) {
 export function ColorFilter({ colors }: { colors: Color[] }) {
     return (
         <div className='grid grid-cols-3 container h-40 w-full overflow-y-scroll gap-y-2 gap-x-5 my-4'>
-            {colors.map((color:Color) => (
+            {colors.map((color: Color) => (
                 <div
                     className='flex flex-col items-center'
                     key={color.name}
@@ -45,6 +45,7 @@ export function FilterInput({
     onChange,
     className,
     inputStyle,
+    checked,
 }: {
     filterName: string;
     type: string;
@@ -54,6 +55,7 @@ export function FilterInput({
     onChange: ChangeEventHandler<HTMLInputElement>;
     className?: string;
     inputStyle?: string;
+    checked?: boolean;
 }) {
     return (
         <div className={`flex ${className}`}>
@@ -66,6 +68,7 @@ export function FilterInput({
                 value={value}
                 defaultValue={value}
                 onChange={onChange}
+                checked={checked}
             />
             <label
                 htmlFor={placeholder && returnId(id, placeholder)}

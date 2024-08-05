@@ -13,10 +13,10 @@ function CarHolder() {
     const filters = getFilters();
     const loading = getLoading();
     return (
-        <div className='w-full '>
+        <div className='w-full'>
             {!loading ? (
                 <div
-                    className='grid grid-cols-12 gap-4 '
+                    className='grid grid-cols-12 gap-4'
                     suppressHydrationWarning
                 >
                     {filters.filteredCars && filters.filteredCars.length > 0 ? (
@@ -29,7 +29,9 @@ function CarHolder() {
                             </div>
                         ))
                     ) : (
-                        <div>No cars found</div>
+                        <div className='mx-auto col-span-12 flex justify-center items-center'>
+                            No cars found
+                        </div>
                     )}
                 </div>
             ) : (
@@ -37,7 +39,7 @@ function CarHolder() {
                     Loading...
                 </div>
             )}
-        </div>
+        </div>  
     );
 }
 

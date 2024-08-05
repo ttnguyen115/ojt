@@ -42,25 +42,34 @@ function DesktopFilterDropdown() {
             router.query as Record<string, string>,
         );
 
+        // Clear 'model' if 'make' is provided
         if (key === 'make' && router.query.model) {
-            currentQuery.delete('model'); // Clear 'model' if 'make' is provided
+            currentQuery.delete('model');
         }
 
+        // Handle appending multiple values for 'body'
         if (key === 'body') {
-            const existingValues = currentQuery.getAll(key);
-            existingValues.push(value.toString());
+            const existingValues =
+                currentQuery.getAll(key)[0]?.split(',') || []; // Get all current values
+
+            existingValues.push(value.toString()); // Add new value
             currentQuery.delete(key); // Clear all existing values
-            existingValues.forEach((val) => currentQuery.append(key, val)); // Append all values
+
+            existingValues.forEach((val) => {
+                currentQuery.append(key, val);
+            }); // Append all values
         } else {
             currentQuery.set(key, value.toString()); // Set or replace value for other keys
         }
 
-        console.log('Final query string:', currentQuery.toString());
-
-        router.push({
-            pathname: pathname,
-            query: currentQuery.toString(), // Converts URLSearchParams back to a query string
-        });
+        router.push(
+            {
+                pathname: pathname,
+                query: currentQuery.toString(), // Converts URLSearchParams back to a query string
+            },
+            undefined,
+            { shallow: true },
+        );
     }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -105,11 +114,49 @@ function DesktopFilterDropdown() {
         name: string,
         item: string,
     ) => {
-        const { id, checked } = e.target;
-        const splitId = id.split('-');
-        console.log(e.target.value, 'id', id);
+        const { checked } = e.target;
+
         if (checked) {
             pushUrlParams(name, item);
+        } else {
+            removeUrlParamValue(name, item); // Call the function to remove the item
+        }
+    };
+
+    // Example removeUrlParamValue function
+    const removeUrlParamValue = (key, valueToRemove) => {
+        const { query } = router;
+
+        if (query[key]) {
+            const values = Array.isArray(query[key])
+                ? query[key]
+                : [query[key]];
+            const newValues = values.filter((value) => value !== valueToRemove);
+
+            if (newValues.length > 0) {
+                router.push(
+                    {
+                        pathname: router.pathname,
+                        query: {
+                            ...query,
+                            [key]: newValues,
+                        },
+                    },
+                    undefined,
+                    { shallow: true },
+                );
+            } else {
+                // Remove the key if no values are left
+                const { [key]: _, ...restQuery } = query;
+                router.push(
+                    {
+                        pathname: router.pathname,
+                        query: restQuery,
+                    },
+                    undefined,
+                    { shallow: true },
+                );
+            }
         }
     };
 
@@ -349,6 +396,9 @@ function DesktopFilterDropdown() {
                                                         item.type,
                                                     );
                                                 }}
+                                                checked={router.query.body?.includes(
+                                                    item.type,
+                                                )}
                                             />
                                         </Fragment>
                                     ),

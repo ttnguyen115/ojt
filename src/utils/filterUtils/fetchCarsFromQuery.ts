@@ -33,7 +33,6 @@ const fetchCarsFromQuery = async (model: string, make: string) => {
     })
 
     const trimsRes = await localInstance.get(`/trims`, { params: { model: model || '', make: make || '' } });
-    console.log('trimsRes', trimsRes);
 
     const enginesRes = await localInstance.get(`/engines?model=${model || ''}&make=${make || ''}`);
 

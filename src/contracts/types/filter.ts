@@ -1,4 +1,5 @@
 import { Car } from "./car";
+import { Color } from "./color";
 import { Make } from "./make";
 
 export interface Filter {
@@ -12,6 +13,6 @@ export interface Filter {
     filteredCars: Car[]
     cars: Car[]
     makes: Make[],
-    interiorColors: string[],
-    exteriorColors: string[],
+    interiorColors: Color[],
+    exteriorColors: Color[],
 }

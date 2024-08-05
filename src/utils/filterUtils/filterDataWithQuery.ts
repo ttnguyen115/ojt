@@ -1,15 +1,12 @@
-const filterDataWithQuery = (data: any[], query: string[]) => {
-    console.log('data', data);
+const filterDataWithQuery = (data: any[], query: { key: string; value: string | string[] }) => {
+    if (query.key && query.value) {
+        if (Array.isArray(query.value)) {
+            return data.filter((item) => query.value.includes(item[query.key]));
+        } else {
+            return data.filter((item) => item[query.key] === query.value);
+        }
+    }
+    return data;
+};
 
-    query.map((q) => {
-        console.log('query', q);
-        data.map((d) => {
-
-            const key = Object.keys(d).find(key => String(d[key]).localeCompare(q, undefined, { sensitivity: 'base' }) === 0)
-            console.log('ll', key);
-        })
-
-    })
-    return 1
-}
-export default filterDataWithQuery
+export default filterDataWithQuery;

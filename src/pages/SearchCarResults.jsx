@@ -31,7 +31,7 @@ const SearchCarResults = ({ title, slugging }) => {
     const filters = getFilters();
 
     const navigateToPage = useCustomNavigation();
-    const { make, model } = query;
+    const { make, model, body } = query;
 
     const dispatch = useDispatch();
     const handleClick = () => {
@@ -55,12 +55,6 @@ const SearchCarResults = ({ title, slugging }) => {
                     }),
                 );
 
-                dispatch(
-                    duckCreator.creators.updateState({
-                        key: 'filteredCars',
-                        data: data.cars,
-                    }),
-                );
                 dispatch(
                     duckCreator.creators.updateState({
                         key: 'cars',
@@ -92,15 +86,24 @@ const SearchCarResults = ({ title, slugging }) => {
                         key: 'bodiesType',
                     }),
                 );
-                console.log('engines', data.engines);
-                filterDataWithQuery(filters.filteredCars, ['Sedan', 'gas']);
+                const filteredCars = filterDataWithQuery(data.cars, {
+                    key: 'body_type',
+                    value: body || '',
+                });
+                console.log('bodydewwq',typeof body);
+                dispatch(
+                    duckCreator.creators.updateState({
+                        key: 'filteredCars',
+                        data: filteredCars,
+                    }),
+                );
             } catch (error) {
                 console.error(error);
             }
         };
 
         fetchData();
-    }, [make, model]);
+    }, [query]);
 
     return (
         <div className='flex flex-col items-start w-full'>
