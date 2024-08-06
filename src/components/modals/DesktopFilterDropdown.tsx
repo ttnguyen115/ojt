@@ -164,7 +164,11 @@ function DesktopFilterDropdown() {
         const bodiesArray = Array.isArray(bodies) ? bodies : [bodies];
 
         bodiesArray.forEach((body) => {
-            if (body && !filters.bodiesType.includes(body)) {
+            if (
+                body &&
+                filters.bodiesType &&
+                filters.bodiesType.includes(body)
+            ) {
                 removeUrlParamValue('body', body);
             }
         });

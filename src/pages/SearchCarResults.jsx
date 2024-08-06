@@ -6,7 +6,7 @@ import duckCreator from '@ducks/duckCreator';
 
 // hooks
 import useCustomNavigation from '@hooks/useCustomNavigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
@@ -37,6 +37,8 @@ const SearchCarResults = ({ title, slugging }) => {
     const handleClick = () => {
         navigateToPage({ query: '123' });
     };
+
+    const filteredQuery = useMemo(() => {}, [query]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -102,7 +104,7 @@ const SearchCarResults = ({ title, slugging }) => {
         };
 
         fetchData();
-    }, [query]);
+    }, [filteredQuery]);
 
     return (
         <div className='flex flex-col items-start w-full'>
