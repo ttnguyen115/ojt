@@ -90,7 +90,6 @@ const SearchCarResults = ({ title, slugging }) => {
                     key: 'body_type',
                     value: body || '',
                 });
-                console.log('bodydewwq',typeof body);
                 dispatch(
                     duckCreator.creators.updateState({
                         key: 'filteredCars',

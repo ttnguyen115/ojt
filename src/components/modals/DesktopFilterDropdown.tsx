@@ -43,7 +43,7 @@ function DesktopFilterDropdown() {
         );
 
         // Clear 'model' if 'make' is provided
-        if (key === 'make' && router.query.model) {
+        if (key === 'make') {
             currentQuery.delete('model');
         }
 
@@ -123,7 +123,6 @@ function DesktopFilterDropdown() {
         }
     };
 
-    // Example removeUrlParamValue function
     const removeUrlParamValue = (key, valueToRemove) => {
         const { query } = router;
 
@@ -159,6 +158,17 @@ function DesktopFilterDropdown() {
             }
         }
     };
+
+    useEffect(() => {
+        const bodies = router.query.body;
+        const bodiesArray = Array.isArray(bodies) ? bodies : [bodies];
+
+        bodiesArray.forEach((body) => {
+            if (body && !filters.bodiesType.includes(body)) {
+                removeUrlParamValue('body', body);
+            }
+        });
+    }, [router.query.model]);
 
     useEffect(() => {
         setSelectedCar({

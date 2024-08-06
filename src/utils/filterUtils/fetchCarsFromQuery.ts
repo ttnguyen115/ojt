@@ -5,6 +5,7 @@ import filterState from "./filterState";
 //axios
 import localInstance from "@fetchers/localInstance";
 import seedingData from "@utils/seedingData";
+import { trimsFetcher } from "@fetchers/carsFetcher";
 
 
 const fetchCarsFromQuery = async (model: string, make: string) => {
@@ -32,12 +33,29 @@ const fetchCarsFromQuery = async (model: string, make: string) => {
         }
     })
 
-    const trimsRes = await localInstance.get(`/trims`, { params: { model: model || '', make: make || '' } });
+    const trimsRes = await trimsFetcher(make, model)
+
+    console.log('trims', trimsRes.data);
+
+
+
 
     const enginesRes = await localInstance.get(`/engines?model=${model || ''}&make=${make || ''}`);
 
+
+    console.log('engines', enginesRes.data);
+
     const engines = filterState(enginesRes.data, ['engine_type']);
 
+    // enginesRes.data.map((engine) => {
+
+    //     const foundCar: Car = carsRes.data.find((car: Car) => car.id === body.make_model_trim.make_model.id)
+    //     if (!foundCar) return
+    //     if (!cars.has(foundCar)) {
+    //         const updatedCar: Car = { ...foundCar, year: body.make_model_trim.year, body_type: body.type, price: body.make_model_trim.msrp, make_name: body.make_model_trim.make_model.make.name, image: seedingData.generateVehicleImage(200, 200), mileage: seedingData.generateRandomAmount(2020) }
+    //         cars.add(updatedCar)
+    //     }
+    // })
 
     const extColorsRes = await localInstance.get(`/exterior-colors?model=${model || ''}&make=${make || ''}`);
     const colors = filterState(extColorsRes.data, ['name', 'rgb']);

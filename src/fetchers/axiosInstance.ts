@@ -7,7 +7,7 @@ export const axiosInstance = axios.create({
 
 });
 
-axiosInstance.defaults.headers.common['Authorization'] = process.env.NEXT_PUBLIC_TOKEN
+// axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
 
 
 axiosInstance.interceptors.response.use(
