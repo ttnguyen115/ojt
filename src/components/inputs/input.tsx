@@ -40,6 +40,7 @@ export function CheckboxInput({
     onChange,
     className = '',
     inputStyle = '',
+    checked = false,
 }: {
     filterName: string;
     value?: string | number;
@@ -48,6 +49,7 @@ export function CheckboxInput({
     onChange: ChangeEventHandler<HTMLInputElement>;
     className?: string;
     inputStyle?: string;
+    checked?: boolean;
 }) {
     return (
         <FilterInput
@@ -59,6 +61,7 @@ export function CheckboxInput({
             onChange={onChange}
             className={className}
             inputStyle={inputStyle}
+            checked={checked}
         />
     );
 }

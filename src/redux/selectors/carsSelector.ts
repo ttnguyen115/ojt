@@ -6,9 +6,7 @@ import { useSelector } from "react-redux"
 
 const getCars = () => {
     const { cars }: { cars: Car[] } = useSelector(duckCreator.selectors.getAllCars)
-    const { makes }: { makes: Make[] } = useSelector(duckCreator.selectors.getAllMakes)
-    const updatedCars: Car[] = seedingData.carDataGenerator(cars, makes)
-    return updatedCars
+    return cars
 }
 
 export default getCars

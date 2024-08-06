@@ -1,7 +1,7 @@
 import { axiosInstance } from "./axiosInstance";
 
-export async function makesFetcher(url: string) {
-    const data = await axiosInstance.get(url);
+export default async function makesFetcher() {
+    const data = await axiosInstance.get('/makes');
     return data || {};
 
 }

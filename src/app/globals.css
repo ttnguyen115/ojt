@@ -54,12 +54,8 @@ summary::after {
 details[open] > summary::after {
     transform: rotate(180deg);
 }
-
 details {
     height: 100%;
-}
-
-details {
     padding-left: 20px;
     padding-right: 20px;
     justify-content: center;
@@ -109,6 +105,7 @@ input {
 
 label {
     @apply text-gray-800;
+    cursor: pointer;
 }
 
 .dropdown-container {
@@ -120,10 +117,6 @@ label {
 }
 
 .dropdown-container > div > label {
-    cursor: pointer;
-}
-
-input {
     cursor: pointer;
 }
 

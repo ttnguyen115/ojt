@@ -1,5 +1,10 @@
+//type
 import { Filter } from "@contracts/index"
+
+//duck
 import duckCreator from "@ducks/duckCreator"
+
+//redux
 import { useSelector } from "react-redux"
 
 const getFilters = () => {

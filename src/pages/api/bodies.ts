@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import bodyStyleFetcher from "@fetchers/bodyStyleFetcher";
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-// export default async function handler(req: NextRequest, res: NextApiResponse) {
-//     // const params = req.nextUrl.searchParams
-//     const response = await bodyStyleFetcher('3 series', 'bmw')
-//     console.log('dx ', response);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const queries = req.query
 
-//     return res.json(response)
-// }
+    const response = await bodyStyleFetcher(queries.model?.toString() || '', queries.make?.toString() || '')
+
+
+    return res.status(200).json({ data: response })
+}

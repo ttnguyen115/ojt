@@ -10,8 +10,8 @@ function CompareModal() {
                 <div className='w-20 h-14 border-gray-200 border-2 rounded-md'></div>
                 <div className='w-20 h-14 border-gray-200 border-2 rounded-md'></div>
                 <div className='w-20 h-14 border-gray-200 border-2 rounded-md'></div>
-                <div>Compare</div>
-                <div>Clear all</div>
+                <>Compare</>
+                <>Clear all</>
             </div>
         </div>
     );

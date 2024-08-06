@@ -1,8 +1,8 @@
 import axios from "axios";
+import localInstance from "./localInstance";
 
-// const attributes: string[] = ['bodies.type', 'engines.cam_type', 'engines.cylinders', 'engines.drive_type', 'engines.engine_type', 'engines.fuel_type', 'engines.transmission', 'engines.valve_timing', 'engines.valves']
 export default async function filtersFetcher() {
-    const results = await axios.get('http://localhost:3000/api/filters')
+    const results = await localInstance.get('/filters')
 
     return results || {};
 }

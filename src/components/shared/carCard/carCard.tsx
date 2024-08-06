@@ -1,5 +1,5 @@
 //react
-import React from 'react';
+import React, { memo } from 'react';
 
 //divider
 import Divider from '../Divider/divider';
@@ -27,12 +27,12 @@ function CarCard({ car }: { car: Car }) {
                             alt='car'
                             width={100}
                             height={100}
-                            priority={false}
+                            priority
                         />
                     </div>
                 </div>
                 <div className='p-4 flex flex-col justify-between'>
-                    <h2 className='font-bold'>{`${car.make_name} ${car.name} `}</h2>
+                    <h2 className='font-bold'>{`${car.year} ${car.make_name} ${car.name} `}</h2>
                     <p
                         className='font-semibold text-gray-500 py-2'
                         suppressHydrationWarning
@@ -58,4 +58,4 @@ function CarCard({ car }: { car: Car }) {
     );
 }
 
-export default CarCard;
+export default memo(CarCard);

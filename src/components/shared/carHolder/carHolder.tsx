@@ -1,5 +1,5 @@
 //react
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 
 //components
 import CarCard from '../carCard/carCard';
@@ -8,25 +8,39 @@ import CarCard from '../carCard/carCard';
 import { Car } from '@contracts/types/car';
 
 //redux-selectors
-import { getCars } from '@redux/selectors';
-
+import { getFilters, getLoading } from '@redux/selectors';
 function CarHolder() {
-    const cars: Car[] = getCars();
+    const filters = getFilters();
+    const loading = getLoading();
     return (
-        <div className='border-gray-200 border-2 rounded-md w-full p-4'>
-            <div className='mb-4'>CarHolder</div>
-            <div className='grid grid-cols-12 gap-4 '>
-                {cars.slice(10, 25).map((car: Car) => (
-                    <div
-                        className='sm:col-span-12 md:col-span-4'
-                        key={car.id}
-                    >
-                        <CarCard car={car} />
-                    </div>
-                ))}
-            </div>
-        </div>
+        <div className='w-full'>
+            {!loading ? (
+                <div
+                    className='grid grid-cols-12 gap-4'
+                    suppressHydrationWarning
+                >
+                    {filters.filteredCars && filters.filteredCars.length > 0 ? (
+                        filters.filteredCars.map((car: Car) => (
+                            <div
+                                className='sm:col-span-12 md:col-span-4'
+                                key={car.id}
+                            >
+                                <CarCard car={car} />
+                            </div>
+                        ))
+                    ) : (
+                        <div className='mx-auto col-span-12 flex justify-center items-center'>
+                            No cars found
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className='flex flex-row justify-center items-center text-center my-auto content-center'>
+                    Loading...
+                </div>
+            )}
+        </div>  
     );
 }
 
-export default CarHolder;
+export default memo(CarHolder);

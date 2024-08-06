@@ -1,5 +1,10 @@
+//type
 import { Make } from "@contracts/types/make"
+
+//duck
 import duckCreator from "@ducks/duckCreator"
+
+//redux
 import { useSelector } from "react-redux"
 
 const getMakes = () => {
